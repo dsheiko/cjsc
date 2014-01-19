@@ -1,0 +1,39 @@
+{
+  "name": "cjsc",
+  "description": "CommonJS Compiler",
+  "version": "0.0.1",
+  "author": "Dmitry Sheiko <me@dsheiko.com>",
+	"main": "cjsc-module.js",
+  "bin": {
+    "jscs": "./cjsc.js"
+  },
+	"dependencies": {
+		"esprima": "~1.0.4"
+	},
+	"devDependencies": {
+		"grunt": "~0.4.1",
+		"grunt-contrib-jscs": ">= 0.1.3",
+		"grunt-contrib-jshint": "~0.4.3",
+		"grunt-mocha-cli": "~1.2.1",
+		"assert": ">= 0.4.9",
+		"mocha": ">= 1.7.4",
+		"should": "*"
+	},
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/fawek/codepainter/raw/master/LICENSE"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "Dmitry Sheiko",
+      "email": "me@dsheiko.com",
+      "web": "http://dsheiko.com"
+    }
+  ],
+  "repository":
+  {"type": "git",
+    "url": "https://github.com/dsheiko/cjsc"
+  }
+}
