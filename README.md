@@ -1,4 +1,9 @@
 CommonJS Compiler
 ==============
 
-Compiles CommonJs dependencies into a single file available for use in a browser in the very way nodejs does it on server-side
+cjsc compiles CommonJS modules into a a single JavaScript file suitable for  browser.
+
+Features
+
+Allows to keep JavaScript modular in a common way
+Adds no extra code, but tiny `require` function and definition wrappers.
