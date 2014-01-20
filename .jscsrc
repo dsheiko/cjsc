@@ -2,5 +2,5 @@
   "LineLength": {
 		"allowMaxLength": 120
 	},
-  "QuoteConventions": false
+  "Indentation": false
 }
