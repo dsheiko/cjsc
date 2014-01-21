@@ -1,4 +1,2 @@
-var isolatedVar = "main",
-		foo = require( "./foo" );
-console.log( foo );
-console.log( isolatedVar );
+console.log( "main.js running..." );
+console.log( "Imported name in main.js is `%s`", require( "./lib/dep1" ).name );

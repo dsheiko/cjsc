@@ -56,8 +56,10 @@ module.exports = function( argv ) {
 				destPath = argv[ 3 ],
 				/** @type {string} */
 				out,
-				/** @type {string} */
+				/** @type {Compiler} */
 				compiler,
+				/** @type {Parser} */
+				parser,
 				/** @type {string} srcResolvedFile - fully resolved main module (source) filename */
 				srcResolvedFile,
 				/** @type {Object} */
@@ -71,12 +73,17 @@ module.exports = function( argv ) {
 			console.log( HELP_SCREEN );
 			process.exit( 0 );
 		}
-
-		compiler = new Compiler( new Parser( DependencyEntity ), cli );
+		parser = new Parser( DependencyEntity );
+		compiler = new Compiler( parser, cli );
 		srcResolvedFile = cli.resolveFilename( srcPath );
 		map = compiler.findDependencies( srcResolvedFile );
 		compiler.preventAnInfiniteLoops( srcResolvedFile, map );
 		out = compiler.compile( srcResolvedFile, map, Replacer );
+		try {
+			parser.getSyntaxTree( out );
+		}	catch( e ) {
+			throw new ReferenceError( "Couldn't compile into a valid JavaScript" );
+		}
 		cli.writeJs( destPath, out );
 		cli.printBody( Object.keys( map ).length );
 	}());
