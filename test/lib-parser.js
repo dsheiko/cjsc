@@ -28,7 +28,7 @@ var Parser = require( "../lib/Parser" ),
 		getExcerpt = function( code, range ) {
 			return code.substr( range[ 0 ], range[ 1 ] - range[ 0 ] );
 		};
-		
+
 require( "should" );
 
 describe( "Parser", function(){

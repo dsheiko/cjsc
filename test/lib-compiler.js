@@ -3,8 +3,7 @@
 		/** @type {function} Compiler constructor */
 var Compiler = require( "../lib/Compiler" ),
 		/** @type {fixture} module */
-		fixture = require( "./inc/fixture" ),
-		DependencyEntity;
+		fixture = require( "./inc/fixture" );
 require( "should" );
 
 describe( "Compiler", function(){
@@ -108,7 +107,6 @@ describe( "Compiler", function(){
 						return fname;
 					},
 					getDependecies: function( fname ) {
-						var re = /\.js$/;
 						return fixture.getJson( "Compiler/" + fname );
 					}
 				};

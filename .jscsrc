@@ -2,5 +2,6 @@
   "LineLength": {
 		"allowMaxLength": 120
 	},
-  "Indentation": false
+  "Indentation": false,
+	"VariableNamingConventions": false
 }

@@ -97,11 +97,11 @@ describe( "require wrapper", function () {
 		});
 		require( "/main.js" );
 		log.should.eql([
-			'main-runs',
-			'dep-runs',
-			'dep-parent-id:/main.js',
-			'main-imports:/dep.js',
-			'dep-fChild-id:/dep.js'
+			"main-runs",
+			"dep-runs",
+			"dep-parent-id:/main.js",
+			"main-imports:/dep.js",
+			"dep-fChild-id:/dep.js"
 		]);
 
   });
