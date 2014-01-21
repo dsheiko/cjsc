@@ -12,55 +12,58 @@
 	* Define scope for `require`
 	*/
 var require = (function(){
-			var /**
-					* Store types assigned to module.exports
-					* @type {module[]}
-					*/
-					imports = [],
-					/**
-					 * Store the code that constract module (and assigns to exports)
-					 * @type {*[]}
-					 */
-					constructors = [],
-					/**
-					 * @type {module}
-					 */
-					module = {},
-					/**
-					 * Implement CommonJS `require`
-					 * @param {string} filename
-					 * @returns {*}
-					 */
-					require = function( filename ) {
-						if ( typeof imports[ filename ] !== "undefined" ) {
-							return imports[ filename ].exports;
-						}
-						module = {
-							id: filename,
-							filename: filename,
-							parent: module,
-							children: [],
-							exports: null,
-							loaded: false
-						};
-						// Called first time, so let's run code constructing (exporting) the module
-						if ( typeof constructors[ filename ] === "undefined" ) {
-							throw new Error( "Constructor of " + filename + " module not found" );
-						}
-						imports[ filename ] = constructors[ filename ]( module, module.exports );
-						imports[ filename ].loaded = true;
-						if ( imports[ filename ].parent.children ) {
-							imports[ filename ].parent.children.push( imports[ filename ] );
-						}
-						return imports[ filename ].exports;
-					};
+	var /**
+			* Store modules (types assigned to module.exports)
+			* @type {module[]}
+			*/
+			imports = [],
 			/**
-			 * Register module
-			 * @param {string} filename
-			 * @param {function(module, *)} constructFn
+			 * Store the code that constract a module (and assigns to exports)
+			 * @type {*[]}
 			 */
-			require.define = function( filename, constructFn ) {
-				constructors[ filename ] = constructFn;
+			factories = [],
+			/**
+			 * @type {module}
+			 */
+			module = {},
+			/**
+			 * Implement CommonJS `require`
+			 * http://wiki.commonjs.org/wiki/Modules/1.1.1
+			 * @param {string} filename
+			 * @returns {*}
+			 */
+			require = function( filename ) {
+
+				if ( typeof imports[ filename ] !== "undefined" ) {
+					return imports[ filename ].exports;
+				}
+				module = {
+					id: filename,
+					filename: filename,
+					parent: module,
+					children: [],
+					exports: null,
+					loaded: false
+				};
+
+				// Called first time, so let's run code constructing (exporting) the module
+				if ( typeof factories[ filename ] === "undefined" ) {
+					throw new Error( "The factory of " + filename + " module not found" );
+				}
+				imports[ filename ] = factories[ filename ]( module, module.exports );
+				imports[ filename ].loaded = true;
+				if ( imports[ filename ].parent.children ) {
+					imports[ filename ].parent.children.push( imports[ filename ] );
+				}
+				return imports[ filename ].exports;
 			};
-			return require;
-		}());
+	/**
+	 * Register module
+	 * @param {string} filename
+	 * @param {function(module, *)} moduleFactory
+	 */
+	require.def = function( filename, moduleFactory ) {
+		factories[ filename ] = moduleFactory;
+	};
+	return require;
+}());

@@ -21,21 +21,22 @@ describe( "require wrapper", function () {
 			 */
 			require = (function(){
 				var /**
-						* Store types assigned to module.exports
+						* Store modules (types assigned to module.exports)
 						* @type {module[]}
 						*/
 						imports = [],
 						/**
-						 * Store the code that constract module (and assigns to exports)
+						 * Store the code that constract a module (and assigns to exports)
 						 * @type {*[]}
 						 */
-						constructors = [],
+						factories = [],
 						/**
 						 * @type {module}
 						 */
 						module = {},
 						/**
 						 * Implement CommonJS `require`
+						 * http://wiki.commonjs.org/wiki/Modules/1.1.1
 						 * @param {string} filename
 						 * @returns {*}
 						 */
@@ -54,10 +55,10 @@ describe( "require wrapper", function () {
 							};
 
 							// Called first time, so let's run code constructing (exporting) the module
-							if ( typeof constructors[ filename ] === "undefined" ) {
-								throw new Error( "Constructor of " + filename + " module not found" );
+							if ( typeof factories[ filename ] === "undefined" ) {
+								throw new Error( "The factory of " + filename + " module not found" );
 							}
-							imports[ filename ] = constructors[ filename ]( module, module.exports );
+							imports[ filename ] = factories[ filename ]( module, module.exports );
 							imports[ filename ].loaded = true;
 							if ( imports[ filename ].parent.children ) {
 								imports[ filename ].parent.children.push( imports[ filename ] );
@@ -67,16 +68,16 @@ describe( "require wrapper", function () {
 				/**
 				 * Register module
 				 * @param {string} filename
-				 * @param {function(module, *)} constructFn
+				 * @param {function(module, *)} moduleFactory
 				 */
-				require.define = function( filename, constructFn ) {
-					constructors[ filename ] = constructFn;
+				require.def = function( filename, moduleFactory ) {
+					factories[ filename ] = moduleFactory;
 				};
 				return require;
 			}());
 
   it("must resolve dependencies", function () {
-		require.define( "/main.js", function( module ){
+		require.def( "/main.js", function( module ){
 			var dep;
 			log.push( "main-runs" );
 			dep = require( "/dep.js" );
@@ -84,7 +85,7 @@ describe( "require wrapper", function () {
 			log.push( "dep-fChild-id:" + module.children[ 0 ].id );
 			return module;
 		});
-		require.define( "/dep.js", function( module ){
+		require.def( "/dep.js", function( module ){
 			log.push( "dep-runs" );
 			log.push( "dep-parent-id:" + module.parent.id );
 			module.exports = { id: module.id };
