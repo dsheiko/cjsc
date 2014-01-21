@@ -29,6 +29,10 @@ var fs = require( "fs" ),
 		 */
 		Parser = require( "./lib/Parser" ),
 		/**
+		 * @type {function} Replacer constructor
+		 */
+		Replacer = require( "./lib/Replacer" ),
+		/**
 		 * @type {function}  DependencyEntity constructor
 		 */
 		DependencyEntity = require( "./lib/Entity/Dependency" ),
@@ -53,13 +57,14 @@ module.exports = function( argv ) {
 	(function(){
 		var srcPath = path.resolve( argv[ 2 ] ),
 				destPath = argv[ 3 ],
+				out,
 				cli = new Cli( path.dirname( srcPath ), fs, path ),
 				compiler = new Compiler( new Parser( DependencyEntity ), cli ),
 				srcResolvedFile = cli.resolveFilename( srcPath ),
 				depMap = compiler.findDependencies( srcResolvedFile );
 				console.log(depMap);
-				//compiler.preventAnInfiniteLoops( srcResolvedFile, depMap );
-				//out = compiler.wrapSourceCode( srcPath );
+				compiler.preventAnInfiniteLoops( srcResolvedFile, depMap );
+				out = compiler.compile( depMap, Replacer );
 
 		//cli.writeJs( destPath, out );
 	}());

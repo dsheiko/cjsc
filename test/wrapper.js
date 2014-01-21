@@ -77,18 +77,22 @@ describe( "require wrapper", function () {
 			}());
 
   it("must resolve dependencies", function () {
-		require.def( "/main.js", function( module ){
+		require.def( "/main.js", function( module, exports ){
 			var dep;
 			log.push( "main-runs" );
 			dep = require( "/dep.js" );
 			log.push( "main-imports:" + dep.id );
 			log.push( "dep-fChild-id:" + module.children[ 0 ].id );
+			// Generated
+			module.exports = module.exports === null ? exports : module.exports;
 			return module;
 		});
-		require.def( "/dep.js", function( module ){
+		require.def( "/dep.js", function( module, exports ){
 			log.push( "dep-runs" );
 			log.push( "dep-parent-id:" + module.parent.id );
 			module.exports = { id: module.id };
+			// Generated
+			module.exports = module.exports === null ? exports : module.exports;
 			return module;
 		});
 		require( "/main.js" );
