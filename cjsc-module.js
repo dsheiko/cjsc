@@ -41,31 +41,43 @@ var fs = require( "fs" ),
 		 * @type {string}
 		 * @default
 		 */
-		HELP_SCREEN = "Usage: cjsc <src-path> <dest-path>\n" +
-					"<src-path> - filename\n" +
-					"<dest-path> - filename\n";
+		HELP_SCREEN = " Usage: cjsc <src-path> <dest-path>\n" +
+					" <src-path> - filename\n" +
+					" <dest-path> - filename\n";
 /**
  * Runner
  */
 module.exports = function( argv ) {
 
-	if ( argv.length < 4 ) {
-		console.log( HELP_SCREEN );
-		process.exit( 0 );
-	}
-
 	(function(){
+				/** @type {string} */
 		var srcPath = path.resolve( argv[ 2 ] ),
+				/** @type {string} */
 				destPath = argv[ 3 ],
+				/** @type {string} */
 				out,
-				cli = new Cli( path.dirname( srcPath ), fs, path ),
-				compiler = new Compiler( new Parser( DependencyEntity ), cli ),
-				srcResolvedFile = cli.resolveFilename( srcPath ),
-				depMap = compiler.findDependencies( srcResolvedFile );
-				console.log(depMap);
-				compiler.preventAnInfiniteLoops( srcResolvedFile, depMap );
-				out = compiler.compile( depMap, Replacer );
+				/** @type {string} */
+				compiler,
+				/** @type {string} srcResolvedFile - fully resolved main module (source) filename */
+				srcResolvedFile,
+				/** @type {Object} */
+				map,
+				/** @type {Cli} */
+				cli = new Cli( path.dirname( srcPath ), fs, path );
 
-		//cli.writeJs( destPath, out );
+		cli.printHeader();
+
+		if ( argv.length < 4 ) {
+			console.log( HELP_SCREEN );
+			process.exit( 0 );
+		}
+
+		compiler = new Compiler( new Parser( DependencyEntity ), cli );
+		srcResolvedFile = cli.resolveFilename( srcPath );
+		map = compiler.findDependencies( srcResolvedFile );
+		compiler.preventAnInfiniteLoops( srcResolvedFile, map );
+		out = compiler.compile( srcResolvedFile, map, Replacer );
+		cli.writeJs( destPath, out );
+		cli.printBody( Object.keys( map ).length );
 	}());
 };

@@ -68,3 +68,29 @@ var require = (function(){
 	return require;
 }());
 
+require.def( "/repositories/home/sheiko/vhosts/os.htdocs/cjsc/demo/main.js", function( module, exports ){
+var isolatedVar = "main",
+		foo = require( "/repositories/home/sheiko/vhosts/os.htdocs/cjsc/demo/foo" );
+console.log( foo );
+console.log( isolatedVar );
+
+	module.exports = module.exports === null ? exports : module.exports;
+	return module;
+});
+
+require.def( "/repositories/home/sheiko/vhosts/os.htdocs/cjsc/demo/foo", function( module, exports ){
+var bar = require( "/repositories/home/sheiko/vhosts/os.htdocs/cjsc/demo/bar" );
+isolatedVar = "foo";
+module.exports = bar;
+	module.exports = module.exports === null ? exports : module.exports;
+	return module;
+});
+
+require.def( "/repositories/home/sheiko/vhosts/os.htdocs/cjsc/demo/bar", function( module, exports ){
+isolatedVar = "bar";
+module.exports = "bar";
+	module.exports = module.exports === null ? exports : module.exports;
+	return module;
+});
+
+require( "/repositories/home/sheiko/vhosts/os.htdocs/cjsc/demo/main.js" );
