@@ -42,7 +42,7 @@ var require = (function(){
 					filename: filename,
 					parent: module,
 					children: [],
-					exports: null,
+					exports: {},
 					loaded: false
 				};
 
@@ -71,7 +71,7 @@ var require = (function(){
 require.def( "/repositories/home/sheiko/vhosts/os.htdocs/cjsc/demo/main.js", function( module, exports ){
 console.log( "main.js running..." );
 console.log( "Imported name in main.js is `%s`", require( "/repositories/home/sheiko/vhosts/os.htdocs/cjsc/demo/lib/dep1.js" ).name );
-	module.exports = module.exports === null ? exports : module.exports;
+	module.exports = module.exports === {} ? exports : module.exports;
 	return module;
 });
 
@@ -79,14 +79,14 @@ require.def( "/repositories/home/sheiko/vhosts/os.htdocs/cjsc/demo/lib/dep1.js",
 console.log( "dep1.js running..." );
 console.log( "Imported name in dep1.js is `%s`", require( "/repositories/home/sheiko/vhosts/os.htdocs/cjsc/demo/lib/dep2.js" ).name );
 exports.name = "dep1";
-	module.exports = module.exports === null ? exports : module.exports;
+	module.exports = module.exports === {} ? exports : module.exports;
 	return module;
 });
 
 require.def( "/repositories/home/sheiko/vhosts/os.htdocs/cjsc/demo/lib/dep2.js", function( module, exports ){
 console.log( "dep2.js running..." );
 exports.name = "dep2";
-	module.exports = module.exports === null ? exports : module.exports;
+	module.exports = module.exports === {} ? exports : module.exports;
 	return module;
 });
 
