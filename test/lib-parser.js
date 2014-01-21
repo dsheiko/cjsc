@@ -21,13 +21,14 @@ var Parser = require( "../lib/Parser" ),
 			};
 		},
 		/**
-		 *
+		 * @param {string} code
 		 * @param {number[]} range
 		 * @returns {string}
 		 */
 		getExcerpt = function( code, range ) {
 			return code.substr( range[ 0 ], range[ 1 ] - range[ 0 ] );
 		};
+		
 require( "should" );
 
 describe( "Parser", function(){
