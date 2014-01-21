@@ -55,9 +55,10 @@ module.exports = function( argv ) {
 				destPath = argv[ 3 ],
 				cli = new Cli( path.dirname( srcPath ), fs, path ),
 				compiler = new Compiler( new Parser( DependencyEntity ), cli ),
-				depMap = compiler.findDependencies( srcPath );
+				srcResolvedFile = cli.resolveFilename( srcPath ),
+				depMap = compiler.findDependencies( srcResolvedFile );
 				console.log(depMap);
-				//compiler.preventAnInfiniteLoops( depMap );
+				//compiler.preventAnInfiniteLoops( srcResolvedFile, depMap );
 				//out = compiler.wrapSourceCode( srcPath );
 
 		//cli.writeJs( destPath, out );
