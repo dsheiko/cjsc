@@ -42,8 +42,8 @@ var fs = require( "fs" ),
 		 * @default
 		 */
 		HELP_SCREEN = " Usage: cjsc <src-path> <dest-path>\n" +
-					" <src-path> - filename\n" +
-					" <dest-path> - filename\n";
+					" <src-path> - source filename (e.g. main.js)\n" +
+					" <dest-path> - destination filename for compiled code\n";
 /**
  * Runner
  */

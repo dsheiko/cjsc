@@ -1,13 +1,20 @@
 CommonJS Compiler
 ==============
 
-CommonJS Compiler compiles CommonJS modules into a a single JavaScript file suitable for  browser.
+CJSC is a nodejs utility, which compiles CommonJS modules into a single JavaScript file that works natively in the browser.
 
-Features
+The utility get especially handy when you want your JavaScript be modular yet keeping the application performance
+by minimizing the number of HTTP requests
 
-* Allows to keep JavaScript modular in a common way
-* Adds no extra code, but tiny `require` function and definition wrappers
-* Supports UMD
+## Features
+
+* Makes CommonJS modules available in the browser
+* Does not require any library to resolve dependencies, just adds a tiny `require` function and definition wrappers to your original code
+* Works fine with [UMD modules](https://github.com/umdjs/umd)
+
+## Features inherited from CommonJS
+* Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
+* Enclosure every file in its own unique module context
 
 ## How to install
 
@@ -68,6 +75,11 @@ Getting imported object from the cache:
  imported name in main.js is still `dep1`
 ```
 
+## File Modules
+
+If the exact filename is not found, then CJSC will try the
+required filename with the added extension of .js.
+
 ## The `module` object
 Every module has available `module` variable that references to an object representing the module.
 Like in [NodeJS](http://nodejs.org/api/modules.html) th object has following structure:
@@ -77,3 +89,11 @@ Like in [NodeJS](http://nodejs.org/api/modules.html) th object has following str
 * module.loaded {boolean} - Whether or not the module is done loading.
 * module.parent {Object} - The module that required this one.
 * module.children {Object[]} - The module objects required by this one
+
+## Caching
+
+Caching goes the same as in nodejs. Modules are cached after the first time they are loaded.
+So every call to `require('foo')` returns exactly the same object, if it refers to the same file.
+
+Multiple calls to `require('foo')` don't execute the module code multiple times.
+
