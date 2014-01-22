@@ -40,7 +40,7 @@ describe( "require wrapper", function () {
 						 * @param {string} filename
 						 * @returns {*}
 						 */
-						require = function( filename ) {
+						_require = function( filename ) {
 
 							if ( typeof imports[ filename ] !== "undefined" ) {
 								return imports[ filename ].exports;
@@ -58,7 +58,7 @@ describe( "require wrapper", function () {
 							if ( typeof factories[ filename ] === "undefined" ) {
 								throw new Error( "The factory of " + filename + " module not found" );
 							}
-							imports[ filename ] = factories[ filename ]( module, module.exports );
+							imports[ filename ] = factories[ filename ]( require, module.exports, module );
 							imports[ filename ].loaded = true;
 							if ( imports[ filename ].parent.children ) {
 								imports[ filename ].parent.children.push( imports[ filename ] );
@@ -70,29 +70,29 @@ describe( "require wrapper", function () {
 				 * @param {string} filename
 				 * @param {function(module, *)} moduleFactory
 				 */
-				require.def = function( filename, moduleFactory ) {
+				_require.def = function( filename, moduleFactory ) {
 					factories[ filename ] = moduleFactory;
 				};
-				return require;
+				return _require;
 			}());
 
   it("must resolve dependencies", function () {
-		require.def( "/main.js", function( module, exports ){
+		require.def( "/main.js", function( require, exports, module  ){
 			var dep;
 			log.push( "main-runs" );
 			dep = require( "/dep.js" );
 			log.push( "main-imports:" + dep.id );
 			log.push( "dep-fChild-id:" + module.children[ 0 ].id );
 			// Generated
-			module.exports = module.exports === null ? exports : module.exports;
+			module.exports = JSON.stringify( exports ) === "{}" ? module.exports : exports;
 			return module;
 		});
-		require.def( "/dep.js", function( module, exports ){
+		require.def( "/dep.js", function( require, exports, module  ){
 			log.push( "dep-runs" );
 			log.push( "dep-parent-id:" + module.parent.id );
 			module.exports = { id: module.id };
 			// Generated
-			module.exports = module.exports === null ? exports : module.exports;
+			module.exports = JSON.stringify( exports ) === "{}" ? module.exports : exports;
 			return module;
 		});
 		require( "/main.js" );
