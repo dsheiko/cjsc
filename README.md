@@ -3,10 +3,10 @@ CommonJS Compiler
 [![Build Status](https://travis-ci.org/dsheiko/cjsc.png)](https://travis-ci.org/dsheiko/cjsc)
 [![NPM version](https://badge.fury.io/js/cjsc.png)](http://badge.fury.io/js/cjsc)
 
-CJSC is a nodejs utility, which compiles CommonJS modules into a single JavaScript file that works natively in the browser.
+CJSC is a nodejs application, which compiles CommonJS modules into a single JavaScript file that works natively in the browser.
 
-The utility get especially handy when you want your JavaScript be modular yet keeping the application performance
-by minimizing the number of HTTP requests
+The utility gets especially handy when you want your JavaScript modular without additional libraries
+without incurring excess requests
 
 ## Features
 
@@ -16,7 +16,7 @@ by minimizing the number of HTTP requests
 
 ## Features inherited from CommonJS
 * Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
-* Enclosure every file in its own unique module context
+* Enclosures every file in its own unique module context
 
 ## How to install
 
@@ -35,6 +35,7 @@ You can also create a symlink to make it globally available
 ```bash
 ln -s cjsc /usr/local/bin/cjsc
 ```
+
 
 ## How it works
 
@@ -99,3 +100,25 @@ So every call to `require('foo')` returns exactly the same object, if it refers 
 
 Multiple calls to `require('foo')` don't execute the module code multiple times.
 
+## <a name="a-grunt"></a>Setting up [Grunt](http://gruntjs.com/) task
+
+*Gruntfile.js*
+```javascript
+grunt.loadNpmTasks('grunt-contrib-cjsc');
+grunt.initConfig({
+     cjsc: {
+      development: {
+        files: {
+          "<path>/compiled.js" : "<path>/source.js"
+        }
+      }
+    }
+  });
+```
+*package.json*
+```javascript
+"devDependencies": {
+    //..
+    "grunt-contrib-cjsc": "*"
+  }
+```
