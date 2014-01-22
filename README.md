@@ -35,6 +35,8 @@ Let's define a few CommonJS modules (http://wiki.commonjs.org/wiki/Modules/1.1.1
 ```javascript
 console.log( "main.js running..." );
 console.log( "Imported name in main.js is `%s`", require( "./lib/dep1" ).name );
+console.log( "Getting imported object from the cache:" );
+console.log( " imported name in main.js is still `%s`", require( "./lib/dep1" ).name );
 ```
 
 `./lib/dep1.js`
@@ -62,6 +64,8 @@ dep1.js running...
 dep2.js running...
 Imported name in dep1.js is `dep2`
 Imported name in main.js is `dep1`
+Getting imported object from the cache:
+ imported name in main.js is still `dep1`
 ```
 
 ## The `module` object
