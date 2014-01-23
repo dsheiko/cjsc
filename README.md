@@ -127,6 +127,9 @@ grunt.loadNpmTasks('grunt-contrib-cjsc');
 grunt.initConfig({
      cjsc: {
       development: {
+				options: {
+					minify: true
+				},
         files: {
           "<path>/compiled.js" : "<path>/source.js"
         }
