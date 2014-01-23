@@ -43,7 +43,8 @@ var fs = require( "fs" ),
 		 */
 		HELP_SCREEN = " Usage: cjsc <src-path> <dest-path>\n" +
 					" <src-path> - source filename (e.g. main.js)\n" +
-					" <dest-path> - destination filename for compiled code\n";
+					" <dest-path> - destination filename for compiled code\n" +
+					" -M, --minify - minify the destination filename\n";
 /**
  * Runner
  */
@@ -83,6 +84,9 @@ module.exports = function( argv ) {
 			parser.getSyntaxTree( out );
 		}	catch( e ) {
 			throw new ReferenceError( "Couldn't compile into a valid JavaScript" );
+		}
+		if ( argv.indexOf( "-M" ) !== -1 || argv.indexOf( "--minify" ) !== -1 ) {
+			out = require( "uglify-js" ).minify( out, { fromString: true }).code;
 		}
 		cli.writeJs( destPath, out );
 		cli.printBody( Object.keys( map ).length );

@@ -1,14 +1,15 @@
 {
   "name": "cjsc",
   "description": "CommonJS Compiler",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Dmitry Sheiko <me@dsheiko.com>",
 	"main": "cjsc-module.js",
   "bin": {
     "jscs": "./cjsc.js"
   },
 	"dependencies": {
-		"esprima": "~1.0.4"
+		"esprima": "~1.0.4",
+		"uglify-js": ">= 2.0.0"
 	},
 	"devDependencies": {
 		"grunt": "~0.4.1",

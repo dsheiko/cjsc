@@ -36,6 +36,21 @@ You can also create a symlink to make it globally available
 ln -s cjsc /usr/local/bin/cjsc
 ```
 
+## Using CommonJS Compiler in the command line
+
+Compile `main-module.js` into `build.js`:
+```bash
+./cjsc main-module.js build.js
+```
+or
+```bash
+node cjsc.js main-module.js build.js
+```
+
+Compile `main-module.js` into `build.js` and minify `build.js`
+```bash
+./cjsc main-module.js build.js -M
+```
 
 ## How it works
 
