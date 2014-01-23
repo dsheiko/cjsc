@@ -26,7 +26,7 @@ describe( "require wrapper", function () {
 						*/
 						imports = [],
 						/**
-						 * Store the code that constract a module (and assigns to exports)
+						 * Store the code that constructs a module (and assigns to exports)
 						 * @type {*[]}
 						 */
 						factories = [],
@@ -50,14 +50,13 @@ describe( "require wrapper", function () {
 								filename: filename,
 								parent: module,
 								children: [],
-								exports: null,
+								exports: {},
 								loaded: false
 							};
-
-							// Called first time, so let's run code constructing (exporting) the module
 							if ( typeof factories[ filename ] === "undefined" ) {
 								throw new Error( "The factory of " + filename + " module not found" );
 							}
+							// Called first time, so let's run code constructing (exporting) the module
 							imports[ filename ] = factories[ filename ]( require, module.exports, module );
 							imports[ filename ].loaded = true;
 							if ( imports[ filename ].parent.children ) {

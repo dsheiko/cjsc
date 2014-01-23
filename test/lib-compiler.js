@@ -108,6 +108,13 @@ describe( "Compiler", function(){
 					},
 					getDependecies: function( fname ) {
 						return fixture.getJson( "Compiler/" + fname );
+					},
+					getRequirements: function() {
+						return {
+							__dirname: false,
+							__filename: false,
+							shortcut: false
+						};
 					}
 				};
 

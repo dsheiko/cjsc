@@ -5,7 +5,7 @@ CommonJS Compiler
 
 CJSC is a nodejs application, which compiles CommonJS modules into a single JavaScript file that works natively in the browser.
 
-The utility gets especially handy when you want your JavaScript modular without additional libraries and 
+The utility gets especially handy when you want your JavaScript modular without additional libraries and
 without incurring excess requests
 
 ## Features
@@ -52,6 +52,8 @@ console.log( " imported name in main.js is still `%s`", require( "./lib/dep1" ).
 `./lib/dep1.js`
 ```javascript
 console.log( "dep1.js running..." );
+console.log( " it has __diname = `%s`", __dirname );
+console.log( " it has __filename = `%s`", __filename );
 console.log( "Imported name in dep1.js is `%s`", require( "./dep2" ).name );
 exports.name = "dep1";
 ```
@@ -59,7 +61,7 @@ exports.name = "dep1";
 `./lib/dep2.js`
 ```javascript
 console.log( "dep2.js running..." );
-exports.name = "dep2";
+module.exports.name = "dep2";
 ```
 
 Now we can compile the modules:
@@ -71,6 +73,8 @@ As we fire up script.js we get the following output:
 ```
 main.js running...
 dep1.js running...
+ it has __diname = `.../demo/lib`
+ it has __filename = `.../demo/lib/dep1.js`
 dep2.js running...
 Imported name in dep1.js is `dep2`
 Imported name in main.js is `dep1`
