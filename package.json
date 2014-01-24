@@ -1,7 +1,7 @@
 {
   "name": "cjsc",
-  "description": "CommonJS Compiler",
-  "version": "0.1.1",
+  "description": "Utility that compiles CommonJS (NodeJS) modules into a single JavaScript file suitable for the browser",
+  "version": "0.1.2",
   "author": "Dmitry Sheiko <me@dsheiko.com>",
 	"main": "cjsc-module.js",
   "bin": {
@@ -9,15 +9,14 @@
   },
 	"dependencies": {
 		"esprima": "~1.0.4",
-		"uglify-js": ">= 2.0.0"
+		"uglify-js": ">=2.0.0"
 	},
 	"devDependencies": {
 		"grunt": "~0.4.1",
-		"grunt-contrib-jscs": ">= 0.1.3",
+		"grunt-contrib-jscs": ">=0.1.3",
 		"grunt-contrib-jshint": "~0.4.3",
 		"grunt-mocha-cli": "~1.2.1",
-		"assert": ">= 0.4.9",
-		"mocha": ">= 1.7.4",
+		"mocha": ">=1.7.4",
 		"should": "*"
 	},
   "licenses": [

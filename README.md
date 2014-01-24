@@ -3,7 +3,7 @@ CommonJS Compiler
 [![Build Status](https://travis-ci.org/dsheiko/cjsc.png)](https://travis-ci.org/dsheiko/cjsc)
 [![NPM version](https://badge.fury.io/js/cjsc.png)](http://badge.fury.io/js/cjsc)
 
-CJSC is a nodejs application, which compiles CommonJS modules into a single JavaScript file that works natively in the browser.
+CJSC is a nodejs application that compiles CommonJS (NodeJS) modules into a single JavaScript file suitable for the browser.
 
 The utility gets especially handy when you want your JavaScript modular without additional libraries and
 without incurring excess requests
