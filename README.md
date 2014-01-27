@@ -52,6 +52,11 @@ Compile `main-module.js` into `build.js` and minify `build.js`
 ./cjsc main-module.js build.js -M
 ```
 
+With a banner
+```bash
+./cjsc main-module.js build.js -M --banner="/*! pkg v.0.0.1 */"
+```
+
 ## How it works
 
 Let's define a few CommonJS modules (http://wiki.commonjs.org/wiki/Modules/1.1.1):

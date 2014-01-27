@@ -94,7 +94,7 @@ module.exports = function( argv ) {
 		if ( argv.indexOf( "-M" ) !== -1 || argv.indexOf( "--minify" ) !== -1 ) {
 			out = require( "uglify-js" ).minify( out, { fromString: true }).code;
 		}
-		cli.writeJs( destPath, out );
+		cli.writeJs( destPath, cli.parseCliOptions( argv ).banner + out );
 		map[ srcResolvedFile ].length && cli.printBody( Object.keys( map ).length );
 	}());
 };
