@@ -78,17 +78,23 @@ module.exports = function( argv ) {
 		compiler = new Compiler( parser, cli );
 		srcResolvedFile = cli.resolveFilename( srcPath );
 		map = compiler.findDependencies( srcResolvedFile );
-		compiler.preventAnInfiniteLoops( srcResolvedFile, map );
-		out = compiler.compile( srcResolvedFile, map, Replacer );
-		try {
-			parser.getSyntaxTree( out );
-		}	catch( e ) {
-			throw new ReferenceError( "Couldn't compile into a valid JavaScript" );
+
+		if ( map[ srcResolvedFile ].length ) {
+			compiler.preventAnInfiniteLoops( srcResolvedFile, map );
+			out = compiler.compile( srcResolvedFile, map, Replacer );
+			try {
+				parser.getSyntaxTree( out );
+			}	catch( e ) {
+				throw new ReferenceError( "Couldn't compile into a valid JavaScript" );
+			}
+		} else {
+			out = cli.readJs( srcResolvedFile );
+			console.log( " No dependencies found. Source is copied to the destination" );
 		}
 		if ( argv.indexOf( "-M" ) !== -1 || argv.indexOf( "--minify" ) !== -1 ) {
 			out = require( "uglify-js" ).minify( out, { fromString: true }).code;
 		}
 		cli.writeJs( destPath, out );
-		cli.printBody( Object.keys( map ).length );
+		map[ srcResolvedFile ].length && cli.printBody( Object.keys( map ).length );
 	}());
 };
