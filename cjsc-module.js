@@ -66,7 +66,7 @@ module.exports = function( argv ) {
 				/** @type {Object} */
 				map,
 				/** @type {Cli} */
-				cli = new Cli( path.dirname( srcPath ), fs, path );
+				cli = new Cli( path.dirname( srcPath ), process.cwd(), fs, path );
 
 		cli.printHeader();
 
