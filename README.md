@@ -12,7 +12,8 @@ without incurring excess requests
 
 * Makes CommonJS modules available in the browser
 * Does not require any library to resolve dependencies, just adds a tiny `require` function and definition wrappers to your original code
-* Works fine with [UMD modules](https://github.com/umdjs/umd)
+* Works fine with [UMD modules](https://github.com/umdjs/umd) (including jQuery, Backbone, Underscore and others)
+* Allows exporting globals of 3rd party libraries without intervention in their code
 
 ## Features inherited from CommonJS
 * Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
@@ -100,6 +101,28 @@ Imported name in dep1.js is `dep2`
 Imported name in main.js is `dep1`
 Getting imported object from the cache:
  imported name in main.js is still `dep1`
+```
+
+## How to make modules of jQuery and its plugins
+
+```javascript
+// Obtain jQuery as UMD-module
+window.$ = require( "./jquery/jquery.js" );
+// Run plugin that attaches to the defined jQuery global object
+require( "./jquery/jquery.autosize.js" );
+console.log( $( window ).autosize );
+```
+
+## How to make modules of 3rd party libraries
+
+```javascript
+// Load 3rd-party library and export the globals it exposes ("exp1" and "exp2")
+var exp1 = require( "./vendors/lib.js", "exp1", "exp2" ).exp1,
+// Take the second exported object from the module cache
+		exp2 = require( "./vendors/lib.js" ).exp2;
+
+console.log( "exp1", exp1 );
+console.log( "exp2", exp2 );
 ```
 
 ## File Modules
