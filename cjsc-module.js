@@ -17,6 +17,11 @@ var fs = require( "fs" ),
 		/** @type {function} nodejs api for handling and transforming file paths */
 		path = require( "path" ),
 		/**
+		 * @link https://github.com/mozilla/source-map/
+		 * @type {object}
+		 */
+		srcMapNs = require( "source-map" ),
+		/**
 		 * @type {function} Cli constructor
 		 */
 		Cli = require( "./lib/Cli" ),
@@ -36,6 +41,7 @@ var fs = require( "fs" ),
 		 * @type {function}  DependencyEntity constructor
 		 */
 		DependencyEntity = require( "./lib/Entity/Dependency" ),
+
 		/**
 		 * @constant
 		 * @type {string}
@@ -45,7 +51,8 @@ var fs = require( "fs" ),
 					" <src-path> - source filename (e.g. main.js)\n" +
 					" <dest-path> - destination filename for compiled code\n" +
 					" -M, --minify - minify the output file\n" +
-					" -D, --debug - provide the output file with debug info\n";
+					" --source-map - specify an output file where to generate source map.\n" +
+					" --source-map-url - specify an output file where to generate source map.\n";
 /**
  * Runner
  */
@@ -66,15 +73,14 @@ module.exports = function( argv ) {
 				srcResolvedFile,
 				/** @type {Object} */
 				map,
+				/** @type {Cli} */
+				cli = new Cli( path.dirname( srcPath ), process.cwd(), fs, path ),
+				/** @type {SourceMapGenerator} */
+				srcMapGen,
 				/**
 				 * @type {Object}
-				 * @property {boolean} debug
 				 */
-				options = {
-					debug: argv.indexOf( "-D" ) !== -1 || argv.indexOf( "--debug" ) !== -1
-				},
-				/** @type {Cli} */
-				cli = new Cli( path.dirname( srcPath ), process.cwd(), fs, path );
+				options = cli.parseCliOptions( argv );
 
 		cli.printHeader();
 
@@ -85,11 +91,17 @@ module.exports = function( argv ) {
 		parser = new Parser( DependencyEntity );
 		compiler = new Compiler( parser, cli );
 		srcResolvedFile = cli.resolveFilename( srcPath );
+
+		srcMapGen = new srcMapNs.SourceMapGenerator({
+			file: destPath
+		});
+
 		map = compiler.findDependencies( srcResolvedFile );
 
 		if ( map[ srcResolvedFile ].length ) {
 			compiler.preventAnInfiniteLoops( srcResolvedFile, map );
-			out = compiler.compile( srcResolvedFile, map, Replacer, options );
+			out = compiler.compile( srcResolvedFile, map, Replacer, srcMapGen );
+
 			try {
 				parser.getSyntaxTree( out );
 			}	catch( e ) {
@@ -102,7 +114,13 @@ module.exports = function( argv ) {
 		if ( argv.indexOf( "-M" ) !== -1 || argv.indexOf( "--minify" ) !== -1 ) {
 			out = require( "uglify-js" ).minify( out, { fromString: true }).code;
 		}
-		cli.writeJs( destPath, cli.parseCliOptions( argv ).banner + out );
+
+		if ( options[ "source-map" ] ) {
+			out += "\n//# sourceMappingURL=" + options[ "source-map-url" ] + options[ "source-map" ];
+		}
+
+		cli.writeJs( destPath, options.banner + out );
+		options[ "source-map" ] && cli.writeJs( options[ "source-map" ], srcMapGen.toString() );
 		map[ srcResolvedFile ].length && cli.printBody( Object.keys( map ).length );
 	}());
 };

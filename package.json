@@ -1,7 +1,7 @@
 {
   "name": "cjsc",
   "description": "Utility that compiles CommonJS (NodeJS) modules into a single JavaScript file suitable for the browser",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "author": "Dmitry Sheiko <me@dsheiko.com>",
 	"main": "cjsc-module.js",
   "bin": {
@@ -9,7 +9,8 @@
   },
 	"dependencies": {
 		"esprima": "~1.0.4",
-		"uglify-js": ">=2.0.0"
+		"uglify-js": ">=2.0.0",
+		"source-map": "*"
 	},
 	"devDependencies": {
 		"grunt": "~0.4.1",

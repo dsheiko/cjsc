@@ -14,6 +14,7 @@ without incurring excess requests
 * Does not require any library to resolve dependencies, just adds a tiny `require` function and definition wrappers to your original code
 * Works fine with [UMD modules](https://github.com/umdjs/umd) (including jQuery, Backbone, Underscore and others)
 * Allows exporting globals of 3rd party libraries without intervention in their code
+* Supports source maps http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
 
 ## Features inherited from CommonJS
 * Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
@@ -48,9 +49,9 @@ or
 node cjsc.js main-module.js build.js
 ```
 
-Compile `main-module.js` into `build.js` keeping debug information
+Compile `main-module.js` into `build.js` and generate source map
 ```bash
-./cjsc main-module.js build.js -D
+./cjsc main-module.js build.js  --source-map=src-map.js --source-map-url=http://localhost/
 ```
 
 Compile `main-module.js` into `build.js` and minify `build.js`
