@@ -117,7 +117,7 @@ module.exports = function( argv ) {
 
 		if ( options[ "source-map" ] ) {
 			options[ "source-map" ] = options[ "source-map" ].replace( /\*/, path.basename( destPath ) );
-			out += "\n//# sourceMappingURL=" + options[ "source-map-url" ] + options[ "source-map" ];
+			out += "\n//# sourceMappingURL=" + options[ "source-map-url" ] + path.basename( options[ "source-map" ] );
 		}
 
 		cli.writeJs( destPath, options.banner + out );
