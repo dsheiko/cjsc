@@ -116,7 +116,7 @@ module.exports = function( argv ) {
 		}
 
 		if ( options[ "source-map" ] ) {
-			options[ "source-map" ] = options[ "source-map" ] === "*" ? destPath + ".map" : options[ "source-map" ];
+			options[ "source-map" ] = options[ "source-map" ].replace( /\*/, path.basename( destPath ) );
 			out += "\n//# sourceMappingURL=" + options[ "source-map-url" ] + options[ "source-map" ];
 		}
 
