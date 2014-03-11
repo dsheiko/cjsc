@@ -44,7 +44,8 @@ var fs = require( "fs" ),
 		HELP_SCREEN = " Usage: cjsc <src-path> <dest-path>\n" +
 					" <src-path> - source filename (e.g. main.js)\n" +
 					" <dest-path> - destination filename for compiled code\n" +
-					" -M, --minify - minify the destination filename\n";
+					" -M, --minify - minify the output file\n" +
+					" -D, --debug - provide the output file with debug info\n";
 /**
  * Runner
  */
@@ -65,6 +66,13 @@ module.exports = function( argv ) {
 				srcResolvedFile,
 				/** @type {Object} */
 				map,
+				/**
+				 * @type {Object}
+				 * @property {boolean} debug
+				 */
+				options = {
+					debug: argv.indexOf( "-D" ) !== -1 || argv.indexOf( "--debug" ) !== -1
+				},
 				/** @type {Cli} */
 				cli = new Cli( path.dirname( srcPath ), process.cwd(), fs, path );
 
@@ -81,7 +89,7 @@ module.exports = function( argv ) {
 
 		if ( map[ srcResolvedFile ].length ) {
 			compiler.preventAnInfiniteLoops( srcResolvedFile, map );
-			out = compiler.compile( srcResolvedFile, map, Replacer );
+			out = compiler.compile( srcResolvedFile, map, Replacer, options );
 			try {
 				parser.getSyntaxTree( out );
 			}	catch( e ) {

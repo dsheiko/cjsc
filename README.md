@@ -48,6 +48,11 @@ or
 node cjsc.js main-module.js build.js
 ```
 
+Compile `main-module.js` into `build.js` keeping debug information
+```bash
+./cjsc main-module.js build.js -D
+```
+
 Compile `main-module.js` into `build.js` and minify `build.js`
 ```bash
 ./cjsc main-module.js build.js -M
