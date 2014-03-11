@@ -51,7 +51,11 @@ node cjsc.js main-module.js build.js
 
 Compile `main-module.js` into `build.js` and generate source map
 ```bash
-./cjsc main-module.js build.js  --source-map=src-map.js --source-map-url=http://localhost/
+./cjsc main-module.js build.js  --source-map=build.js.map --source-map-url=http://localhost/
+```
+or the following options for automatic naming
+```bash
+./cjsc main-module.js build.js  --source-map=* --source-map-url=http://localhost/
 ```
 
 Compile `main-module.js` into `build.js` and minify `build.js`

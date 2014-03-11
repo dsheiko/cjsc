@@ -51,7 +51,7 @@ var fs = require( "fs" ),
 					" <src-path> - source filename (e.g. main.js)\n" +
 					" <dest-path> - destination filename for compiled code\n" +
 					" -M, --minify - minify the output file\n" +
-					" --source-map - specify an output file where to generate source map.\n" +
+					" --source-map - specify an output file where to generate source map. Use \"*\" automatic naming\n" +
 					" --source-map-url - specify an output file where to generate source map.\n";
 /**
  * Runner
@@ -116,6 +116,7 @@ module.exports = function( argv ) {
 		}
 
 		if ( options[ "source-map" ] ) {
+			options[ "source-map" ] = options[ "source-map" ] === "*" ? destPath + ".map" : options[ "source-map" ];
 			out += "\n//# sourceMappingURL=" + options[ "source-map-url" ] + options[ "source-map" ];
 		}
 
