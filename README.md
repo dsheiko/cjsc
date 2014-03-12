@@ -57,6 +57,9 @@ or the following options for automatic naming
 ```bash
 ./cjsc main-module.js build.js  --source-map=*.map --source-map-url=/
 ```
+Now breakpoints and console messages mapped to the original sources
+![Source mapping example](https://raw.github.com//dsheiko/cjsc/master/demo/img/console-ex.jpg "Source mapping example")
+
 
 Compile `main-module.js` into `build.js` and minify `build.js`
 ```bash
