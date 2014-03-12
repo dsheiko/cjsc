@@ -185,3 +185,5 @@ grunt.initConfig({
     "grunt-contrib-cjsc": "*"
   }
 ```
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/fb790e90a5c2e6afb69ba979b6ac34b1 "githalytics.com")](http://githalytics.com/dsheiko/cjsc)
