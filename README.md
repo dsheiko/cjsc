@@ -15,6 +15,7 @@ without incurring excess requests
 * Works fine with [UMD modules](https://github.com/umdjs/umd) (including jQuery, Backbone, Underscore and others)
 * Allows exporting globals of 3rd party libraries without intervention in their code
 * Supports source maps http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
+* Supports JavaScript templates ( Mustache, Handlebars, Underscore and others )
 
 ## Features inherited from CommonJS
 * Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
@@ -136,6 +137,47 @@ var exp1 = require( "./vendors/lib.js", "exp1", "exp2" ).exp1,
 
 console.log( "exp1", exp1 );
 console.log( "exp2", exp2 );
+```
+
+## How to use Mustache templates
+Template file: ./mustache/example.tpl
+```
+{{title}} spends {{calc}}
+```
+Module that uses the template
+```javascript
+var mustache = require( "./mustache/mustache" ),
+		tpl = require( "./mustache/example.tpl" ),
+		view = {
+			title: "Joe",
+			calc: function () {
+				return 2 + 4;
+			}
+		};
+
+console.log( mustache.render( tpl, view ) );
+```
+
+## How to use Handlebars templates
+Template file: ./handlebarsjs/example.hbs
+```
+<div class="entry">
+  <h1>{{title}}</h1>
+  <div class="body">
+    {{body}}
+  </div>
+</div>
+```
+Module that uses the template
+```javascript
+var handlebars = require( "./handlebarsjs/handlebars", "Handlebars" ).Handlebars,
+		tpl = require( "./handlebarsjs/example.hbs" ),
+		view = {
+			title: "My New Post",
+			body: "This is my first post!"
+		};
+
+console.log( handlebars.compile( tpl )( view ) );
 ```
 
 ## File Modules

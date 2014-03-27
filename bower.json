@@ -1,0 +1,38 @@
+{
+  "name": "cjsc",
+  "version": "0.1.11",
+  "main": {
+    "jscs": "./cjsc.js"
+  },
+  "dependencies": {
+    "esprima": "~1.0.4",
+		"uglify-js": ">=2.0.0",
+		"source-map": "*"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+		"grunt-contrib-jscs": ">=0.1.3",
+		"grunt-contrib-jshint": "~0.4.3",
+		"grunt-mocha-cli": "~1.2.1",
+		"mocha": ">=1.7.4",
+		"should": "*"
+  },
+  "homepage": "https://github.com/dsheiko/cjsc",
+  "description": "Utility that compiles CommonJS (NodeJS) modules into a single JavaScript file suitable for the browser",
+  "keywords": [
+    "compiler",
+    "commonJs"
+  ],
+  "authors": [
+    "Dmitry Sheiko (http://dsheiko.com)"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+
+}
