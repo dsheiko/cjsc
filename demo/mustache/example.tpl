@@ -1,1 +1,2 @@
-{{title}} spends {{calc}}
+{{title}}
+ spends {{calc}}
