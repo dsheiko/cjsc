@@ -1,7 +1,7 @@
 /*jshint -W068 */
 /*jshint multistr: true */
 		/** @type {function} Parser constructor */
-var Parser = require( "../lib/Parser" ),
+var Parser = require( "../../lib/Parser" ),
 		/** @type {fixture} module */
 		fixture = require( "./inc/fixture" ),
 		/**

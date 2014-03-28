@@ -71,3 +71,32 @@ var _require = (function(){
 if ( typeof require === "undefined" ) {
 	require = _require;
 }
+_require.def( "test/integration/fixtures/dependency-config/require-a/main.js", function( _require, exports, module ){
+var $ = _require( "test/integration/fixtures/dependency-config/require-a/jquery-stub.js" );
+_require( "test/integration/fixtures/dependency-config/require-a/jquery-plugin-stub.js" );
+window.log.push( $.name );
+window.log.push( $.fn );
+
+	return module;
+});
+
+_require.def( "test/integration/fixtures/dependency-config/require-a/jquery-stub.js", function( _require, exports, module ){
+module.exports = { 
+ name: "jQuery"
+};
+	return module;
+});
+
+_require.def( "test/integration/fixtures/dependency-config/require-a/jquery-plugin-stub.js", function( _require, exports, module ){
+
+ var 
+	/** @type {module:jQuery} */
+	jQuery = _require( "test/integration/fixtures/dependency-config/require-a/jquery-stub.js" );
+(function( $ ){
+$.fn = "plugin";
+}( jQuery ));
+	module.exports = jQuery;
+	return module;
+});
+
+_require( "test/integration/fixtures/dependency-config/require-a/main.js" );

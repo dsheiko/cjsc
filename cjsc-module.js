@@ -11,6 +11,12 @@
 * @module cjsc-module
 */
 
+/**
+* @typedef requireConfig
+* @type {Object}
+* @property {module:DependencyConfig} depId
+*/
+
 	"use strict";
 		/** @type {function} nodejs File I/O api */
 var fs = require( "fs" ),
@@ -22,25 +28,29 @@ var fs = require( "fs" ),
 		 */
 		srcMapNs = require( "source-map" ),
 		/**
-		 * @type {function} Cli constructor
+		 * @type {module:Cli} Cli constructor
 		 */
 		Cli = require( "./lib/Cli" ),
 		/*
-		 * @type {function} Compiler constructor
+		 * @type {module:Compiler} Compiler constructor
 		 */
 		Compiler = require( "./lib/Compiler" ),
 		/**
-		 * @type {function} Parser constructor
+		 * @type {module:Parser} Parser constructor
 		 */
 		Parser = require( "./lib/Parser" ),
 		/**
-		 * @type {function} Replacer constructor
+		 * @type {module:Replacer} Replacer constructor
 		 */
 		Replacer = require( "./lib/Replacer" ),
 		/**
-		 * @type {function}  DependencyEntity constructor
+		 * @type {module:DependencyEntity}  DependencyEntity constructor
 		 */
 		DependencyEntity = require( "./lib/Entity/Dependency" ),
+		/**
+		 * @type {module:DependencyConfig} DependencyConfig constructor
+		 */
+		DependencyConfig = require( "./lib/Entity/DependencyConfig" ),
 
 		/**
 		 * @constant
@@ -51,12 +61,15 @@ var fs = require( "fs" ),
 					" <src-path> - source filename (e.g. main.js)\n" +
 					" <dest-path> - destination filename for compiled code\n" +
 					" -M, --minify - minify the output file\n" +
-					" --source-map - specify an output file where to generate source map. Use \"*\" automatic naming\n" +
-					" --source-map-url - specify an output file where to generate source map.\n";
+					" --config=<file> - specify a configuration JSON file\n" +
+					" --source-map=<file/pattern> - specify an output file where to generate source map. Use \"*\" automatic naming\n" +
+					" --source-map-url=<url> - the path to the source map to be added in.\n";
 /**
  * Runner
+ * @param {*[]} argv - CLI arguments
+ * @param {requireConfig} config - Depnedency configuration
  */
-module.exports = function( argv ) {
+module.exports = function( argv, config ) {
 
 	(function(){
 				/** @type {string} */
@@ -80,7 +93,20 @@ module.exports = function( argv ) {
 				/**
 				 * @type {Object}
 				 */
-				options = cli.parseCliOptions( argv );
+				options = cli.parseCliOptions( argv ),
+				/**
+				 * @param {Object} config
+				 */
+				validateRequireConfig = function( config ) {
+					var prop;
+					for ( prop in config ) {
+						if ( config.hasOwnProperty( prop ) ) {
+							config[ prop ] = new DependencyConfig( config[ prop ] );
+						}
+					}
+				};
+
+
 
 		cli.printHeader();
 
@@ -88,8 +114,21 @@ module.exports = function( argv ) {
 			console.log( HELP_SCREEN );
 			process.exit( 0 );
 		}
+
+		config = config || {};
+		if ( options[ "config" ] ) {
+			try {
+				config = JSON.parse( cli.readJs( options[ "config" ] ) );
+			} catch( e ) {
+				throw new SyntaxError( "`" + options[ "config" ] + "` appears to be invalid JSON" );
+			}
+			// Validate the contract
+			validateRequireConfig( config );
+		}
+
 		parser = new Parser( DependencyEntity );
-		compiler = new Compiler( parser, cli );
+
+		compiler = new Compiler( parser, cli, config );
 		srcResolvedFile = cli.resolveFilename( srcPath );
 
 		srcMapGen = new srcMapNs.SourceMapGenerator({

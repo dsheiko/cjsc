@@ -1,6 +1,6 @@
 
-var _ = require( "./external/underscore.js" ),
-		Backbone = require( "./external/backbone.js" ),
+var _ = require( "./backbone/underscore.js" ),
+		Backbone = require( "./backbone/backbone.js" ),
 		object = {};
 
 _.extend( object, Backbone.Events );

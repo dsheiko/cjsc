@@ -71,3 +71,42 @@ var _require = (function(){
 if ( typeof require === "undefined" ) {
 	require = _require;
 }
+_require.def( "test/integration/fixtures/dependency-config/require-b/main.js", function( _require, exports, module ){
+var globalA = _require( "globalA" ),
+		globalB = _require( "globalB" ),
+		mod = _require( "test/integration/fixtures/dependency-config/require-b/3rd-party-code.js" );
+
+window.log.push( JSON.stringify( mod ) );
+
+
+	return module;
+});
+
+_require.def( "globalA", function( _require, exports, module ){
+	module.exports = window.globalA;
+
+	return module;
+});
+
+_require.def( "globalB", function( _require, exports, module ){
+	module.exports = window.globalB;
+
+	return module;
+});
+
+_require.def( "test/integration/fixtures/dependency-config/require-b/3rd-party-code.js", function( _require, exports, module ){
+
+ var 
+	/** @type {module:globalA} */
+	globalA = _require( "globalA" ),
+
+	/** @type {module:globalB} */
+	globalB = _require( "globalB" );
+window.globalC =  "globalC + " + globalA;
+window.globalD =  "globalD + " + globalB;
+	module.exports.globalC = globalC;
+	module.exports.globalD = globalD;
+	return module;
+});
+
+_require( "test/integration/fixtures/dependency-config/require-b/main.js" );

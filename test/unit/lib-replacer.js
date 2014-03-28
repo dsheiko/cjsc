@@ -1,7 +1,7 @@
 /*jshint -W068 */
 /*jshint multistr: true */
 		/** @type {function} Replacer constructor */
-var Replacer = require( "../lib/Replacer" );
+var Replacer = require( "../../lib/Replacer" );
 
 require( "should" );
 

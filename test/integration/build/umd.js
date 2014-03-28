@@ -71,3 +71,38 @@ var _require = (function(){
 if ( typeof require === "undefined" ) {
 	require = _require;
 }
+_require.def( "test/integration/fixtures/umd/main.js", function( _require, exports, module ){
+window.log.push( module.id + ":runs" );
+window.log.push( module.id + ":exports:" + _require( "test/integration/fixtures/umd/module/module1.js" ).id );
+
+	return module;
+});
+
+_require.def( "test/integration/fixtures/umd/module/module1.js", function( _require, exports, module ){
+// UMD boilerplate according to https://github.com/umdjs/umd
+if ( typeof module === "object" && typeof define !== "function" ) {
+	/**
+	* Override AMD `define` function for RequireJS
+	* @param {function( function, Object, Object )} factory
+	*/
+	var define = function ( factory ) {
+		module.exports = factory( require, exports, module );
+	};
+}
+
+define(function( require, exports, module ) {
+	window.log.push( module.id + ":runs" );
+	window.log.push( module.id + ":exports:" + _require( "test/integration/fixtures/umd/module/module2.js" ).id );
+	return { id: module.id };
+});
+	return module;
+});
+
+_require.def( "test/integration/fixtures/umd/module/module2.js", function( _require, exports, module ){
+window.log.push( module.id + ":runs" );
+exports = { id: module.id };
+	module.exports = exports;
+	return module;
+});
+
+_require( "test/integration/fixtures/umd/main.js" );

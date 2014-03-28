@@ -71,3 +71,14 @@ var _require = (function(){
 if ( typeof require === "undefined" ) {
 	require = _require;
 }
+_require.def( "test/integration/fixtures/dependency-config/alias/main.js", function( _require, exports, module ){
+window.log.push( _require( "test/integration/fixtures/dependency-config/alias/module/concrete-module.js" ) );
+	return module;
+});
+
+_require.def( "test/integration/fixtures/dependency-config/alias/module/concrete-module.js", function( _require, exports, module ){
+module.exports = "module";
+	return module;
+});
+
+_require( "test/integration/fixtures/dependency-config/alias/main.js" );

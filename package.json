@@ -1,7 +1,7 @@
 {
   "name": "cjsc",
   "description": "Utility that compiles CommonJS (NodeJS) modules into a single JavaScript file suitable for the browser",
-  "version": "0.1.14",
+  "version": "0.2.0",
   "author": "Dmitry Sheiko <me@dsheiko.com>",
 	"main": "cjsc-module.js",
   "bin": {
@@ -18,6 +18,8 @@
 		"grunt-contrib-jshint": "~0.4.3",
 		"grunt-mocha-cli": "~1.2.1",
 		"mocha": ">=1.7.4",
+		"grunt-contrib-qunit": "*",
+		"qunitjs": "*",
 		"should": "*"
 	},
   "licenses": [

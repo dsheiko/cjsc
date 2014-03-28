@@ -1,7 +1,7 @@
 /*jshint -W068 */
 /*jshint multistr: true */
 		/** @type {function} Compiler constructor */
-var Compiler = require( "../lib/Compiler" ),
+var Compiler = require( "../../lib/Compiler" ),
 		/** @type {fixture} module */
 		fixture = require( "./inc/fixture" );
 require( "should" );

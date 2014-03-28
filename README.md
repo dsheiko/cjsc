@@ -6,7 +6,7 @@ CommonJS Compiler
 CJSC is a nodejs application that compiles CommonJS (NodeJS) modules into a single JavaScript file suitable for the browser.
 
 The utility gets especially handy when you want your JavaScript modular without additional libraries and
-without incurring excess requests  
+without incurring excess requests
 
 ## Features
 
@@ -21,7 +21,20 @@ without incurring excess requests
 * Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
 * Enclosures every file in its own unique module context
 
-## How to install
+# Contents
+* [How to install](#a-install)
+* [How to use in the command line](#a-use)
+* [How it works](#a-work)
+* [File modules](#a-file-modules)
+* [Caching](#a-caching)
+* [How to configure dependency](#a-config)
+* [How to make module of a globally exposed variable](#a-config-a)
+* [How to make modules of jQuery and its plugins](#a-config-b)
+* [How to make modules of 3rd party libraries](#a-vendors)
+* [How to use Mustache templates](#a-mustache)
+* [How to use Handlebars templates](#a-handlebars)
+
+## <a name="a-install"></a>How to install
 
 CommonJS Compiler relies on node.js. If you don't have node.js installed, just follow the instructions:
 https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
@@ -39,7 +52,7 @@ You can also create a symlink to make it globally available
 ln -s cjsc /usr/local/bin/cjsc
 ```
 
-## Using CommonJS Compiler in the command line
+## <a name="a-use"></a>Using CommonJS Compiler in the command line
 
 Compile `main-module.js` into `build.js`:
 ```bash
@@ -72,7 +85,7 @@ With a banner
 ./cjsc main-module.js build.js -M --banner="/*! pkg v.0.0.1 */"
 ```
 
-## How it works
+## <a name="a-work"></a>How it works
 
 Let's define a few CommonJS modules (http://wiki.commonjs.org/wiki/Modules/1.1.1):
 
@@ -117,70 +130,7 @@ Getting imported object from the cache:
  imported name in main.js is still `dep1`
 ```
 
-## How to make modules of jQuery and its plugins
-
-```javascript
-// Obtain jQuery as UMD-module
-window.$ = require( "./jquery/jquery.js" );
-// Run plugin that attaches to the defined jQuery global object
-require( "./jquery/jquery.autosize.js" );
-console.log( $( window ).autosize );
-```
-
-## How to make modules of 3rd party libraries
-
-```javascript
-// Load 3rd-party library and export the globals it exposes ("exp1" and "exp2")
-var exp1 = require( "./vendors/lib.js", "exp1", "exp2" ).exp1,
-// Take the second exported object from the module cache
-		exp2 = require( "./vendors/lib.js" ).exp2;
-
-console.log( "exp1", exp1 );
-console.log( "exp2", exp2 );
-```
-
-## How to use Mustache templates
-Template file: ./mustache/example.tpl
-```
-{{title}} spends {{calc}}
-```
-Module that uses the template
-```javascript
-var mustache = require( "./mustache/mustache" ),
-		tpl = require( "./mustache/example.tpl" ),
-		view = {
-			title: "Joe",
-			calc: function () {
-				return 2 + 4;
-			}
-		};
-
-console.log( mustache.render( tpl, view ) );
-```
-
-## How to use Handlebars templates
-Template file: ./handlebarsjs/example.hbs
-```
-<div class="entry">
-  <h1>{{title}}</h1>
-  <div class="body">
-    {{body}}
-  </div>
-</div>
-```
-Module that uses the template
-```javascript
-var handlebars = require( "./handlebarsjs/handlebars", "Handlebars" ).Handlebars,
-		tpl = require( "./handlebarsjs/example.hbs" ),
-		view = {
-			title: "My New Post",
-			body: "This is my first post!"
-		};
-
-console.log( handlebars.compile( tpl )( view ) );
-```
-
-## File Modules
+## <a name="a-file-modules"></a>File Modules
 
 If the exact filename is not found, then CJSC will try the
 required filename with the added extension of .js.
@@ -195,7 +145,7 @@ Like in [NodeJS](http://nodejs.org/api/modules.html) th object has following str
 * module.parent {Object} - The module that required this one.
 * module.children {Object[]} - The module objects required by this one
 
-## Caching
+## <a name="a-caching"></a>Caching
 
 Caching goes the same as in nodejs. Modules are cached after the first time they are loaded.
 So every call to `require('foo')` returns exactly the same object, if it refers to the same file.
@@ -226,6 +176,173 @@ grunt.initConfig({
     //..
     "grunt-contrib-cjsc": "*"
   }
+```
+
+## <a name="a-config"></a>How to configure dependency
+You can configure your dependencies in a JSON file like that:
+```javascript
+{
+	"<dependency-name>": {
+		"path": "<dependency-path>",
+		"globalProperty": "<global-property>",
+		exports: [ "<variable>", "<variable>" ],
+		require: [ "<dependency-name>", "<dependency-name>" ]
+	}
+}
+```
+or
+```javascript
+{
+	"<dependency-name>": {
+		"path": "<dependency-path>",
+		"globalProperty": "<global-property>",
+		exports: "<variable>",
+		require: "<dependency-name>"
+	}
+}
+```
+And apply it as follows:
+```
+node cjsc main.js build.js --config=config.json
+```
+
+## <a name="a-config-a"></a>How to make module of a globally exposed variable
+`config.json`:
+```javascript
+{
+	"jQuery": {
+		"path": "./config/vendors/jquery.js"
+	}
+}
+```
+`main.json`:
+```javascript
+var $ = require( "jQuery" );
+// $ - is a reference to globally exposed jQuery instance
+console.log( $( window ) );
+```
+Compilation:
+```
+node cjsc main.js build.js --config=config.json
+```
+
+## <a name="a-config-b"></a>How to make modules of jQuery and its plugins
+`config.json`:
+```javascript
+{
+	"jQuery": {
+		"path": "./vendors/jquery-2.1.0.min.js"
+	},
+	"placeholder": {
+		"path": "./vendors/jquery.placeholder.js",
+		"require": "jQuery",
+		"exports": "jQuery"
+	}
+}
+```
+`main.json`:
+```javascript
+// Obtain jQuery as UMD-module
+var $ = require( "jQuery" );
+// Attach plugin to jQuery
+require( "placeholder" );
+console.log( $.fn.placeholder );
+```
+Compilation:
+```
+node cjsc main.js build.js --config=config.json
+```
+
+## <a name="a-vendors"></a>How to make modules of 3rd party libraries
+
+Options #1:
+```javascript
+// Load 3rd-party library and export the globals it exposes ("exp1" and "exp2")
+var exp1 = require( "./vendors/lib.js", "exp1", "exp2" ).exp1,
+// Take the second exported object from the module cache
+		exp2 = require( "./vendors/lib.js" ).exp2;
+
+console.log( "exp1", exp1 );
+console.log( "exp2", exp2 );
+```
+
+Options #2:
+`config.json`:
+```javascript
+{
+	"lib": {
+		"path": "./vendors/lib.js",
+		"exports": [ "exp1", "exp2" ]
+	}
+}
+```
+`main.json`:
+```javascript
+var lib = require( "lib" );
+console.log( lib.exp1, lib.exp2 );
+```
+Compilation:
+```
+node cjsc main.js build.js --config=config.json
+```
+
+If 3rd party code expose the only object, it can be done like thaT:
+`config.json`:
+```javascript
+{
+	"lib": {
+		"path": "./vendors/lib.js",
+		"exports": "exp1"
+	}
+}
+```
+`main.json`:
+```javascript
+var lib = require( "lib" );
+// Exp1
+console.log( lib );
+```
+
+
+## <a name="a-mustache"></a>How to use Mustache templates
+Template file: ./mustache/example.tpl
+```
+{{title}} spends {{calc}}
+```
+Module that uses the template
+```javascript
+var mustache = require( "./mustache/mustache" ),
+		tpl = require( "./mustache/example.tpl" ),
+		view = {
+			title: "Joe",
+			calc: function () {
+				return 2 + 4;
+			}
+		};
+
+console.log( mustache.render( tpl, view ) );
+```
+
+## <a name="a-handlebars"></a>How to use Handlebars templates
+Template file: ./handlebarsjs/example.hbs
+```
+<div class="entry">
+  <h1>{{title}}</h1>
+  <div class="body">
+    {{body}}
+  </div>
+</div>
+```
+Module that uses the template
+```javascript
+var handlebars = require( "./handlebarsjs/handlebars", "Handlebars" ).Handlebars,
+		tpl = require( "./handlebarsjs/example.hbs" ),
+		view = {
+			title: "My New Post",
+			body: "This is my first post!"
+		};
+
+console.log( handlebars.compile( tpl )( view ) );
 ```
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/fb790e90a5c2e6afb69ba979b6ac34b1 "githalytics.com")](http://githalytics.com/dsheiko/cjsc)

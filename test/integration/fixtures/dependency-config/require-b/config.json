@@ -1,0 +1,13 @@
+{
+	"globalA": {
+		"globalProperty": "globalA"
+	},
+	"globalB": {
+		"globalProperty": "globalB"
+	},
+	"example": {
+		"path": "./3rd-party-code.js",
+		"require": [ "globalA", "globalB" ],
+		"exports": [ "globalC", "globalD" ]
+	}
+}
