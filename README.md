@@ -267,6 +267,7 @@ console.log( "exp2", exp2 );
 ```
 
 Options #2:
+
 `config.json`:
 ```javascript
 {
@@ -286,7 +287,8 @@ Compilation:
 node cjsc main.js build.js --config=config.json
 ```
 
-If 3rd party code expose the only object, it can be done like thaT:
+If 3rd party code exposes the only object, it can be done like that:
+
 `config.json`:
 ```javascript
 {
