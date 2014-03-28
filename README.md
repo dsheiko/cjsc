@@ -211,14 +211,14 @@ node cjsc main.js build.js --config=config.json
 ```javascript
 {
 	"jQuery": {
-		"path": "./config/vendors/jquery.js"
+		"globalProperty": "jQuery"
 	}
 }
 ```
 `main.json`:
 ```javascript
 var $ = require( "jQuery" );
-// $ - is a reference to globally exposed jQuery instance
+// $ - is a reference to globally exposed jQuery instance (assuming window.jQuery si defined outside this module)
 console.log( $( window ) );
 ```
 Compilation:
