@@ -34,6 +34,7 @@ without incurring excess requests
 * [How to use Mustache templates](#a-mustache)
 * [How to use Handlebars templates](#a-handlebars)
 
+
 ## <a name="a-install"></a>How to install
 
 CommonJS Compiler relies on node.js. If you don't have node.js installed, just follow the instructions:
