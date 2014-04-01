@@ -1,7 +1,7 @@
 var main = require( "./cjsc-module" );
-try {
+//try {
  main( process.argv );
-} catch ( err ) {
-  console.error( " " + err.message || err );
-	process.exit( 1 );
-}
+//} catch ( err ) {
+//  console.error( " " + err.message || err );
+//	process.exit( 1 );
+//}
