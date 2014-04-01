@@ -135,6 +135,11 @@ module.exports = function( argv, config ) {
 			file: destPath
 		});
 
+		if ( options[ "source-map" ] ) {
+			options[ "source-map" ] = options[ "source-map" ].replace( /\*/, path.basename( destPath ) );
+			cli.getRelativeToSrcPath( options[ "source-map" ] || "." );
+		}
+
 		map = compiler.findDependencies( srcResolvedFile );
 
 		if ( map[ srcResolvedFile ].length ) {
@@ -155,8 +160,7 @@ module.exports = function( argv, config ) {
 		}
 
 		if ( options[ "source-map" ] ) {
-			options[ "source-map" ] = options[ "source-map" ].replace( /\*/, path.basename( destPath ) );
-			out += "\n//# sourceMappingURL=" + options[ "source-map-url" ] + path.basename( options[ "source-map" ] );
+			out += "\n//# sourceMappingURL=" + ( options[ "source-map-url" ] || "./" ) + path.basename( options[ "source-map" ] );
 		}
 
 		cli.writeJs( destPath, options.banner + out );

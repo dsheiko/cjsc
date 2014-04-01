@@ -70,8 +70,13 @@ Compile `main-module.js` into `build.js` and generate source map
 ```
 or the following options for automatic naming
 ```bash
-./cjsc main-module.js build.js  --source-map=*.map --source-map-url=/
+./cjsc main-module.js build.js  --source-map=*.map
 ```
+
+Whereas:
+* `--source-map` is a source map file path relative to the project directory (the directory where cjsc is running)
+* `--source-map-url` by default is "." and means the same path as source map file
+
 Now breakpoints and console messages mapped to the original sources
 ![Source mapping example](https://raw.github.com//dsheiko/cjsc/master/demo/img/console-ex.jpg "Source mapping example")
 
