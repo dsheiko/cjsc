@@ -137,7 +137,7 @@ module.exports = function( argv, config ) {
 
 		if ( options[ "source-map" ] ) {
 			options[ "source-map" ] = options[ "source-map" ].replace( /\*/, path.basename( destPath ) );
-			cli.getRelativeToSrcPath( options[ "source-map" ] || "." );
+			cli.determineRelativeToSrcPath( options[ "source-map" ] || "." );
 		}
 
 		map = compiler.findDependencies( srcResolvedFile );
