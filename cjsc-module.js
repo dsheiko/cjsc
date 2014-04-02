@@ -63,7 +63,8 @@ var fs = require( "fs" ),
 					" -M, --minify - minify the output file\n" +
 					" --config=<file> - specify a configuration JSON file\n" +
 					" --source-map=<file/pattern> - specify an output file where to generate source map. Use \"*\" automatic naming\n" +
-					" --source-map-url=<url> - the path to the source map to be added in.\n";
+					" --source-map-url=<url> - the path to the source map to be added in.\n"
+				  " --source-map-root=<path> - the path to the original source to be included in the source map.";
 /**
  * Runner
  * @param {*[]} argv - CLI arguments
@@ -137,7 +138,7 @@ module.exports = function( argv, config ) {
 
 		if ( options[ "source-map" ] ) {
 			options[ "source-map" ] = options[ "source-map" ].replace( /\*/, path.basename( destPath ) );
-			cli.determineRelativeToSrcPath( options[ "source-map" ] || "." );
+			cli.setSourceMapRoot( options[ "source-map-root" ] || "", options[ "source-map" ] );
 		}
 
 		map = compiler.findDependencies( srcResolvedFile );

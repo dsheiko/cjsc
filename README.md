@@ -66,16 +66,21 @@ node cjsc.js main-module.js build.js
 
 Compile `main-module.js` into `build.js` and generate source map
 ```bash
-./cjsc main-module.js build.js  --source-map=build.js.map --source-map-url=http://localhost/
+./cjsc main-module.js build.js  --source-map=build/build.js.map --source-map-url=http://localhost/
 ```
 or the following options for automatic naming
 ```bash
 ./cjsc main-module.js build.js  --source-map=*.map
 ```
+or this way to explicitly specify the path to sources relative to the source map
+```bash
+./cjsc main-module.js build.js  --source-map=build/*.map --source-map-root=../src
+```
 
 Whereas:
 * `--source-map` is a source map file path relative to the project directory (the directory where cjsc is running)
 * `--source-map-url` by default is "." and means the same path as source map file
+* `--source-map-root` is sources path relative to the source map file. For instance: sources are in `<project>/src`, build is in `<project>/build`. So specify `--source-map-root=../src` to let the browser know that it must look for mapped source file in `../src/**/file.js` relative to the source map path.
 
 Now breakpoints and console messages mapped to the original sources
 ![Source mapping example](https://raw.github.com//dsheiko/cjsc/master/demo/img/console-ex.jpg "Source mapping example")
