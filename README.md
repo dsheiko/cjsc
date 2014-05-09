@@ -189,6 +189,8 @@ grunt.initConfig({
   }
 ```
 
+Please find details at https://github.com/dsheiko/grunt-contrib-cjsc
+
 ## <a name="a-config"></a>How to configure dependency
 You can configure your dependencies in a JSON file like that:
 ```javascript
