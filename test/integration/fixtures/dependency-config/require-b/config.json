@@ -6,7 +6,7 @@
 		"globalProperty": "globalB"
 	},
 	"example": {
-		"path": "./3rd-party-code.js",
+		"path": "./test/integration/fixtures/dependency-config/require-b/3rd-party-code.js",
 		"require": [ "globalA", "globalB" ],
 		"exports": [ "globalC", "globalD" ]
 	}

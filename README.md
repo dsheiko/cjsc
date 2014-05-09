@@ -309,6 +309,8 @@ If 3rd party code exposes the only object, it can be done like that:
 	}
 }
 ```
+Note: The `"path"` must be relative to the project directory (where the compiler is running from)
+
 `main.json`:
 ```javascript
 var lib = require( "lib" );
