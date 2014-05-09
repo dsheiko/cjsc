@@ -1,6 +1,5 @@
-CommonJS Compiler <sup>[![Version Badge][2]][1]</sup>
+CommonJS Compiler
 ==============
-[![npm badge][9]][1]
 [![Build Status](https://travis-ci.org/dsheiko/cjsc.png)](https://travis-ci.org/dsheiko/cjsc)
 [![NPM version](https://badge.fury.io/js/cjsc.png)](http://badge.fury.io/js/cjsc)
 
