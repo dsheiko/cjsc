@@ -74,9 +74,9 @@ module.exports = function( argv, config ) {
 
 	(function(){
 				/** @type {string} */
-		var srcPath = path.resolve( argv[ 2 ] ),
+		var srcPath = path.resolve( argv[ 2 ] || "" ),
 				/** @type {string} */
-				destPath = argv[ 3 ],
+				destPath = argv[ 3 ] || "",
 				/** @type {string} */
 				out,
 				/** @type {Compiler} */
