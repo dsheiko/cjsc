@@ -12,7 +12,7 @@
 	*
 	* Define scope for `require`
 	*/
-var _require = window._require || (function(){
+var _require = (function(){
 	var /**
 			* Store modules (types assigned to module.exports)
 			* @type {module[]}
@@ -666,4 +666,6 @@ _require.def( "test/integration/fixtures/mustache/example.tpl", function( _requi
 	return module;
 });
 
+(function(){
 _require( "test/integration/fixtures/mustache/main.js" );
+}());

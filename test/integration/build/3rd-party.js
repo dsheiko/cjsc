@@ -12,7 +12,7 @@
 	*
 	* Define scope for `require`
 	*/
-var _require = window._require || (function(){
+var _require = (function(){
 	var /**
 			* Store modules (types assigned to module.exports)
 			* @type {module[]}
@@ -90,4 +90,6 @@ window.exp2 = { title: "export2" };
 	return module;
 });
 
+(function(){
 _require( "test/integration/fixtures/3rd-party/main.js" );
+}());

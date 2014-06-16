@@ -12,7 +12,7 @@
 	*
 	* Define scope for `require`
 	*/
-var _require = window._require || (function(){
+var _require = (function(){
 	var /**
 			* Store modules (types assigned to module.exports)
 			* @type {module[]}
@@ -83,4 +83,6 @@ _require.def( "jQuery", function( _require, exports, module ){
 	return module;
 });
 
+(function(){
 _require( "test/integration/fixtures/dependency-config/reference/main.js" );
+}());

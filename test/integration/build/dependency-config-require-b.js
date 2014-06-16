@@ -12,7 +12,7 @@
 	*
 	* Define scope for `require`
 	*/
-var _require = window._require || (function(){
+var _require = (function(){
 	var /**
 			* Store modules (types assigned to module.exports)
 			* @type {module[]}
@@ -109,4 +109,6 @@ window.globalD =  "globalD + " + globalB;
 	return module;
 });
 
+(function(){
 _require( "test/integration/fixtures/dependency-config/require-b/main.js" );
+}());
