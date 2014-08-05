@@ -3,19 +3,20 @@ CommonJS Compiler
 [![Build Status](https://travis-ci.org/dsheiko/cjsc.png)](https://travis-ci.org/dsheiko/cjsc)
 [![NPM version](https://badge.fury.io/js/cjsc.png)](http://badge.fury.io/js/cjsc)
 
-CJSC is a nodejs application that compiles CommonJS (NodeJS) modules into a single JavaScript file suitable for the browser.
+`cjsc` is a command-line tool that makes your Common JS modules suitable for in-browser use.
+While every AMD-module results in a separate HTTP request and therefore [badly affects page response time](https://developer.yahoo.com/performance/rules.html),
+`cjsc`, instead, combines all the acting modules in a single file (optionally compressed).
 
-The utility gets especially handy when you want your JavaScript modular without additional libraries and
-without incurring excess requests
 
 ## Features
 
-* Makes CommonJS modules available in the browser
-* Does not require any library to resolve dependencies, just adds a tiny `require` function and definition wrappers to your original code
-* Works fine with [UMD modules](https://github.com/umdjs/umd) (including jQuery, Backbone, Underscore and others)
+* Does not bring into you production code any additional library
+* Works fine with UMD modules (including jQuery, Backbone, Underscore and others)
 * Allows exporting globals of 3rd party libraries without intervention in their code
-* Supports source maps http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
+* Supports source maps http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
 * Supports JavaScript templates ( Mustache, Handlebars, Underscore and others )
+* Produces a string out of (multiline) non-JS external text file
+
 
 ## Features inherited from CommonJS
 * Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
@@ -23,8 +24,8 @@ without incurring excess requests
 
 # Contents
 * [How to install](#a-install)
+* [Getting Started](#a-work)
 * [How to use in the command line](#a-use)
-* [How it works](#a-work)
 * [File modules](#a-file-modules)
 * [Caching](#a-caching)
 * [How to configure dependency](#a-config)
@@ -37,66 +38,27 @@ without incurring excess requests
 
 ## <a name="a-install"></a>How to install
 
-CommonJS Compiler relies on node.js. If you don't have node.js installed, just follow the instructions:
+### Install nodejs/npm
+`cjsc` utilizes nodejs and its package manager (NPM). If don't have these tools yet installed, you can find details on
 https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
 
-Make sure all the required dependencies installed
+### Install `cjsc`
+
+Locally:
 ```bash
-npm i
-```
-Make sure the binary is executable
-```bash
-chmod +x cjsc
-```
-You can also create a symlink to make it globally available
-```bash
-ln -s cjsc /usr/local/bin/cjsc
+npm i cjsc
 ```
 
-## <a name="a-use"></a>Using CommonJS Compiler in the command line
-
-Compile `main-module.js` into `build.js`:
+or globally:
 ```bash
-./cjsc main-module.js build.js
+sudo npm i cjsc -g
 ```
-or
-```bash
-node cjsc.js main-module.js build.js
-```
-
-Compile `main-module.js` into `build.js` and generate source map
-```bash
-./cjsc main-module.js build.js  --source-map=build/build.js.map --source-map-url=http://localhost/
-```
-or the following options for automatic naming
-```bash
-./cjsc main-module.js build.js  --source-map=*.map
-```
-or this way to explicitly specify the path to sources relative to the source map
-```bash
-./cjsc main-module.js build.js  --source-map=build/*.map --source-map-root=../src
-```
-
-Whereas:
-* `--source-map` is a source map file path relative to the project directory (the directory where cjsc is running)
-* `--source-map-url` by default is "." and means the same path as source map file
-* `--source-map-root` is sources path relative to the source map file. For instance: sources are in `<project>/src`, build is in `<project>/build`. So specify `--source-map-root=../src` to let the browser know that it must look for mapped source file in `../src/**/file.js` relative to the source map path.
-
-Now breakpoints and console messages mapped to the original sources
-![Source mapping example](https://raw.github.com//dsheiko/cjsc/master/demo/img/console-ex.jpg "Source mapping example")
+Note: in this case npm creates a symlink `/usr/bin/cjsc`
 
 
-Compile `main-module.js` into `build.js` and minify `build.js`
-```bash
-./cjsc main-module.js build.js -M
-```
 
-With a banner
-```bash
-./cjsc main-module.js build.js -M --banner="/*! pkg v.0.0.1 */"
-```
 
-## <a name="a-work"></a>How it works
+## <a name="a-work"></a>Getting Started
 
 Let's define a few CommonJS modules (http://wiki.commonjs.org/wiki/Modules/1.1.1):
 
@@ -141,6 +103,57 @@ Getting imported object from the cache:
  imported name in main.js is still `dep1`
 ```
 
+
+
+
+
+
+
+## <a name="a-use"></a>Using CommonJS Compiler in the command line
+
+Compile `main-module.js` into `build.js`:
+```bash
+./cjsc main-module.js build.js
+```
+or
+```bash
+node cjsc.js main-module.js build.js
+```
+
+Compile `main-module.js` into `build.js` and generate source map
+```bash
+./cjsc main-module.js build.js  --source-map=build/build.js.map --source-map-url=http://localhost/
+```
+or the following options for automatic naming
+```bash
+./cjsc main-module.js build.js  --source-map=*.map
+```
+or this way to explicitly specify the path to sources relative to the source map
+```bash
+./cjsc main-module.js build.js  --source-map=build/*.map --source-map-root=../src
+```
+
+Whereas:
+* `--source-map` is a source map file path relative to the project directory (the directory where cjsc is running)
+* `--source-map-url` by default is "." and means the same path as source map file
+* `--source-map-root` is sources path relative to the source map file. For instance: sources are in `<project>/src`, build is in `<project>/build`. So specify `--source-map-root=../src` to let the browser know that it must look for mapped source file in `../src/**/file.js` relative to the source map path.
+
+Now breakpoints and console messages mapped to the original sources
+![Source mapping example](https://raw.github.com//dsheiko/cjsc/master/demo/img/console-ex.jpg "Source mapping example")
+
+
+Compile `main-module.js` into `build.js` and minify `build.js`
+```bash
+./cjsc main-module.js build.js -M
+```
+
+With a banner
+```bash
+./cjsc main-module.js build.js -M --banner="/*! pkg v.0.0.1 */"
+```
+
+
+
 ## <a name="a-file-modules"></a>File Modules
 
 If the exact filename is not found, then CJSC will try the
@@ -162,6 +175,10 @@ Caching goes the same as in nodejs. Modules are cached after the first time they
 So every call to `require('foo')` returns exactly the same object, if it refers to the same file.
 
 Multiple calls to `require('foo')` don't execute the module code multiple times.
+
+
+
+
 
 ## <a name="a-grunt"></a>Setting up [Grunt](http://gruntjs.com/) task
 
@@ -191,6 +208,8 @@ grunt.initConfig({
 
 Please find details at https://github.com/dsheiko/grunt-contrib-cjsc
 
+
+
 ## <a name="a-config"></a>How to configure dependency
 You can configure your dependencies in a JSON file like that:
 ```javascript
@@ -219,6 +238,8 @@ And apply it as follows:
 node cjsc main.js build.js --config=config.json
 ```
 
+
+
 ## <a name="a-config-a"></a>How to make module of a globally exposed variable
 `config.json`:
 ```javascript
@@ -238,6 +259,8 @@ Compilation:
 ```
 node cjsc main.js build.js --config=config.json
 ```
+
+
 
 ## <a name="a-config-b"></a>How to make modules of jQuery and its plugins
 `config.json`:
@@ -265,6 +288,7 @@ Compilation:
 ```
 node cjsc main.js build.js --config=config.json
 ```
+
 
 ## <a name="a-vendors"></a>How to make modules of 3rd party libraries
 
@@ -321,6 +345,8 @@ console.log( lib );
 ```
 
 
+
+
 ## <a name="a-mustache"></a>How to use Mustache templates
 Template file: ./mustache/example.tpl
 ```
@@ -339,6 +365,7 @@ var mustache = require( "./mustache/mustache" ),
 
 console.log( mustache.render( tpl, view ) );
 ```
+
 
 ## <a name="a-handlebars"></a>How to use Handlebars templates
 Template file: ./handlebarsjs/example.hbs
