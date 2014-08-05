@@ -10,7 +10,7 @@
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <title>Cjsc by dsheiko</title>
+    <title>CommonJS Compiler - makes your Common JS modules suitable for in-browser use</title>
   </head>
 
   <body>
@@ -18,8 +18,8 @@
       <div class="inner">
 
         <header>
-          <h1>Cjsc</h1>
-          <h2>compiles CommonJS modules into a single JavaScript file that works natively in the browser.</h2>
+          <h1>CommonJS Compiler</h1>
+          <h2>Command-line tool that makes your Common JS modules suitable for in-browser use</h2>
         </header>
 
         <section id="downloads" class="clearfix">
@@ -28,40 +28,355 @@
           <a href="https://github.com/dsheiko/cjsc" id="view-on-github" class="button"><span>View on GitHub</span></a>
         </section>
 
+        <p>While every AMD-module results in a separate HTTP request and therefore <a href="https://developer.yahoo.com/performance/rules.html" target="_blank">badly affects page response time</a>,
+<var>cjsc</var>, instead, combines all the acting modules in a single file (optionally compressed).</p>
+
         <hr>
 
         <section id="main_content">
           <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+<a class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>First install <a href="https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager">nodejs</a>, them run following:</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+<pre><code>$sudo npm i cjsc -g</code></pre>
+
+
+<h3>
+<a class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h3>
+
+<p>Let's make a module <var>foo.js</var>:</p>
+<pre><code>console.log( "foo.js: Hello World" );
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>Now we address this module from other one <var>bar.js</var>:</p>
+
+<pre><code>require( "./foo" );
+console.log( "bar.js: Hello World" );
+</code></pre>
+
+<p>Compiling <var>bar.js</var></p>
+
+<pre><code>$cjsc bar.js out.js</code></pre>
+
+<p>If we run <var>out.js</var> the output would be:</p>
+
+<pre><code>foo.js: Hello World
+bar.js: Hello World</code></pre>
+
+<hr />
+
+<p>Well, let's try now something more sophisticated. <var>foo.js</var>:</p>
+<pre><code>console.log( "foo.js: constructing" );
+module.exports = { name: "foo.js" };</code></pre>
+
+<p><var>bar.js</var>:</p>
+<pre><code>console.log( require( "./foo" ) );
+console.log( require( "./foo" ) );
+</code></pre>
+
+<p>The output of <var>out.js</var> after compilation:</p>
+
+<pre><code>foo.js: constructing
+{ name: "foo.js" }
+{ name: "foo.js" }</code></pre>
+
+<p>Mark that constructing code is invoked only once and the imported object is retrieved from the cache with every <var>require</var> request.</p>
+
+<hr />
+
+<p>What happens if we include a non-JavaScript file? Let's try with <var>foo.txt</var>:</p>
+
+<pre><code>Lorem ipsum dolor sit amet
+Lorem ipsum dolor sit amet
+Lorem ipsum dolor sit amet
+Lorem ipsum dolor sit amet
+</code></pre>
+
+<p><var>bar.js</var>:</p>
+
+<pre><code>var str = require( "./foo.txt" );
+console.log( "bar.js:" + str );
+</code></pre>
+
+
+<p>The output:</p>
+
+<pre><code>bar.js:Lorem ipsum dolor sit amet
+Lorem ipsum dolor sit amet
+Lorem ipsum dolor sit amet
+Lorem ipsum dolor sit amet
+</code></pre>
+
 
 <h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<a class="anchor" href="#file-modules"><span class="octicon octicon-link"></span></a>Deeper in File Modules</h3>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>Every module has exposed <var>module</var> variable that references to an object representing the module.
+  Like in <a href="http://nodejs.org/api/modules.html">nodejs</a> the object has following structure:</p>
+
+<ul>
+  <li>module.id {string} - The identifier for the module.</li>
+  <li>module.filename {string} - The fully resolved filename to the module.</li>
+  <li>module.loaded {boolean} - Whether or not the module is done loading.</li>
+  <li>module.parent {Object} - The module that required this one.</li>
+  <li>module.children {Object[]} - The module objects required by this one</li>
+</ul>
+
+<p>Caching goes the same as in nodejs. Modules are cached after the first time they are loaded.</p>
+<p>So every call to <var>require('foo')</var> returns exactly the same object, if it refers to the same file.
+  Multiple calls to <var>require('foo')</var> don't execute the module code multiple times.</p>
+
 
 <h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<a class="anchor" href="#cli"><span class="octicon octicon-link"></span></a>Command-line options</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>Compile <var>main-module.js</var> into <var>build.js</var>:</p>
+
+<pre><code>./cjsc main-module.js build.js</code></pre>
+
+<p>or</p>
+
+<pre><code>node cjsc.js main-module.js build.js</code></pre>
+
+
+<p>Compile <var>main-module.js</var> into <var>build.js</var> and generate source map</p>
+
+<pre><code>./cjsc main-module.js build.js  --source-map=build/build.js.map --source-map-url=http://localhost/</code></pre>
+
+<p>or with the following options for automatic naming</p>
+
+<pre><code>./cjsc main-module.js build.js  --source-map=*.map</code></pre>
+
+<p>or this way to explicitly specify the path to sources relative to the source map</p>
+
+<pre><code>./cjsc main-module.js build.js  --source-map=build/*.map --source-map-root=../src</code></pre>
+
+<p>Whereas:</p>
+<ul>
+  <li><var>--source-map</var> is a source map file path relative to the project directory (the directory where cjsc is running)</li>
+  <li><var>--source-map-url</var> by default is "." and means the same path as source map file</li>
+  <li>* <var>--source-map-root</var> is sources path relative to the source map file. For instance: sources are in <var>project/src</var>, build is in <var>project/build</var>. So specify <var>--source-map-root=../src</var> to let the browser know that it must look for mapped source file in <var>../src/**/file.js</var> relative to the source map path.</li>
+</ul>
+
+<p>Compile <var>main-module.js</var> into <var>build.js</var> and minify <var>build.js</var></p>
+<pre><code>./cjsc main-module.js build.js -M</code></pre>
+
+<p>With a banner</p>
+<pre><code>./cjsc main-module.js build.js -M --banner="/*! pkg v.0.0.1 */"</code></pre>
+
 
 <h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<a  class="anchor" href="#grunt-task"><span class="octicon octicon-link"></span></a>Setting up Grunt task</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+
+<p>Gruntfile.js:</p>
+
+<pre><code>grunt.loadNpmTasks('grunt-contrib-cjsc');
+    grunt.initConfig({
+         cjsc: {
+          development: {
+            options: {
+              minify: true
+            },
+            files: {
+              "path/compiled.js" : "path/source.js"
+            }
+          }
+        }
+      });
+</code></pre>
+
+<p>package.json:</p>
+
+<pre><code>"devDependencies": {
+        //..
+        "grunt-contrib-cjsc": "*"
+      }</code></pre>
+
+
+<p>Please find details at <a href="https://github.com/dsheiko/grunt-contrib-cjsc">https://github.com/dsheiko/grunt-contrib-cjsc</a></p>
 
 <h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<a  class="anchor" href="#configure-deps"><span class="octicon octicon-link"></span></a>Configuring dependencies</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+
+<p>You can configure your dependencies in a JSON file. E.g. <var>config.json</var>:</p>
+
+<pre><code>{
+      "dependency-name": {
+        "path": "dependency-path",
+        "globalProperty": "global-property",
+        exports: [ "variable", "variable" ],
+        require: [ "dependency-name", "dependency-name" ]
+      }
+    }</code></pre>
+
+<p>or</p>
+
+<pre><code>{
+      "dependency-name": {
+        "path": "dependency-path",
+        "globalProperty": "global-property",
+        exports: "variable",
+        require: "dependency-name"
+      }
+    }</code></pre>
+
+To enable the configuration use <var>--config</var> option:
+
+<pre><code>node cjsc main.js out.js --config=config.json</code></pre>
+
+
+<h3>
+<a  class="anchor" href="#globally-exposed-var"><span class="octicon octicon-link"></span></a>Making module of a globally exposed variable</h3>
+
+<p><var>config.json</var>:</p>
+
+<pre><code>{
+      "jQuery": {
+        "globalProperty": "jQuery"
+      }
+    }</code></pre>
+
+<p><var>main.json</var>:</p>
+
+<pre><code>var $ = require( "jQuery" );
+    // $ - is a reference to globally exposed jQuery instance (assuming window.jQuery si defined outside this module)
+    console.log( $( window ) );</code></pre>
+
+<p>Compilation:</p>
+
+<pre><code>node cjsc main.js build.js --config=config.json</code></pre>
+
+<h3>
+<a  class="anchor" href="#jquery"><span class="octicon octicon-link"></span></a>Making modules of jQuery and its plugins</h3>
+
+<p><var>config.json</var>:</p>
+
+<pre><code>{
+      "jQuery": {
+        "path": "./vendors/jquery-2.1.0.min.js"
+      },
+      "placeholder": {
+        "path": "./vendors/jquery.placeholder.js",
+        "require": "jQuery",
+        "exports": "jQuery"
+      }
+    }</code></pre>
+
+<p><var>main.json</var>:</p>
+
+<pre><code>// Obtain jQuery as UMD-module
+    var $ = require( "jQuery" );
+    // Attach plugin to jQuery
+    require( "placeholder" );
+    console.log( $.fn.placeholder );</code></pre>
+
+<p>Compilation:</p>
+
+<pre><code>node cjsc main.js build.js --config=config.json</code></pre>
+
+
+<h3>
+<a  class="anchor" href="#libs"><span class="octicon octicon-link"></span></a>Making modules of 3rd party libraries</h3>
+
+
+<p>Options #1:</p>
+
+<pre><code>// Load 3rd-party library and export the globals it exposes ("exp1" and "exp2")
+    var exp1 = require( "./vendors/lib.js", "exp1", "exp2" ).exp1,
+    // Take the second exported object from the module cache
+        exp2 = require( "./vendors/lib.js" ).exp2;
+
+    console.log( "exp1", exp1 );
+    console.log( "exp2", exp2 );
+    </code></pre>
+
+<p>Options #2 by <var>config.json</var>:</p>
+<pre><code>{
+      "lib": {
+        "path": "./vendors/lib.js",
+        "exports": [ "exp1", "exp2" ]
+      }
+    }</code></pre>
+
+<p><var>main.json</var>:</p>
+
+<pre><code>var lib = require( "lib" );
+    console.log( lib.exp1, lib.exp2 );</code></pre>
+
+<p>Compilation:</p>
+
+<pre><code>node cjsc main.js build.js --config=config.json</code></pre>
+
+
+<p>If 3rd party code exposes the only object, it can be done like that <var>config.json</var>:</p>
+
+<pre><code>{
+      "lib": {
+        "path": "./vendors/lib.js",
+        "exports": "exp1"
+      }
+    }</code></pre>
+
+<p>Note: The <var>"path"</var> must be relative to the project directory (where the compiler is running from)</p>
+
+<p><var>main.json</var>:</p>
+
+<pre><code>var lib = require( "lib" );
+    // Exp1
+    console.log( lib );</code></pre>
+
+
+
+<h3>
+<a  class="anchor" href="#a-mustache"><span class="octicon octicon-link"></span></a>Using Mustache templates</h3>
+
+<p>Template file: ./mustache/example.tpl</p>
+
+<pre><code>{{title}} spends {{calc}}</code></pre>
+
+<p>Module that uses the template</p>
+
+<pre><code>var mustache = require( "./mustache/mustache" ),
+        tpl = require( "./mustache/example.tpl" ),
+        view = {
+          title: "Joe",
+          calc: function () {
+            return 2 + 4;
+          }
+        };
+
+    console.log( mustache.render( tpl, view ) );</code></pre>
+
+<h3>
+<a  class="anchor" href="#a-handlebars"><span class="octicon octicon-link"></span></a>Using Handlebars templates</h3>
+
+<p>Template file: ./handlebarsjs/example.hbs</p>
+
+<pre><code>&lt;div class=&quot;entry&quot;&gt;
+      &lt;h1&gt;{{title}}&lt;/h1&gt;
+      &lt;div class=&quot;body&quot;&gt;
+        {{body}}
+      &lt;/div&gt;
+    &lt;/div&gt;</code></pre>
+
+<p>Module that uses the template</p>
+
+<pre><code>var handlebars = require( "./handlebarsjs/handlebars", "Handlebars" ).Handlebars,
+        tpl = require( "./handlebarsjs/example.hbs" ),
+        view = {
+          title: "My New Post",
+          body: "This is my first post!"
+        };
+
+    console.log( handlebars.compile( tpl )( view ) );
+    </code></pre>
+
+
+
+
         </section>
 
         <footer>
