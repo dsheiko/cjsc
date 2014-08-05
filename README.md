@@ -156,12 +156,10 @@ With a banner
 
 ## <a name="a-file-modules"></a>File Modules
 
-If the exact filename is not found, then CJSC will try the
-required filename with the added extension of .js.
 
 ## The `module` object
-Every module has available `module` variable that references to an object representing the module.
-Like in [NodeJS](http://nodejs.org/api/modules.html) th object has following structure:
+Every module has exposed `module` variable that references to an object representing the module.
+Like in [NodeJS](http://nodejs.org/api/modules.html) the object has following structure:
 
 * module.id {string} - The identifier for the module.
 * module.filename {string} - The fully resolved filename to the module.
@@ -211,7 +209,8 @@ Please find details at https://github.com/dsheiko/grunt-contrib-cjsc
 
 
 ## <a name="a-config"></a>How to configure dependency
-You can configure your dependencies in a JSON file like that:
+
+You can configure your dependencies in a JSON file. E.g. `config.json`:
 ```javascript
 {
 	"<dependency-name>": {
@@ -233,7 +232,7 @@ or
 	}
 }
 ```
-And apply it as follows:
+To enable the configuration use `--config` option:
 ```
 node cjsc main.js build.js --config=config.json
 ```
