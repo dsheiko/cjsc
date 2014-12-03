@@ -46,7 +46,7 @@ https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
 
 Locally:
 ```bash
-npm i cjsc
+npm i cjsc --save-dev
 ```
 
 or globally:
