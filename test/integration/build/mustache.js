@@ -50,7 +50,7 @@ var _require = (function(){
 					throw new Error( "The factory of " + filename + " module not found" );
 				}
 				// Called first time, so let's run code constructing (exporting) the module
-				imports[ filename ] = factories[ filename ]( _require, module.exports, module );
+				imports[ filename ] = factories[ filename ]( _require, module.exports, module, window );
 				imports[ filename ].loaded = true;
 				if ( imports[ filename ].parent.children ) {
 					imports[ filename ].parent.children.push( imports[ filename ] );
@@ -71,7 +71,7 @@ var _require = (function(){
 if ( typeof require === "undefined" ) {
 	require = _require;
 }
-_require.def( "test/integration/fixtures/mustache/main.js", function( _require, exports, module ){
+_require.def( "test/integration/fixtures/mustache/main.js", function( _require, exports, module, global ){
 
 var mustache = _require( "test/integration/fixtures/mustache/mustache.js" ),
 		tpl = _require( "test/integration/fixtures/mustache/example.tpl" ),
@@ -86,7 +86,7 @@ window.log.push( mustache.render( tpl, view ).replace( /[\n\r]/gm, ";" ) );
 	return module;
 });
 
-_require.def( "test/integration/fixtures/mustache/mustache.js", function( _require, exports, module ){
+_require.def( "test/integration/fixtures/mustache/mustache.js", function( _require, exports, module, global ){
 /*!
  * mustache.js - Logic-less {{mustache}} templates with JavaScript
  * http://github.com/janl/mustache.js
@@ -661,7 +661,7 @@ _require.def( "test/integration/fixtures/mustache/mustache.js", function( _requi
 	return module;
 });
 
-_require.def( "test/integration/fixtures/mustache/example.tpl", function( _require, exports, module ){
+_require.def( "test/integration/fixtures/mustache/example.tpl", function( _require, exports, module, global ){
 	module.exports = "{{title}}\r\n spends {{calc}}"
 	return module;
 });

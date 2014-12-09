@@ -50,7 +50,7 @@ var _require = (function(){
 					throw new Error( "The factory of " + filename + " module not found" );
 				}
 				// Called first time, so let's run code constructing (exporting) the module
-				imports[ filename ] = factories[ filename ]( _require, module.exports, module );
+				imports[ filename ] = factories[ filename ]( _require, module.exports, module, window );
 				imports[ filename ].loaded = true;
 				if ( imports[ filename ].parent.children ) {
 					imports[ filename ].parent.children.push( imports[ filename ] );
@@ -71,7 +71,7 @@ var _require = (function(){
 if ( typeof require === "undefined" ) {
 	require = _require;
 }
-_require.def( "test/integration/fixtures/handlebars/main.js", function( _require, exports, module ){
+_require.def( "test/integration/fixtures/handlebars/main.js", function( _require, exports, module, global ){
 var handlebars = _require( "test/integration/fixtures/handlebars/handlebars.js" ).Handlebars,
 		tpl = _require( "test/integration/fixtures/handlebars/example.hbs" ),
 		view = {
@@ -82,7 +82,7 @@ window.log.push( handlebars.compile( tpl )( view ).replace( /[\n\r]/gm, ";" ) );
 	return module;
 });
 
-_require.def( "test/integration/fixtures/handlebars/handlebars.js", function( _require, exports, module ){
+_require.def( "test/integration/fixtures/handlebars/handlebars.js", function( _require, exports, module, global ){
 /*!
 
  handlebars v1.3.0
@@ -2834,7 +2834,7 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
 	return module;
 });
 
-_require.def( "test/integration/fixtures/handlebars/example.hbs", function( _require, exports, module ){
+_require.def( "test/integration/fixtures/handlebars/example.hbs", function( _require, exports, module, global ){
 	module.exports = "<div class=\"entry\">\r\n  <h1>{{title}}</h1>\r\n  <div class=\"body\">\r\n    {{body}}\r\n  </div>\r\n</div>"
 	return module;
 });

@@ -50,7 +50,7 @@ var _require = (function(){
 					throw new Error( "The factory of " + filename + " module not found" );
 				}
 				// Called first time, so let's run code constructing (exporting) the module
-				imports[ filename ] = factories[ filename ]( _require, module.exports, module );
+				imports[ filename ] = factories[ filename ]( _require, module.exports, module, window );
 				imports[ filename ].loaded = true;
 				if ( imports[ filename ].parent.children ) {
 					imports[ filename ].parent.children.push( imports[ filename ] );
@@ -71,7 +71,7 @@ var _require = (function(){
 if ( typeof require === "undefined" ) {
 	require = _require;
 }
-_require.def( "test/integration/fixtures/generic/main.js", function( _require, exports, module ){
+_require.def( "test/integration/fixtures/generic/main.js", function( _require, exports, module, global ){
 window.log.push( "main.js:runs" );
 window.log.push( "main.js:exports:" + _require( "test/integration/fixtures/generic/module/dep1.js" ).name );
 window.log.push( "main.js:caches:" + _require( "test/integration/fixtures/generic/module/dep1.js" ).name );
@@ -79,7 +79,7 @@ window.log.push( "main.js:caches:" + _require( "test/integration/fixtures/generi
 	return module;
 });
 
-_require.def( "test/integration/fixtures/generic/module/dep1.js", function( _require, exports, module ){
+_require.def( "test/integration/fixtures/generic/module/dep1.js", function( _require, exports, module, global ){
 	var __dirname = "test/integration/fixtures/generic/module", __filename = "test/integration/fixtures/generic/module/dep1.js";
 window.log.push( "dep1.js:runs" );
 window.log.push( "dep1.js:__diname:" + __dirname );
@@ -89,7 +89,7 @@ module.exports.name = "dep1-import";
 	return module;
 });
 
-_require.def( "test/integration/fixtures/generic/module/dep2/dep2.js", function( _require, exports, module ){
+_require.def( "test/integration/fixtures/generic/module/dep2/dep2.js", function( _require, exports, module, global ){
 window.log.push( "dep2.js:runs" );
 module.exports.name = "dep2-import";
 	return module;

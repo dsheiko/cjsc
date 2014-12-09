@@ -50,7 +50,7 @@ var _require = (function(){
 					throw new Error( "The factory of " + filename + " module not found" );
 				}
 				// Called first time, so let's run code constructing (exporting) the module
-				imports[ filename ] = factories[ filename ]( _require, module.exports, module );
+				imports[ filename ] = factories[ filename ]( _require, module.exports, module, window );
 				imports[ filename ].loaded = true;
 				if ( imports[ filename ].parent.children ) {
 					imports[ filename ].parent.children.push( imports[ filename ] );
@@ -71,7 +71,7 @@ var _require = (function(){
 if ( typeof require === "undefined" ) {
 	require = _require;
 }
-_require.def( "test/integration/fixtures/3rd-party/main.js", function( _require, exports, module ){
+_require.def( "test/integration/fixtures/3rd-party/main.js", function( _require, exports, module, global ){
 
 var exp1 = _require( "test/integration/fixtures/3rd-party/vendors/lib.js" ).exp1,
 		exp2 = _require( "test/integration/fixtures/3rd-party/vendors/lib.js" ).exp2;
@@ -82,7 +82,7 @@ window.log.push( "exp2:" + exp2.title );
 	return module;
 });
 
-_require.def( "test/integration/fixtures/3rd-party/vendors/lib.js", function( _require, exports, module ){
+_require.def( "test/integration/fixtures/3rd-party/vendors/lib.js", function( _require, exports, module, global ){
 window.exp1 = { title: "export1" };
 window.exp2 = { title: "export2" };
 	module.exports.exp1 = exp1;

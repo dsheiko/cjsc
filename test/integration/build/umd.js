@@ -50,7 +50,7 @@ var _require = (function(){
 					throw new Error( "The factory of " + filename + " module not found" );
 				}
 				// Called first time, so let's run code constructing (exporting) the module
-				imports[ filename ] = factories[ filename ]( _require, module.exports, module );
+				imports[ filename ] = factories[ filename ]( _require, module.exports, module, window );
 				imports[ filename ].loaded = true;
 				if ( imports[ filename ].parent.children ) {
 					imports[ filename ].parent.children.push( imports[ filename ] );
@@ -71,14 +71,14 @@ var _require = (function(){
 if ( typeof require === "undefined" ) {
 	require = _require;
 }
-_require.def( "test/integration/fixtures/umd/main.js", function( _require, exports, module ){
+_require.def( "test/integration/fixtures/umd/main.js", function( _require, exports, module, global ){
 window.log.push( module.id + ":runs" );
 window.log.push( module.id + ":exports:" + _require( "test/integration/fixtures/umd/module/module1.js" ).id );
 
 	return module;
 });
 
-_require.def( "test/integration/fixtures/umd/module/module1.js", function( _require, exports, module ){
+_require.def( "test/integration/fixtures/umd/module/module1.js", function( _require, exports, module, global ){
 // UMD boilerplate according to https://github.com/umdjs/umd
 if ( typeof module === "object" && typeof define !== "function" ) {
 	/**
@@ -98,7 +98,7 @@ define(function( require, exports, module ) {
 	return module;
 });
 
-_require.def( "test/integration/fixtures/umd/module/module2.js", function( _require, exports, module ){
+_require.def( "test/integration/fixtures/umd/module/module2.js", function( _require, exports, module, global ){
 window.log.push( module.id + ":runs" );
 exports = { id: module.id };
 	module.exports = exports;
