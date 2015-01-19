@@ -4,6 +4,7 @@
     "require": true,
     "exports": true,
     "window": true,
+    "global": true,
 		"describe": false,
 		"it": false,
 		"should": false,

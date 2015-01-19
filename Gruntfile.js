@@ -24,10 +24,12 @@ module.exports = function(grunt) {
 					}
 			},
 			jscs: {
-					options: {
-							"standard": "Jquery"
-					},
-					all: ["lib"]
+				options: {
+					standard: "Jquery"
+				},
+				files: {
+					src: [ "./lib" ]
+				}
 			}
 	});
 
