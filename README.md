@@ -18,12 +18,12 @@ While every AMD-module results in a separate HTTP request and therefore [badly a
 * Produces a string out of (multiline) non-JS external text file
 
 
-## Features inherited from CommonJS
+## CommonJS Features
 * Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
 * Enclosures every file in its own unique module context
 
-![How cjsc works](https://github.com/dsheiko/cjsc/raw/master/doc/cjsc1.png)
 
+![How cjsc works](https://github.com/dsheiko/cjsc/raw/master/doc/cjsc1.png)
 
 # Contents
 * [How to install](#a-install)
