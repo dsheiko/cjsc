@@ -17,11 +17,9 @@ While every AMD-module results in a separate HTTP request and therefore [badly a
 * Supports JavaScript templates ( Mustache, Handlebars, Underscore and others )
 * Produces a string out of (multiline) non-JS external text file
 
-
 ## CommonJS Features
 * Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
 * Enclosures every file in its own unique module context
-
 
 ![How cjsc works](https://github.com/dsheiko/cjsc/raw/master/doc/cjsc1.png)
 
