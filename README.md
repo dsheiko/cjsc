@@ -22,6 +22,9 @@ While every AMD-module results in a separate HTTP request and therefore [badly a
 * Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
 * Enclosures every file in its own unique module context
 
+![How cjsc works](https://github.com/dsheiko/cjsc/raw/master/doc/cjsc1.png)
+
+
 # Contents
 * [How to install](#a-install)
 * [Getting Started](#a-work)
@@ -54,8 +57,6 @@ or globally:
 sudo npm i cjsc -g
 ```
 Note: in this case npm creates a symlink `/usr/bin/cjsc`
-
-
 
 
 ## <a name="a-work"></a>Getting Started
@@ -168,6 +169,8 @@ Like in [NodeJS](http://nodejs.org/api/modules.html) the object has following st
 * module.children {Object[]} - The module objects required by this one
 
 ## <a name="a-caching"></a>Caching
+
+![Caching](https://github.com/dsheiko/cjsc/raw/master/doc/cjsc2.png)
 
 Caching goes the same as in nodejs. Modules are cached after the first time they are loaded.
 So every call to `require('foo')` returns exactly the same object, if it refers to the same file.
