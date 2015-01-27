@@ -392,5 +392,6 @@ console.log( handlebars.compile( tpl )( view ) );
 ## Alternatives
 
 * Browserify - http://browserify.org/
+* Modules-webmake - https://github.com/medikoo/modules-webmake
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/fb790e90a5c2e6afb69ba979b6ac34b1 "githalytics.com")](http://githalytics.com/dsheiko/cjsc)
