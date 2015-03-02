@@ -59,12 +59,13 @@ var fs = require( "fs" ),
 		 */
 		HELP_SCREEN = " Usage: cjsc <src-path> <dest-path>\n" +
 					" <src-path> - source filename (e.g. main.js)\n" +
-					" <dest-path> - destination filename for compiled code\n" +
+					" <dest-path>, -o=<dest-path> - destination filename for compiled code\n" +
 					" -M, --minify - minify the output file\n" +
 					" --config=<file> - specify a configuration JSON file\n" +
 					" --source-map=<file/pattern> - specify an output file where to generate source map. Use \"*\" automatic naming\n" +
-					" --source-map-url=<url> - the path to the source map to be added in.\n"
-				  " --source-map-root=<path> - the path to the original source to be included in the source map.";
+					" --source-map-url=<url> - the path to the source map to be added in.\n" +
+				  " --source-map-root=<path> - the path to the original source to be included in the source map.\n" +
+          " -t, --transform=[plugin --opt]";
 /**
  * Runner
  * @param {*[]} argv - CLI arguments
@@ -74,9 +75,9 @@ module.exports = function( argv, config ) {
 
 	(function(){
 				/** @type {string} */
-		var srcPath = path.resolve( argv[ 2 ] || "" ),
+		var srcPath = null,
 				/** @type {string} */
-				destPath = argv[ 3 ] || "",
+				destPath = null,
 				/** @type {string} */
 				out,
 				/** @type {Compiler} */
@@ -91,10 +92,11 @@ module.exports = function( argv, config ) {
 				cli = new Cli( path.dirname( srcPath ), process.cwd(), fs, path ),
 				/** @type {SourceMapGenerator} */
 				srcMapGen,
-				/**
-				 * @type {Object}
-				 */
-				options = cli.parseCliOptions( argv ),
+        /**
+         *
+         * @type {Object}
+         */
+        plugins = {},
 				/**
 				 * @param {Object} config
 				 */
@@ -108,20 +110,27 @@ module.exports = function( argv, config ) {
 				};
 
 
-
+    cli.parseCliOptions( argv );
 		cli.printHeader();
 
-		if ( argv.length < 4 ) {
+    if ( cli.targets.length ) {
+      srcPath = cli.targets[ 0 ];
+      destPath = cli.targets.length > 1 ? cli.targets[ 1 ] : cli.options[ "ouput" ];
+    }
+
+		if ( cli.options[ "help" ] || !srcPath || !destPath ) {
 			console.log( HELP_SCREEN );
 			process.exit( 0 );
 		}
 
+
+
 		config = config || {};
-		if ( options[ "config" ] ) {
+		if ( cli.options[ "config" ] ) {
 			try {
-				config = JSON.parse( cli.readJs( options[ "config" ] ) );
+				config = JSON.parse( cli.readJs( cli.options[ "config" ] ) );
 			} catch( e ) {
-				throw new SyntaxError( "`" + options[ "config" ] + "` appears to be invalid JSON" );
+				throw new SyntaxError( "`" + cli.options[ "config" ] + "` appears to be invalid JSON" );
 			}
 			// Validate the contract
 			validateRequireConfig( config );
@@ -136,16 +145,18 @@ module.exports = function( argv, config ) {
 			file: destPath
 		});
 
-		if ( options[ "source-map" ] ) {
-			options[ "source-map" ] = options[ "source-map" ].replace( /\*/, path.basename( destPath ) );
-			cli.setSourceMapRoot( options[ "source-map-root" ] || "", options[ "source-map" ] );
+		if ( cli.options[ "source-map" ] ) {
+			cli.options[ "source-map" ] = cli.options[ "source-map" ].replace( /\*/, path.basename( destPath ) );
+			cli.setSourceMapRoot( cli.options[ "source-map-root" ] || "", cli.options[ "source-map" ] );
 		}
 
-		map = compiler.findDependencies( srcResolvedFile );
+    plugins = cli.resolvePlugins();
+
+		map = compiler.findDependencies( srcResolvedFile, plugins.hookSource );
 
 		if ( map[ srcResolvedFile ].length ) {
 			compiler.preventAnInfiniteLoops( srcResolvedFile, map );
-			out = compiler.compile( srcResolvedFile, map, Replacer, srcMapGen );
+			out = compiler.compile( srcResolvedFile, map, Replacer, srcMapGen, plugins.hookModule );
 
 			try {
 				parser.getSyntaxTree( out );
@@ -160,12 +171,32 @@ module.exports = function( argv, config ) {
 			out = require( "uglify-js" ).minify( out, { fromString: true }).code;
 		}
 
-		if ( options[ "source-map" ] ) {
-			out += "\n//# sourceMappingURL=" + ( options[ "source-map-url" ] || "./" ) + path.basename( options[ "source-map" ] );
+		if ( cli.options[ "source-map" ] ) {
+			out += "\n//# sourceMappingURL=" + ( cli.options[ "source-map-url" ] || "./" ) + path.basename( cli.options[ "source-map" ] );
 		}
 
-		cli.writeJs( destPath, options.banner + out );
-		options[ "source-map" ] && cli.writeJs( options[ "source-map" ], srcMapGen.toString() );
+
+
+/*
+var all= [], plugin = require("./plugin");
+require( "fs" )
+  .createReadStream( "./README.md" )
+  .pipe(plugin("..", {replace: [
+    { from: /Alternatives/, to: "######YOOOO" }
+  ]}))
+  .on('data', function (data) {
+    all.push(data);
+  })
+  .on('end', function () {
+    var txt = all.toString();
+    console.log(txt);
+    //require( "fs" ).createWriteStream('out.txt', all);
+  });
+*/
+
+
+		cli.writeJs( destPath, cli.options.banner + out );
+		cli.options[ "source-map" ] && cli.writeJs( cli.options[ "source-map" ], srcMapGen.toString() );
 		map[ srcResolvedFile ].length && cli.printBody( Object.keys( map ).length );
 	}());
 };
