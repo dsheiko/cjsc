@@ -1,27 +1,36 @@
 {
   "name": "cjsc",
   "description": "Utility that compiles CommonJS (NodeJS) modules into a single JavaScript file suitable for the browser",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "author": "Dmitry Sheiko <me@dsheiko.com>",
-	"main": "cjsc-module.js",
+  "main": "cjsc-module.js",
   "bin": {
     "cjsc": "./cjsc"
   },
-	"dependencies": {
-		"esprima": "~1.0.4",
-		"uglify-js": ">=2.0.0",
-		"source-map": "*"
-	},
-	"devDependencies": {
-		"grunt": "~0.4.1",
-		"grunt-contrib-jscs": "*",
-		"grunt-contrib-jshint": "~0.4.3",
-		"grunt-mocha-cli": "~1.2.1",
-		"mocha": ">=1.7.4",
-		"grunt-contrib-qunit": "*",
-		"qunitjs": "*",
-		"should": "*"
-	},
+  "keywords": [
+    "browser",
+    "require",
+    "commonjs",
+    "commonj-esque",
+    "bundle",
+    "npm",
+    "javascript"
+  ],
+  "dependencies": {
+    "esprima": "~1.0.4",
+    "uglify-js": ">=2.0.0",
+    "source-map": "*"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-jscs": "^0.1.8",
+    "grunt-contrib-jshint": "~0.4.3",
+    "grunt-contrib-qunit": "*",
+    "grunt-mocha-cli": "~1.2.1",
+    "mocha": ">=1.7.4",
+    "qunitjs": "*",
+    "should": "*"
+  },
   "licenses": [
     {
       "type": "MIT",
@@ -35,9 +44,8 @@
       "web": "http://dsheiko.com"
     }
   ],
-  "repository":
-  {
-		"type": "git",
+  "repository": {
+    "type": "git",
     "url": "https://github.com/dsheiko/cjsc"
   }
 }

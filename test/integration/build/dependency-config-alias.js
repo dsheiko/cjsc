@@ -50,7 +50,8 @@ var _require = (function(){
 					throw new Error( "The factory of " + filename + " module not found" );
 				}
 				// Called first time, so let's run code constructing (exporting) the module
-				imports[ filename ] = factories[ filename ]( _require, module.exports, module, window );
+				imports[ filename ] = factories[ filename ]( _require, module.exports, module,
+          typeof window !== "undefined" ? window : global );
 				imports[ filename ].loaded = true;
 				if ( imports[ filename ].parent.children ) {
 					imports[ filename ].parent.children.push( imports[ filename ] );
