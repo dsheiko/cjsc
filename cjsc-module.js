@@ -21,16 +21,11 @@
 		/** @type {function} nodejs File I/O api */
 var fs = require( "fs" ),
 		/** @type {function} nodejs api for handling and transforming file paths */
-		path = require( "path" ),
-		/**
-		 * @link https://github.com/mozilla/source-map/
-		 * @type {object}
+		npath = require( "path" ),
+    /*
+		 * @type {module:lib/SrcMapGenerator}
 		 */
-		srcMapNs = require( "source-map" ),
-		/**
-		 * @type {module:Cli} Cli constructor
-		 */
-		Cli = require( "./lib/Cli" ),
+		SrcMapGenerator = require( "./lib/SrcMapGenerator" ),
 		/*
 		 * @type {module:Compiler} Compiler constructor
 		 */
@@ -46,27 +41,8 @@ var fs = require( "fs" ),
 		/**
 		 * @type {module:DependencyEntity}  DependencyEntity constructor
 		 */
-		DependencyEntity = require( "./lib/Entity/Dependency" ),
-		/**
-		 * @type {module:DependencyConfig} DependencyConfig constructor
-		 */
-		DependencyConfig = require( "./lib/Entity/DependencyConfig" ),
+		DependencyEntity = require( "./lib/Entity/Dependency" );
 
-		/**
-		 * @constant
-		 * @type {string}
-		 * @default
-		 */
-		HELP_SCREEN = " Usage: cjsc <src-path> <dest-path>\n" +
-					" <src-path> - source filename (e.g. main.js)\n" +
-					" <dest-path>, -o=<dest-path> - destination filename for compiled code\n" +
-					" -M, --minify - minify the output file\n" +
-					" --config=<file> - specify a configuration JSON file\n" +
-					" --source-map=<file/pattern> - specify an output file where to generate source map. Use \"*\" automatic naming\n" +
-					" --source-map-url=<url> - the path to the source map to be added in.\n" +
-				  " --source-map-root=<path> - the path to the original source to be included in the source map.\n" +
-          " -t, --transform=[MODULE --opt] - use a transform module on top-level files.\n" +
-          " -p, --plugin=MODULE - register MODULE as a plugin";
 /**
  * Runner
  * @param {*[]} argv - CLI arguments
@@ -75,103 +51,66 @@ var fs = require( "fs" ),
 module.exports = function( argv, config ) {
 
 	(function(){
-				/** @type {string} */
-		var srcPath = null,
-				/** @type {string} */
-				destPath = null,
-				/** @type {string} */
-				out,
+
+
+		var
 				/** @type {Compiler} */
 				compiler,
 				/** @type {Parser} */
 				parser,
-				/** @type {string} srcResolvedFile - fully resolved main module (source) filename */
-				srcResolvedFile,
-				/** @type {Object} */
-				map,
-				/** @type {Cli} */
-				cli = new Cli( path.dirname( srcPath ), process.cwd(), fs, path ),
+        /** @type {module:lib/FileSystem} */
+        fSys,
+				/** @type {module:lLib/Cli} Cli constructor	*/
+				cli = new require( "./lib/Cli" )(),
 				/** @type {SourceMapGenerator} */
-				srcMapGen,
- 				/**
-				 * @param {Object} config
-				 */
-				validateRequireConfig = function( config ) {
-					var prop;
-					for ( prop in config ) {
-						if ( config.hasOwnProperty( prop ) ) {
-							config[ prop ] = new DependencyConfig( config[ prop ] );
-						}
-					}
-				};
+				srcMapGen;
 
-
+    cli.printHeader();
     cli.parseCliOptions( argv );
-		cli.printHeader();
+    fSys = new require( "./lib/FileSystem" )( npath.dirname( cli.srcPath ) );
 
-    if ( cli.targets.length ) {
-      srcPath = cli.targets[ 0 ];
-      destPath = cli.targets.length > 1 ? cli.targets[ 1 ] : cli.options[ "ouput" ];
-    }
-
-		if ( cli.options[ "help" ] || !srcPath || !destPath ) {
-			console.log( HELP_SCREEN );
-			process.exit( 0 );
-		}
-
-
-
-		config = config || {};
-		if ( cli.options[ "config" ] ) {
-			try {
-				config = JSON.parse( cli.readJs( cli.options[ "config" ] ) );
-			} catch( e ) {
-				throw new SyntaxError( "`" + cli.options[ "config" ] + "` appears to be invalid JSON" );
-			}
-			// Validate the contract
-			validateRequireConfig( config );
-		}
-
+    config = require( "./lib/Config" )( cli.options[ "config" ], fSys );
 		parser = new Parser( DependencyEntity );
 
-		compiler = new Compiler( parser, cli, config );
-		srcResolvedFile = cli.resolveFilename( srcPath );
+    srcMapGen = new SrcMapGenerator( cli.destPath, fSys );
 
-		srcMapGen = new srcMapNs.SourceMapGenerator({
-			file: destPath
-		});
+		compiler = new Compiler( parser, fSys, config, srcMapGen );
 
-		if ( cli.options[ "source-map" ] ) {
-			cli.options[ "source-map" ] = cli.options[ "source-map" ].replace( /\*/, path.basename( destPath ) );
-			cli.setSourceMapRoot( cli.options[ "source-map-root" ] || "", cli.options[ "source-map" ] );
-		}
-
-
-		map = compiler.findDependencies( srcResolvedFile );
-
-		if ( map[ srcResolvedFile ].length ) {
-			compiler.preventAnInfiniteLoops( srcResolvedFile, map );
-			out = compiler.compile( srcResolvedFile, map, Replacer, srcMapGen );
-
-			try {
-				parser.getSyntaxTree( out );
-			}	catch( e ) {
-				throw new ReferenceError( "Couldn't compile into a valid JavaScript" );
-			}
-		} else {
-			out = cli.readJs( srcResolvedFile );
-			console.log( " No dependencies found. Source is copied to the destination" );
-		}
-		if ( argv.indexOf( "-M" ) !== -1 || argv.indexOf( "--minify" ) !== -1 ) {
-			out = require( "uglify-js" ).minify( out, { fromString: true }).code;
-		}
+//		srcResolvedFile = fSys.resolveFilename( cli.srcPath );
+//    console.log("----", srcResolvedFile);
 
 		if ( cli.options[ "source-map" ] ) {
-			out += "\n//# sourceMappingURL=" + ( cli.options[ "source-map-url" ] || "./" ) + path.basename( cli.options[ "source-map" ] );
+			cli.options[ "source-map" ] = cli.options[ "source-map" ].replace( /\*/, npath.basename( cli.destPath ) );
+			fSys.setSourceMapRoot( cli.options[ "source-map-root" ] || "", cli.options[ "source-map" ] );
 		}
 
-		cli.writeJs( destPath, cli.options.banner + out );
-		cli.options[ "source-map" ] && cli.writeJs( cli.options[ "source-map" ], srcMapGen.toString() );
-		map[ srcResolvedFile ].length && cli.printBody( Object.keys( map ).length );
+    //cli.srcPath is File??
+
+		compiler.run( cli.srcPath, function( map, output ){
+      if ( !map ) {
+        return;
+      }
+//console.log();
+      //console.log( "\n\n\n********************\n", output );
+      if ( !map[ cli.srcPath ].length ) {
+        output = fSys.readJs( cli.srcPath );
+        console.log( " No dependencies found. Source is copied to the destination" );
+      }
+
+      if ( cli.options[ "minify" ] ) {
+        output = require( "uglify-js" ).minify( output, { fromString: true }).code;
+      }
+
+      if ( cli.options[ "source-map" ] ) {
+        output += "\n//# sourceMappingURL=" + ( cli.options[ "source-map-url" ] || "./" ) + npath.basename( cli.options[ "source-map" ] );
+      }
+
+      fSys.writeJs( cli.destPath, cli.options.banner + output );
+      cli.options[ "source-map" ] && cli.writeJs( cli.options[ "source-map" ], srcMapGen.get() );
+
+      map[ cli.srcPath ].length && cli.printBody( Object.keys( map ).length );
+
+    });
+
 	}());
 };
