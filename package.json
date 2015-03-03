@@ -19,7 +19,9 @@
   "dependencies": {
     "esprima": "~1.0.4",
     "uglify-js": ">=2.0.0",
-    "source-map": "*"
+    "source-map": "*",
+    "xtend": "^4.0.0",
+    "argv": "0.0.2"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -29,7 +31,8 @@
     "grunt-mocha-cli": "~1.2.1",
     "mocha": ">=1.7.4",
     "qunitjs": "*",
-    "should": "*"
+    "should": "*",
+    "through2": "^0.6.3"
   },
   "licenses": [
     {

@@ -1,12 +1,12 @@
 
 var through = require("through2");
-var stream = require("fs").createReadStream( '/tmp/stream.js');
-
+var stream = require("fs").createReadStream( 'CHANGELOG.md');
+var all = [];
 //https://github.com/substack/node-browserify
 //http://codewinds.com/blog/2013-08-19-nodejs-writable-streams.html#creating_writable_memory_stream
 //http://nodejs.org/api/stream.html#stream_readable_pipe_destination_options
 // http://nodejs.org/api/stream.html#stream_class_stream_transform_1
-stream.pipe(piping);
+
 
 //
 //// Trying our stream out
@@ -120,3 +120,35 @@ var piping = function (file, opts) {
         next();
     });
 };
+
+stream
+//  .pipe(piping("..", {replace: [
+//    { from: /0\.3\.0/, to: "1.0.O" }
+//  ]}))
+  .on('data', function (data) {
+    all.push(data);
+  })
+  .on('end', function () {
+    var txt = all.toString();
+    console.log(txt);
+    //require( "fs" ).createWriteStream('out.txt', all);
+  });;
+
+
+
+  /*
+var all= [], plugin = require("./plugin");
+require( "fs" )
+  .createReadStream( "./README.md" )
+  .pipe(plugin("..", {replace: [
+    { from: /Alternatives/, to: "######YOOOO" }
+  ]}))
+  .on('data', function (data) {
+    all.push(data);
+  })
+  .on('end', function () {
+    var txt = all.toString();
+    console.log(txt);
+    //require( "fs" ).createWriteStream('out.txt', all);
+  });
+*/

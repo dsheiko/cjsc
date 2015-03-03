@@ -1,7 +1,21 @@
 /*jshint -W068 */
 /*jshint multistr: true */
 /** @type {function} Compiler constructor */
-var Cli = require( "../../lib/Cli" );
+var Cli = require( "../../lib/Cli" ),
+    fs = require( "fs" ),
+    through = require( "through2" ),
+    pipe = function(){
+      var code = "";
+      return through.obj(function (buf, enc, next) {
+          /*  accumulate the code chunks  */
+          code += buf.toString( "utf8" );
+          next();
+      }, function ( next ) {
+          code = code.replace( "1", "2" );
+          this.push( new Buffer( code ) );
+          next();
+      });
+    };
 
 require( "should" );
 
@@ -25,4 +39,33 @@ describe( "Cli", function(){
       cli.plugins[ 1 ].plugin.should.eql( "foo" );
     });
   });
+
+  describe( "readStream", function(){
+    it( "reads file async", function( done ){
+      var cli = new Cli( "..", process.cwd(), fs, {} ),
+          line = "demo/use-main-flow.js /tmp/out.js -p plugin --plugin=foo";
+      cli.readStream( __dirname + "/fixtures/test-src.js", function( txt ){
+        txt.length.should.be.ok;
+        done();
+      });
+    });
+
+    it( "pipe in read file", function( done ){
+      var cli = new Cli( "..", process.cwd(), fs, {} ),
+          line = "demo/use-main-flow.js /tmp/out.js -p plugin --plugin=foo";
+      cli.plugins = [
+        {
+          plugin: "test-plugin"
+        }
+      ];
+      cli.readStream( __dirname + "/fixtures/test-src.js", function( txt ){
+        txt.length.should.be.ok;
+        done();
+      });
+    });
+  });
+
+
+
+
 });

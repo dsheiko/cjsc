@@ -65,7 +65,8 @@ var fs = require( "fs" ),
 					" --source-map=<file/pattern> - specify an output file where to generate source map. Use \"*\" automatic naming\n" +
 					" --source-map-url=<url> - the path to the source map to be added in.\n" +
 				  " --source-map-root=<path> - the path to the original source to be included in the source map.\n" +
-          " -t, --transform=[plugin --opt]";
+          " -t, --transform=[MODULE --opt] - use a transform module on top-level files.\n" +
+          " -p, --plugin=MODULE - register MODULE as a plugin";
 /**
  * Runner
  * @param {*[]} argv - CLI arguments
@@ -92,12 +93,7 @@ module.exports = function( argv, config ) {
 				cli = new Cli( path.dirname( srcPath ), process.cwd(), fs, path ),
 				/** @type {SourceMapGenerator} */
 				srcMapGen,
-        /**
-         *
-         * @type {Object}
-         */
-        plugins = {},
-				/**
+ 				/**
 				 * @param {Object} config
 				 */
 				validateRequireConfig = function( config ) {
@@ -150,13 +146,12 @@ module.exports = function( argv, config ) {
 			cli.setSourceMapRoot( cli.options[ "source-map-root" ] || "", cli.options[ "source-map" ] );
 		}
 
-    plugins = cli.resolvePlugins();
 
-		map = compiler.findDependencies( srcResolvedFile, plugins.hookSource );
+		map = compiler.findDependencies( srcResolvedFile );
 
 		if ( map[ srcResolvedFile ].length ) {
 			compiler.preventAnInfiniteLoops( srcResolvedFile, map );
-			out = compiler.compile( srcResolvedFile, map, Replacer, srcMapGen, plugins.hookModule );
+			out = compiler.compile( srcResolvedFile, map, Replacer, srcMapGen );
 
 			try {
 				parser.getSyntaxTree( out );
@@ -174,26 +169,6 @@ module.exports = function( argv, config ) {
 		if ( cli.options[ "source-map" ] ) {
 			out += "\n//# sourceMappingURL=" + ( cli.options[ "source-map-url" ] || "./" ) + path.basename( cli.options[ "source-map" ] );
 		}
-
-
-
-/*
-var all= [], plugin = require("./plugin");
-require( "fs" )
-  .createReadStream( "./README.md" )
-  .pipe(plugin("..", {replace: [
-    { from: /Alternatives/, to: "######YOOOO" }
-  ]}))
-  .on('data', function (data) {
-    all.push(data);
-  })
-  .on('end', function () {
-    var txt = all.toString();
-    console.log(txt);
-    //require( "fs" ).createWriteStream('out.txt', all);
-  });
-*/
-
 
 		cli.writeJs( destPath, cli.options.banner + out );
 		cli.options[ "source-map" ] && cli.writeJs( cli.options[ "source-map" ], srcMapGen.toString() );
