@@ -1,3 +1,3 @@
 #!/bin/bash
-node ../cjsc.js ./use-3rd-party.js /tmp/build.js
-cat /tmp/build.js
+node ../cjsc.js ./use-3rd-party.js /tmp/out.js
+cat /tmp/out.js

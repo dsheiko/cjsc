@@ -76,8 +76,7 @@ module.exports = function( argv, config ) {
 
 		compiler = new Compiler( parser, fSys, config, srcMapGen );
 
-//		srcResolvedFile = fSys.resolveFilename( cli.srcPath );
-//    console.log("----", srcResolvedFile);
+    cli.srcPath = fSys.resolveFilename( cli.srcPath );
 
 		if ( cli.options[ "source-map" ] ) {
 			cli.options[ "source-map" ] = cli.options[ "source-map" ].replace( /\*/, npath.basename( cli.destPath ) );
@@ -90,8 +89,7 @@ module.exports = function( argv, config ) {
       if ( !map ) {
         return;
       }
-//console.log();
-      //console.log( "\n\n\n********************\n", output );
+
       if ( !map[ cli.srcPath ].length ) {
         output = fSys.readJs( cli.srcPath );
         console.log( " No dependencies found. Source is copied to the destination" );

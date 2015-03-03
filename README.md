@@ -16,6 +16,7 @@ While every AMD-module results in a separate HTTP request and therefore [badly a
 * Supports source maps http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
 * Supports JavaScript templates ( Mustache, Handlebars, Underscore and others )
 * Produces a string out of (multiline) non-JS external text file
+* Provides Browserify-compatible plugin API
 
 ## CommonJS Features
 * Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
