@@ -67,7 +67,7 @@ module.exports = function( argv, config ) {
 
     cli.printHeader();
     cli.parseCliOptions( argv );
-    fSys = new require( "./lib/FileSystem" )( npath.dirname( cli.srcPath ) );
+    fSys = new require( "./lib/FileSystem" )( cli );
 
     config = require( "./lib/Config" )( cli.options[ "config" ], fSys );
 		parser = new Parser( DependencyEntity );

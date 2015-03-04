@@ -19,7 +19,7 @@ var Cli = require( "../../lib/Cli" ),
 
 require( "should" );
 
-describe( "Cli", function(){
+describe( "lib/Cli", function(){
   describe( "parseTransformOptions", function(){
     it( "parses command line correctly", function(){
       var cli = new Cli( "..", process.cwd(), {}, {} ),
@@ -39,33 +39,5 @@ describe( "Cli", function(){
       cli.plugins[ 1 ].plugin.should.eql( "foo" );
     });
   });
-
-  describe( "readStream", function(){
-    it( "reads file async", function( done ){
-      var cli = new Cli( "..", process.cwd(), fs, {} ),
-          line = "demo/use-main-flow.js /tmp/out.js -p plugin --plugin=foo";
-      cli.readStream( __dirname + "/fixtures/test-src.js", function( txt ){
-        txt.length.should.be.ok;
-        done();
-      });
-    });
-
-    it( "pipe in read file", function( done ){
-      var cli = new Cli( "..", process.cwd(), fs, {} ),
-          line = "demo/use-main-flow.js /tmp/out.js -p plugin --plugin=foo";
-      cli.plugins = [
-        {
-          plugin: "test-plugin"
-        }
-      ];
-      cli.readStream( __dirname + "/fixtures/test-src.js", function( txt ){
-        txt.length.should.be.ok;
-        done();
-      });
-    });
-  });
-
-
-
 
 });
