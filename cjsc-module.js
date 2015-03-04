@@ -18,9 +18,9 @@
 */
 
 	"use strict";
-		/** @type {function} nodejs File I/O api */
+		/** @type {module:fs} nodejs File I/O api */
 var fs = require( "fs" ),
-		/** @type {function} nodejs api for handling and transforming file paths */
+		/** @type {module:path} nodejs api for handling and transforming file paths */
 		npath = require( "path" ),
     /*
 		 * @type {module:lib/SrcMapGenerator}
@@ -49,7 +49,6 @@ var fs = require( "fs" ),
  * @param {requireConfig} config - Depnedency configuration
  */
 module.exports = function( argv, config ) {
-
 	(function(){
 
 

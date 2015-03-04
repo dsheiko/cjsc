@@ -1,3 +1,3 @@
 console.log( "lib.js running..." );
-global.exp1 = { title: "Export 1" };
-global.exp2 = { title: "Export 2" };
+window.exp1 = { title: "Export 1" };
+window.exp2 = { title: "Export 2" };

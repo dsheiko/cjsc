@@ -31,7 +31,6 @@ describe( "Compiler", function(){
 			});
 		});
 
-
 		it( "must throw an exception when module requires itself", function(){
 			var map = {
 						"main.js": [{ filename: "main.js" }]
@@ -41,6 +40,7 @@ describe( "Compiler", function(){
 				compiler.preventAnInfiniteLoops( "main.js", map );
 			}).should[ "throw" ]();
 		});
+
 
 		describe( "must throw an exception when a loop found", function(){
 			it( "(1)", function(){
@@ -91,42 +91,42 @@ describe( "Compiler", function(){
 			});
 		});
 
-	});
+//	});
 
-	describe( ".findDependencies ", function(){
-		var cliStub = {
-					resolveFilename: function( fname ) {
-						return fname + ".json";
-					},
-					readJs: function( fname ) {
-						return fname;
-					}
-				},
-				parserStub = {
-					getSyntaxTree: function( fname ) {
-						return fname;
-					},
-					getDependecies: function( fname ) {
-						return fixture.getJson( "Compiler/" + fname );
-					},
-					getRequirements: function() {
-						return {
-							__dirname: false,
-							__filename: false,
-							shortcut: false
-						};
-					}
-				};
-
-
-		it( "must propertly populate dependency ", function(){
-			var compiler = new Compiler( parserStub, cliStub ),
-					deps = compiler.findDependencies( "main.json" );
-
-			deps["main.json"][ 0 ].id.should.eql( "foo" );
-			deps["foo.json"][ 0 ].id.should.eql( "bar" );
-		});
-
+//	describe( ".findDependencies ", function(){
+//		var cliStub = {
+//					resolveFilename: function( fname ) {
+//						return fname + ".json";
+//					},
+//					readJs: function( fname ) {
+//						return fname;
+//					}
+//				},
+//				parserStub = {
+//					getSyntaxTree: function( fname ) {
+//						return fname;
+//					},
+//					getDependecies: function( fname ) {
+//						return fixture.getJson( "Compiler/" + fname );
+//					},
+//					getRequirements: function() {
+//						return {
+//							__dirname: false,
+//							__filename: false,
+//							shortcut: false
+//						};
+//					}
+//				};
+//
+//
+//		it( "must propertly populate dependency ", function(){
+//			var compiler = new Compiler( parserStub, cliStub ),
+//					deps = compiler.findDependencies( "main.json" );
+//
+//			deps["main.json"][ 0 ].id.should.eql( "foo" );
+//			deps["foo.json"][ 0 ].id.should.eql( "bar" );
+//		});
+//
 	});
 });
 

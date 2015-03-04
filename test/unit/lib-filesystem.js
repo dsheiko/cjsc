@@ -11,6 +11,7 @@ require( "should" );
 describe( "lib/FileSystem", function(){
 
   describe( "readStream", function(){
+
     it( "reads file async", function( done ){
       var fSys = new FSys( new Cli() );
       fSys.readStream( __dirname + "/fixtures/test-src.js", function( txt ){
@@ -19,7 +20,7 @@ describe( "lib/FileSystem", function(){
       });
     });
 
-    it( "pipe in read file", function( done ){
+    it( "pipe in read file / perform plugin", function( done ){
       var cli = new Cli(),
           fSys;
       cli.plugins = [
@@ -36,7 +37,7 @@ describe( "lib/FileSystem", function(){
       fSys = new FSys( cli );
       fSys.readStream( __dirname + "/fixtures/test-src.js", function( txt ){
         txt.length.should.be.ok;
-        console.log( txt );
+        txt.trim().should.equal( "var rev = \"*.*.*\";" );
         done();
       });
     });

@@ -29,7 +29,16 @@ module.exports = function(grunt) {
             standard: "Jquery"
           },
           files: {
-            src: [ "./lib" ]
+            src: [ "./lib"  ]
+          }
+        },
+        test: {
+          options: {
+            standard: "Jquery",
+            reportFull: true
+          },
+          files: {
+            src: [ "./lib"  ]
           }
         }
 			}
