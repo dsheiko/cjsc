@@ -183,7 +183,7 @@ Multiple calls to `require('foo')` don't execute the module code multiple times.
 
 *Gruntfile.js*
 ```javascript
-grunt.loadNpmTasks('grunt-contrib-cjsc');
+grunt.loadNpmTasks('grunt-cjsc');
 grunt.initConfig({
      cjsc: {
       development: {
@@ -201,11 +201,11 @@ grunt.initConfig({
 ```javascript
 "devDependencies": {
     //..
-    "grunt-contrib-cjsc": "*"
+    "grunt-cjsc": "*"
   }
 ```
 
-Please find details at https://github.com/dsheiko/grunt-contrib-cjsc
+Please find details at https://github.com/dsheiko/grunt-cjsc
 
 
 
