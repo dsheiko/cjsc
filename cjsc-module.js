@@ -73,7 +73,7 @@ module.exports = function( argv, config ) {
 
     srcMapGen = new SrcMapGenerator( cli.destPath, fSys );
 
-		compiler = new Compiler( parser, fSys, config, srcMapGen );
+		compiler = new Compiler( parser, fSys, config, srcMapGen, cli );
 
     cli.srcPath = fSys.resolveFilename( cli.srcPath );
 
