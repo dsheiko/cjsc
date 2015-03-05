@@ -400,6 +400,7 @@ node cjsc.js -o /tmp/build.js demo/use-umd.js
 node cjsc.js -o /tmp/build.js demo/use-backbone.js
 node cjsc.js -o /tmp/build.js demo/use-mustache.js
 node cjsc.js -o demo/source-map/build.js demo/source-map/src/use-main-flow.js --source-map=demo/source-map/*.map --source-map-root=./src
+node cjsc.js -o /tmp/build.js demo/use-config.js --config=./demo/config/config.json
 ```
 
 ## Alternatives

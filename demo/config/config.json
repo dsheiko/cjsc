@@ -1,4 +1,7 @@
 {
+  "foo": {
+    "globalProperty": "foo"
+  },
 	"jQuery": {
 		"path": "./demo/config/vendors/jquery.js"
 	},
