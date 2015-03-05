@@ -57,7 +57,7 @@ console.log( "bar.js: Hello World" );
 
 <p>Compiling <var>bar.js</var></p>
 
-<pre><code>$cjsc bar.js out.js</code></pre>
+<pre><code>$cjsc bar.js -o out.js</code></pre>
 
 <p>If we run <var>out.js</var> the output would be:</p>
 
@@ -133,24 +133,24 @@ Lorem ipsum dolor sit amet
 
 <p>Compile <var>main-module.js</var> into <var>build.js</var>:</p>
 
-<pre><code>./cjsc main-module.js build.js</code></pre>
+<pre><code>./cjsc main-module.js -o build.js</code></pre>
 
 <p>or</p>
 
-<pre><code>node cjsc.js main-module.js build.js</code></pre>
+<pre><code>node cjsc.js main-module.js -o build.js</code></pre>
 
 
 <p>Compile <var>main-module.js</var> into <var>build.js</var> and generate source map</p>
 
-<pre><code>./cjsc main-module.js build.js  --source-map=build/build.js.map --source-map-url=http://localhost/</code></pre>
+<pre><code>./cjsc main-module.js -o build.js  --source-map=build/build.js.map --source-map-url=http://localhost/</code></pre>
 
 <p>or with the following options for automatic naming</p>
 
-<pre><code>./cjsc main-module.js build.js  --source-map=*.map</code></pre>
+<pre><code>./cjsc main-module.js -o build.js  --source-map=*.map</code></pre>
 
 <p>or this way to explicitly specify the path to sources relative to the source map</p>
 
-<pre><code>./cjsc main-module.js build.js  --source-map=build/*.map --source-map-root=../src</code></pre>
+<pre><code>./cjsc main-module.js -o build.js  --source-map=build/*.map --source-map-root=../src</code></pre>
 
 <p>Whereas:</p>
 <ul>
@@ -160,10 +160,10 @@ Lorem ipsum dolor sit amet
 </ul>
 
 <p>Compile <var>main-module.js</var> into <var>build.js</var> and minify <var>build.js</var></p>
-<pre><code>./cjsc main-module.js build.js -M</code></pre>
+<pre><code>./cjsc main-module.js -o build.js -M</code></pre>
 
 <p>With a banner</p>
-<pre><code>./cjsc main-module.js build.js -M --banner="/*! pkg v.0.0.1 */"</code></pre>
+<pre><code>./cjsc main-module.js -o build.js -M --banner="/*! pkg v.0.0.1 */"</code></pre>
 
 
 <h3>
@@ -172,7 +172,7 @@ Lorem ipsum dolor sit amet
 
 <p>Gruntfile.js:</p>
 
-<pre><code>grunt.loadNpmTasks('grunt-contrib-cjsc');
+<pre><code>grunt.loadNpmTasks('grunt-cjsc');
     grunt.initConfig({
          cjsc: {
           development: {
@@ -191,11 +191,11 @@ Lorem ipsum dolor sit amet
 
 <pre><code>"devDependencies": {
         //..
-        "grunt-contrib-cjsc": "*"
+        "grunt-cjsc": "*"
       }</code></pre>
 
 
-<p>Please find details at <a href="https://github.com/dsheiko/grunt-contrib-cjsc">https://github.com/dsheiko/grunt-contrib-cjsc</a></p>
+<p>Please find details at <a href="https://github.com/dsheiko/grunt-cjsc">https://github.com/dsheiko/grunt-cjsc</a></p>
 
 <h3>
 <a  class="anchor" href="#configure-deps"><span class="octicon octicon-link"></span></a>Configuring dependencies</h3>
@@ -225,7 +225,7 @@ Lorem ipsum dolor sit amet
 
 To enable the configuration use <var>--config</var> option:
 
-<pre><code>node cjsc main.js out.js --config=config.json</code></pre>
+<pre><code>node cjsc main.js -o out.js --config=config.json</code></pre>
 
 
 <h3>
@@ -247,7 +247,7 @@ To enable the configuration use <var>--config</var> option:
 
 <p>Compilation:</p>
 
-<pre><code>node cjsc main.js build.js --config=config.json</code></pre>
+<pre><code>node cjsc main.js -o build.js --config=config.json</code></pre>
 
 <h3>
 <a  class="anchor" href="#jquery"><span class="octicon octicon-link"></span></a>Making modules of jQuery and its plugins</h3>
@@ -275,7 +275,7 @@ To enable the configuration use <var>--config</var> option:
 
 <p>Compilation:</p>
 
-<pre><code>node cjsc main.js build.js --config=config.json</code></pre>
+<pre><code>node cjsc main.js -o build.js --config=config.json</code></pre>
 
 
 <h3>
@@ -308,7 +308,7 @@ To enable the configuration use <var>--config</var> option:
 
 <p>Compilation:</p>
 
-<pre><code>node cjsc main.js build.js --config=config.json</code></pre>
+<pre><code>node cjsc main.js -o build.js --config=config.json</code></pre>
 
 
 <p>If 3rd party code exposes the only object, it can be done like that <var>config.json</var>:</p>
@@ -364,7 +364,7 @@ To enable the configuration use <var>--config</var> option:
 
 <p>Module that uses the template</p>
 
-<pre><code>var handlebars = require( "./handlebarsjs/handlebars", "Handlebars" ).Handlebars,
+<pre><code>var handlebars = require( "./handlebarsjs/handlebars", "Handlebars" ),
         tpl = require( "./handlebarsjs/example.hbs" ),
         view = {
           title: "My New Post",
