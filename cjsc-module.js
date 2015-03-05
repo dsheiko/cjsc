@@ -41,7 +41,11 @@ var fs = require( "fs" ),
 		/**
 		 * @type {module:DependencyEntity}  DependencyEntity constructor
 		 */
-		DependencyEntity = require( "./lib/Entity/Dependency" );
+		DependencyEntity = require( "./lib/Entity/Dependency" ),
+    /**
+		 * @type {module:Config} Config constructor
+		 */
+		Config = require( "./lib/Config" );
 
 /**
  * Runner
@@ -68,10 +72,12 @@ module.exports = function( argv, config ) {
     cli.parseCliOptions( argv );
     fSys = new require( "./lib/FileSystem" )( cli );
 
-    config = require( "./lib/Config" )( cli.options[ "config" ], fSys );
+    config = new Config( cli.options[ "config" ], fSys );
+
 		parser = new Parser( DependencyEntity );
 
     srcMapGen = new SrcMapGenerator( cli.destPath, fSys );
+
 
 		compiler = new Compiler( parser, fSys, config, srcMapGen, cli );
 
@@ -82,13 +88,10 @@ module.exports = function( argv, config ) {
 			fSys.setSourceMapRoot( cli.options[ "source-map-root" ] || "", cli.options[ "source-map" ] );
 		}
 
-    //cli.srcPath is File??
-
-		compiler.run( cli.srcPath, function( map, output ){
+		compiler.start( cli.srcPath, function( map, output ){
       if ( !map ) {
         return;
       }
-
       if ( !map[ cli.srcPath ].length ) {
         output = fSys.readJs( cli.srcPath );
         console.log( " No dependencies found. Source is copied to the destination" );

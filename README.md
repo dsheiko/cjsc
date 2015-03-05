@@ -87,7 +87,7 @@ module.exports.name = "dep2";
 
 Now we can compile the modules:
 ```bash
-cjsc main.js script.js
+cjsc main.js -o script.js
 ```
 
 As we fire up script.js we get the following output:
@@ -113,24 +113,24 @@ Getting imported object from the cache:
 
 Compile `main-module.js` into `build.js`:
 ```bash
-./cjsc main-module.js build.js
+./cjsc main-module.js -o build.js
 ```
 or
 ```bash
-node cjsc.js main-module.js build.js
+node cjsc.js main-module.js -o build.js
 ```
 
 Compile `main-module.js` into `build.js` and generate source map
 ```bash
-./cjsc main-module.js build.js  --source-map=build/build.js.map --source-map-url=http://localhost/
+./cjsc main-module.js -o build.js  --source-map=build/build.js.map --source-map-url=http://localhost/
 ```
 or the following options for automatic naming
 ```bash
-./cjsc main-module.js build.js  --source-map=*.map
+./cjsc main-module.js -o build.js  --source-map=*.map
 ```
 or this way to explicitly specify the path to sources relative to the source map
 ```bash
-./cjsc main-module.js build.js  --source-map=build/*.map --source-map-root=../src
+./cjsc main-module.js 0o build.js  --source-map=build/*.map --source-map-root=../src
 ```
 
 Whereas:
@@ -144,12 +144,12 @@ Now breakpoints and console messages mapped to the original sources
 
 Compile `main-module.js` into `build.js` and minify `build.js`
 ```bash
-./cjsc main-module.js build.js -M
+./cjsc main-module.js -o build.js -M
 ```
 
 With a banner
 ```bash
-./cjsc main-module.js build.js -M --banner="/*! pkg v.0.0.1 */"
+./cjsc main-module.js -o build.js -M --banner="/*! pkg v.0.0.1 */"
 ```
 
 
@@ -322,7 +322,7 @@ console.log( lib.exp1, lib.exp2 );
 ```
 Compilation:
 ```
-node cjsc main.js build.js --config=config.json
+node cjsc main.js -o build.js --config=config.json
 ```
 
 If 3rd party code exposes the only object, it can be done like that:
@@ -388,6 +388,17 @@ var handlebars = require( "./handlebarsjs/handlebars", "Handlebars" ).Handlebars
 		};
 
 console.log( handlebars.compile( tpl )( view ) );
+```
+
+## Supplied demos
+
+```
+node cjsc.js -o /tmp/build.js demo/use-main-flow.js
+node cjsc.js -o /tmp/build.js demo/use-3rd-party.js
+node cjsc.js -o /tmp/build.js demo/use-nonmodule.js
+node cjsc.js -o /tmp/build.js demo/use-umd.js
+node cjsc.js -o /tmp/build.js demo/use-backbone.js
+node cjsc.js -o /tmp/build.js demo/use-mustache.js
 ```
 
 ## Alternatives

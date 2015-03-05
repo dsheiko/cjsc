@@ -1,6 +1,6 @@
 {
   "name": "cjsc",
-  "version": "0.2.15",
+  "version": "1.0.0",
   "main": {
     "jscs": "./cjsc.js"
   },
