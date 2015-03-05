@@ -17,55 +17,56 @@
 * @property {module:DependencyConfig} depId
 */
 
-	"use strict";
-		/** @type {module:fs} nodejs File I/O api */
+  "use strict";
+    /** @type {module:fs} nodejs File I/O api */
 var fs = require( "fs" ),
-		/** @type {module:path} nodejs api for handling and transforming file paths */
-		npath = require( "path" ),
+    /** @type {module:path} nodejs api for handling and transforming file paths */
+    npath = require( "path" ),
     /*
-		 * @type {module:lib/SrcMapGenerator}
-		 */
-		SrcMapGenerator = require( "./lib/SrcMapGenerator" ),
-		/*
-		 * @type {module:Compiler} Compiler constructor
-		 */
-		Compiler = require( "./lib/Compiler" ),
-		/**
-		 * @type {module:Parser} Parser constructor
-		 */
-		Parser = require( "./lib/Parser" ),
-		/**
-		 * @type {module:Replacer} Replacer constructor
-		 */
-		Replacer = require( "./lib/Replacer" ),
-		/**
-		 * @type {module:DependencyEntity}  DependencyEntity constructor
-		 */
-		DependencyEntity = require( "./lib/Entity/Dependency" ),
+     * @type {module:lib/SrcMapGenerator}
+     */
+    SrcMapGenerator = require( "./lib/SrcMapGenerator" ),
+    /*
+     * @type {module:Compiler} Compiler constructor
+     */
+    Compiler = require( "./lib/Compiler" ),
     /**
-		 * @type {module:Config} Config constructor
-		 */
-		Config = require( "./lib/Config" );
+     * @type {module:Parser} Parser constructor
+     */
+    Parser = require( "./lib/Parser" ),
+    /**
+     * @type {module:Replacer} Replacer constructor
+     */
+    Replacer = require( "./lib/Replacer" ),
+    /**
+     * @type {module:DependencyEntity}  DependencyEntity constructor
+     */
+    DependencyEntity = require( "./lib/Entity/Dependency" ),
+    /**
+     * @type {module:Config} Config constructor
+     */
+    Config = require( "./lib/Config" );
 
 /**
  * Runner
- * @param {*[]} argv - CLI arguments
+ * @param {Array || Object} argv - CLI arguments
  * @param {requireConfig} config - Depnedency configuration
+ * @param {Function} [done]
  */
-module.exports = function( argv, config ) {
-	(function(){
+module.exports = function( argv, config, done ) {
+  (function(){
 
-		var
-				/** @type {Compiler} */
-				compiler,
-				/** @type {Parser} */
-				parser,
+    var
+        /** @type {Compiler} */
+        compiler,
+        /** @type {Parser} */
+        parser,
         /** @type {module:lib/FileSystem} */
         fSys,
-				/** @type {module:lLib/Cli} Cli constructor	*/
-				cli = new require( "./lib/Cli" )(),
-				/** @type {SourceMapGenerator} */
-				srcMapGen;
+        /** @type {module:lLib/Cli} Cli constructor  */
+        cli = new require( "./lib/Cli" )(),
+        /** @type {SourceMapGenerator} */
+        srcMapGen;
 
     cli.printHeader();
     cli.parseCliOptions( argv );
@@ -73,20 +74,20 @@ module.exports = function( argv, config ) {
 
     config = new Config( config || cli.options[ "config" ], fSys );
 
-		parser = new Parser( DependencyEntity );
+    parser = new Parser( DependencyEntity );
 
     srcMapGen = new SrcMapGenerator( cli, fSys );
 
 
-		compiler = new Compiler( parser, fSys, config, srcMapGen, cli );
+    compiler = new Compiler( parser, fSys, config, srcMapGen, cli );
 
     cli.srcPath = fSys.resolveFilename( cli.srcPath );
 
-		if ( cli.options[ "source-map" ] ) {
-			cli.options[ "source-map" ] = cli.options[ "source-map" ].replace( /\*/, npath.basename( cli.destPath ) );
-			fSys.setSourceMapRoot( cli.options[ "source-map-root" ] || "", cli.options[ "source-map" ] );
-		}
-		compiler.start( cli.srcPath, function( map, output ){
+    if ( cli.options[ "source-map" ] ) {
+      cli.options[ "source-map" ] = cli.options[ "source-map" ].replace( /\*/, npath.basename( cli.destPath ) );
+      fSys.setSourceMapRoot( cli.options[ "source-map-root" ] || "", cli.options[ "source-map" ] );
+    }
+    compiler.start( cli.srcPath, function( map, output ){
 
       if ( !map ) {
         return;
@@ -104,8 +105,8 @@ module.exports = function( argv, config ) {
       cli.options[ "source-map" ] && fSys.writeJs( cli.options[ "source-map" ], srcMapGen.get() );
 
       map[ cli.srcPath ].length && cli.printBody( Object.keys( map ).length );
-
+      done && done( cli.options.banner + output );
     });
 
-	}());
+  }());
 };

@@ -12,4 +12,6 @@ var cjsc = require( ".././cjsc-module" ),
        }
     };
 
-cjsc( args, config );
+cjsc( args, config, function( code ){
+  console.log( "All done. Generated code:", code );
+});

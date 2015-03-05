@@ -37,6 +37,8 @@ While every AMD-module results in a separate HTTP request and therefore [badly a
 * [How to make modules of 3rd party libraries](#a-vendors)
 * [How to use Mustache templates](#a-mustache)
 * [How to use Handlebars templates](#a-handlebars)
+* [API](#a-api)
+* [Plugin example](#a-pluginexample)
 
 
 ## <a name="a-install"></a>How to install
@@ -470,6 +472,60 @@ node cjsc.js -o /tmp/build.js demo/use-browserify-replace.js -t [ browserify-rep
                   --replace '{ "from": "\\$foo", "to": 42 }' \
                   --replace '{ "from": "\\$bar", "to": "quux" }' ]
 ```
+
+
+## <a name="a-api"></a>API
+```
+var cjsc = require( ".././cjsc-module" ),
+    args = {
+      targets: [ "./demo/use-main-flow.js", "/tmp/build.js" ],
+      options: {
+        debug: true
+      },
+      plugins: []
+    },
+    config = {
+      "foo": {
+         "globalProperty": "foo"
+       }
+    };
+
+cjsc( args, config, function( code ){
+  console.log( "All done. Generated code:", code );
+});
+```
+## <a name="a-pluginexample"></a>Plugin example
+
+Plugin example
+```
+var through = require( "through2" );
+
+/*  export a Browserify plugin  */
+module.exports = function ( file, opts ) {
+    /*  provide stream  */
+    var code = "";
+    return through.obj(function (buf, enc, next) {
+        //  accumulate the code
+        code += buf.toString("utf8");
+        next();
+    }, function ( next ) {
+        //  transform the code
+        code = code.replace( opts.replace[ 0 ].from, opts.replace[ 0 ].to );
+        this.push( new Buffer( code ) );
+        next();
+    });
+};
+```
+
+Usage:
+```
+node cjsc.js -o /tmp/build.js app.js -t [ plugin \
+                  --replace '{ "from": "\\$foo", "to": 42 }' ]
+```
+
+## The `module` object
+Every module has exposed `module` variable that references to an object representing the module.
+Like in [NodeJS](http://
 
 ## Alternatives
 * Browserify - http://browserify.org/

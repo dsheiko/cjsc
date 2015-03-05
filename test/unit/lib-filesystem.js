@@ -27,10 +27,10 @@ describe( "lib/FileSystem", function(){
         {
           plugin: npath.resolve( __dirname + "/fixtures/test-plugin.js" ),
           targets: {
-            replace: {
+            replace: [{
               from: "0.0.1",
               to: "*.*.*"
-            }
+            }]
           }
         }
       ];
