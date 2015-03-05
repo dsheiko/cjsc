@@ -50,7 +50,8 @@ var _require = (function(){
 					throw new Error( "The factory of " + filename + " module not found" );
 				}
 				// Called first time, so let's run code constructing (exporting) the module
-				imports[ filename ] = factories[ filename ]( _require, module.exports, module, window );
+				imports[ filename ] = factories[ filename ]( _require, module.exports, module,
+          typeof window !== "undefined" ? window : global );
 				imports[ filename ].loaded = true;
 				if ( imports[ filename ].parent.children ) {
 					imports[ filename ].parent.children.push( imports[ filename ] );
@@ -83,7 +84,14 @@ var mustache = _require( "test/integration/fixtures/mustache/mustache.js" ),
 		};
 
 window.log.push( mustache.render( tpl, view ).replace( /[\n\r]/gm, ";" ) );
-	return module;
+
+  return module;
+});
+
+_require.def( "test/integration/fixtures/mustache/example.tpl", function( _require, exports, module, global ){
+	module.exports = "{{title}}\r\n spends {{calc}}";
+
+  return module;
 });
 
 _require.def( "test/integration/fixtures/mustache/mustache.js", function( _require, exports, module, global ){
@@ -658,12 +666,9 @@ _require.def( "test/integration/fixtures/mustache/mustache.js", function( _requi
 
 }));
 
-	return module;
-});
 
-_require.def( "test/integration/fixtures/mustache/example.tpl", function( _require, exports, module, global ){
-	module.exports = "{{title}}\r\n spends {{calc}}"
-	return module;
+
+  return module;
 });
 
 (function(){

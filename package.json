@@ -20,7 +20,7 @@
     "argv": "0.0.2",
     "async": "^0.9.0",
     "cli-color": "^0.3.2",
-    "esprima": "~1.0.4",
+    "esprima": "^1.2.5",
     "source-map": "*",
     "uglify-js": ">=2.0.0",
     "xtend": "^4.0.0"

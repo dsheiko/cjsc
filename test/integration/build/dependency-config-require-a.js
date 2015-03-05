@@ -50,7 +50,8 @@ var _require = (function(){
 					throw new Error( "The factory of " + filename + " module not found" );
 				}
 				// Called first time, so let's run code constructing (exporting) the module
-				imports[ filename ] = factories[ filename ]( _require, module.exports, module, window );
+				imports[ filename ] = factories[ filename ]( _require, module.exports, module,
+          typeof window !== "undefined" ? window : global );
 				imports[ filename ].loaded = true;
 				if ( imports[ filename ].parent.children ) {
 					imports[ filename ].parent.children.push( imports[ filename ] );
@@ -77,26 +78,30 @@ _require( "test/integration/fixtures/dependency-config/require-a/jquery-plugin-s
 window.log.push( $.name );
 window.log.push( $.fn );
 
-	return module;
+
+  return module;
 });
 
 _require.def( "test/integration/fixtures/dependency-config/require-a/jquery-stub.js", function( _require, exports, module, global ){
 module.exports = { 
  name: "jQuery"
 };
-	return module;
+
+
+  return module;
 });
 
 _require.def( "test/integration/fixtures/dependency-config/require-a/jquery-plugin-stub.js", function( _require, exports, module, global ){
 
  var 
-	/** @type {module:jQuery} */
-	jQuery = _require( "test/integration/fixtures/dependency-config/require-a/jquery-stub.js" );
+  /** @type {module:jQuery} */
+  jQuery = _require( "test/integration/fixtures/dependency-config/require-a/jquery-stub.js" );
 (function( $ ){
 $.fn = "plugin";
 }( jQuery ));
-	module.exports = jQuery;
-	return module;
+
+  module.exports.jQuery = jQuery;
+  return module;
 });
 
 (function(){

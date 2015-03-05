@@ -8,7 +8,7 @@ module.exports = function ( file, opts ) {
         //  accumulate the code
         code += buf.toString("utf8");
         next();
-    }, function (next) {
+    }, function ( next ) {
         //  transform the code
         code = code.replace( opts.replace.from, opts.replace.to );
         this.push( new Buffer( code ) );
