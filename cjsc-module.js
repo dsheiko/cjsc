@@ -92,10 +92,6 @@ module.exports = function( argv, config ) {
       if ( !map ) {
         return;
       }
-      if ( !map[ cli.srcPath ].length ) {
-        output = fSys.readJs( cli.srcPath );
-        console.log( " No dependencies found. Source is copied to the destination" );
-      }
 
       if ( cli.options[ "minify" ] ) {
         output = require( "uglify-js" ).minify( output, { fromString: true }).code;

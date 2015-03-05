@@ -16,7 +16,8 @@ While every AMD-module results in a separate HTTP request and therefore [badly a
 * Supports source maps http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
 * Supports JavaScript templates ( Mustache, Handlebars, Underscore and others )
 * Produces a string out of (multiline) non-JS external text file
-* Provides Browserify-compatible plugin API
+* Provides plugin API
+* Supports [Browserify plugins](https://www.npmjs.com/browse/keyword/browserify-plugin)
 
 ## CommonJS Features
 * Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
@@ -175,9 +176,6 @@ Caching goes the same as in nodejs. Modules are cached after the first time they
 So every call to `require('foo')` returns exactly the same object, if it refers to the same file.
 
 Multiple calls to `require('foo')` don't execute the module code multiple times.
-
-
-
 
 
 ## <a name="a-grunt"></a>Setting up [Grunt](http://gruntjs.com/) task
@@ -393,19 +391,40 @@ console.log( handlebars.compile( tpl )( view ) );
 ## Supplied demos
 
 ```
+# Generic flow
 node cjsc.js -o /tmp/build.js demo/use-main-flow.js
+
+# Access 3rd-party non-module in a module
 node cjsc.js -o /tmp/build.js demo/use-3rd-party.js
+
+# Non-module to compiled CommonJS
 node cjsc.js -o /tmp/build.js demo/use-nonmodule.js
+
+# UMD to compiled CommonJS
 node cjsc.js -o /tmp/build.js demo/use-umd.js
+
+# Backbone as a module
 node cjsc.js -o /tmp/build.js demo/use-backbone.js
+
+# Templating with Mustache
 node cjsc.js -o /tmp/build.js demo/use-mustache.js
 node /tmp/build.js
 
+# Templating with Handlebars.js
 node cjsc.js -o /tmp/build.js  demo/use-handlebars.js
 node /tmp/build.js
 
+# Source map usage demo
 node cjsc.js -o demo/source-map/build.js demo/source-map/src/use-main-flow.js --source-map=demo/source-map/*.map --source-map-root=./src
+
+# Config usage demo
 node cjsc.js -o /tmp/build.js demo/use-config.js --config=./demo/config/config.json
+
+# Browserify-plugin usage demo
+npm install -g browserify-replace
+node cjsc.js -o /tmp/build.js demo/use-browserify-replace.js -t [ browserify-replace \
+                  --replace '{ "from": "\\$foo", "to": 42 }' \
+                  --replace '{ "from": "\\$bar", "to": "quux" }' ]
 ```
 
 ## Alternatives

@@ -12,7 +12,7 @@ describe( "lib/Cli", function(){
           line = "demo/use-main-flow.js /tmp/out.js -t [ plugin --replace { \"from\": \"\\\\$foo\", \"to\": 42 } ] -t [ foo --nope ]";
       cli.parseTransformOptions( line.split( " " ));
       cli.plugins[ 0 ].plugin.should.eql( "plugin" );
-      cli.plugins[ 0 ].targets.replace.to.should.eql( 42 );
+      cli.plugins[ 0 ].targets.replace[ 0 ].to.should.eql( 42 );
       cli.plugins[ 1 ].plugin.should.eql( "foo" );
     });
   });
