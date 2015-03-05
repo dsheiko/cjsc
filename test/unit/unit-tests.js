@@ -5,3 +5,4 @@ require( "./lib-cli" );
 require( "./lib-filesystem" );
 require( "./lib-renderer-script" );
 require( "./wrapper" );
+require( "./async" );

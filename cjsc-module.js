@@ -76,7 +76,7 @@ module.exports = function( argv, config ) {
 
 		parser = new Parser( DependencyEntity );
 
-    srcMapGen = new SrcMapGenerator( cli.destPath, fSys );
+    srcMapGen = new SrcMapGenerator( cli, fSys );
 
 
 		compiler = new Compiler( parser, fSys, config, srcMapGen, cli );
@@ -106,7 +106,7 @@ module.exports = function( argv, config ) {
       }
 
       fSys.writeJs( cli.destPath, cli.options.banner + output );
-      cli.options[ "source-map" ] && cli.writeJs( cli.options[ "source-map" ], srcMapGen.get() );
+      cli.options[ "source-map" ] && fSys.writeJs( cli.options[ "source-map" ], srcMapGen.get() );
 
       map[ cli.srcPath ].length && cli.printBody( Object.keys( map ).length );
 
