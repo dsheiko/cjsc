@@ -375,6 +375,23 @@ To enable the configuration use <var>--config</var> option:
     </code></pre>
 
 
+<h3>
+<a  class="anchor" href="#a-bplugin"><span class="octicon octicon-link"></span></a>Using Browserify-plugin</h3>
+
+<pre><code>
+$npm install -g browserify-replace
+$node cjsc.js -o /tmp/build.js demo/use-browserify-replace.js -t [ browserify-replace \
+                  --replace '{ "from": "\\$foo", "to": 42 }' \
+                  --replace '{ "from": "\\$bar", "to": "quux" }' ]
+$node /tmp/build.js
+</code></pre>
+
+<p>Output:</p>
+<pre><code>
+42
+quux
+</code></pre>
+
 
 
         </section>
