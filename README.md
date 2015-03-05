@@ -58,7 +58,6 @@ sudo npm i cjsc -g
 ```
 Note: in this case npm creates a symlink `/usr/bin/cjsc`
 
-
 ## <a name="a-work"></a>Getting Started
 
 Let's define a few CommonJS modules (http://wiki.commonjs.org/wiki/Modules/1.1.1):
@@ -111,6 +110,40 @@ Getting imported object from the cache:
 
 
 ## <a name="a-use"></a>Using CommonJS Compiler in the command line
+
+```
+Usage: cjsc <src-path> <dest-path>
+    <src-path> - source filename (e.g. main.js)
+    --help, -h
+            displays this help screen
+    --output, -o
+            destination filename for compiled code
+            <dest-path>, -o=<dest-path>
+    --minify, -M
+            minify the output file
+    --config, -C
+            specify a configuration JSON file
+            --config=<file>
+    --transform, -t
+            use a transform module on top-level files.
+            --transform=[MODULE --opt]
+    --plugin, -p
+            register MODULE as a plugin
+            --plugin=MODULE
+    --source-map
+            specify an output file where to generate source map. Use "*" automatic naming
+            --source-map=<file/pattern>
+    --source-map-url
+            the path to the source map to be added in.
+            --source-map-url=<url>
+    --source-map-root
+            the path to the original source to be included in the source map.
+            --source-map-root=<path>
+    --banner
+            preserve copyright comments in the output.
+    --debug
+            debug mode.
+```
 
 Compile `main-module.js` into `build.js`:
 ```bash

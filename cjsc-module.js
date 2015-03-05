@@ -55,7 +55,6 @@ var fs = require( "fs" ),
 module.exports = function( argv, config ) {
 	(function(){
 
-
 		var
 				/** @type {Compiler} */
 				compiler,
@@ -72,7 +71,7 @@ module.exports = function( argv, config ) {
     cli.parseCliOptions( argv );
     fSys = new require( "./lib/FileSystem" )( cli );
 
-    config = new Config( cli.options[ "config" ], fSys );
+    config = new Config( config || cli.options[ "config" ], fSys );
 
 		parser = new Parser( DependencyEntity );
 
@@ -87,8 +86,8 @@ module.exports = function( argv, config ) {
 			cli.options[ "source-map" ] = cli.options[ "source-map" ].replace( /\*/, npath.basename( cli.destPath ) );
 			fSys.setSourceMapRoot( cli.options[ "source-map-root" ] || "", cli.options[ "source-map" ] );
 		}
-
 		compiler.start( cli.srcPath, function( map, output ){
+
       if ( !map ) {
         return;
       }
