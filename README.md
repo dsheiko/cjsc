@@ -17,7 +17,7 @@ While every AMD-module results in a separate HTTP request and therefore [badly a
 * Supports JavaScript templates ( Mustache, Handlebars, Underscore and others )
 * Produces a string out of (multiline) non-JS external text file
 * Provides plugin API
-* Supports [Browserify plugins](https://www.npmjs.com/browse/keyword/browserify-plugin)
+* Supports [Browserify plugins](https://www.npmjs.com/browse/keyword/browserify-plugin) (transformers)
 
 ## CommonJS Features
 * Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
@@ -143,6 +143,17 @@ Usage: cjsc <src-path> <dest-path>
             preserve copyright comments in the output.
     --debug
             debug mode.
+
+Passing arguments to transforms:
+
+  For -t you may use subarg syntax to pass options to the
+  transforms or plugin function as the second parameter. For example:
+
+    -t [ foo --x 3 --beep { a: 1 } ]
+
+  will call the `foo` transform for each applicable file by calling:
+
+    foo( file, { x: 3, beep: { a: 1 } } )
 ```
 
 Compile `main-module.js` into `build.js`:
