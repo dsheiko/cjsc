@@ -283,7 +283,27 @@ To enable the configuration use `--config` option:
 node cjsc main.js build.js --config=config.json
 ```
 
+ Passing plugin configurations:
 
+```javascript
+{
+  "ver": 1,
+  "modules": {
+    "<dependency-name>": {},
+    "<dependency-name>": {}
+  },
+  "plugins": [
+    {
+      "plugin": "<pkg-name>",
+      "targets":  {
+        "<target>": [{
+          /* options object */
+        }]
+      }
+    }
+  ]
+}
+```
 
 ## <a name="a-config-a"></a>How to make module of a globally exposed variable
 `config.json`:
