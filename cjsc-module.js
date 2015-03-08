@@ -49,11 +49,11 @@ var fs = require( "fs" ),
 
 /**
  * Runner
- * @param {Array || Object} argv - CLI arguments
+ * @param {Array || Object} rawArgv - CLI arguments
  * @param {requireConfig} config - Depnedency configuration
  * @param {Function} [done]
  */
-module.exports = function( argv, config, done ) {
+module.exports = function( rawArgv, config, done ) {
   (function(){
 
     var
@@ -68,9 +68,12 @@ module.exports = function( argv, config, done ) {
         /** @type {SourceMapGenerator} */
         srcMapGen;
 
-    cli.printHeader();
-    cli.parseCliOptions( argv );
+
     fSys = new require( "./lib/FileSystem" )( cli );
+
+    cli.printHeader( fSys.getProjectInfo().version );
+
+    cli.run( rawArgv );
 
     config = new Config( config || cli.options[ "config" ], fSys, cli );
 

@@ -17,19 +17,19 @@
     "javascript"
   ],
   "dependencies": {
-    "argv": "0.0.2",
     "async": "^0.9.0",
     "cli-color": "^0.3.2",
     "esprima": "^1.2.5",
     "source-map": "*",
+    "subarg": "^1.0.0",
     "uglify-js": ">=2.0.0",
     "xtend": "^4.0.0"
   },
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-jscs": "^0.1.8",
+    "grunt": "^0.4.5",
     "grunt-contrib-jshint": "~0.4.3",
     "grunt-contrib-qunit": "*",
+    "grunt-jscodesniffer": "^0.1.10",
     "grunt-mocha-cli": "~1.2.1",
     "mocha": ">=1.7.4",
     "qunitjs": "*",

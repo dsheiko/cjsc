@@ -459,18 +459,23 @@ console.log( handlebars.compile( tpl )( view ) );
 ```
 # Generic flow
 node cjsc.js -o /tmp/build.js demo/use-main-flow.js
+node /tmp/build.js
 
 # Access 3rd-party non-module in a module
 node cjsc.js -o /tmp/build.js demo/use-3rd-party.js
+node /tmp/build.js
 
 # Non-module to compiled CommonJS
 node cjsc.js -o /tmp/build.js demo/use-nonmodule.js
+node /tmp/build.js
 
 # UMD to compiled CommonJS
 node cjsc.js -o /tmp/build.js demo/use-umd.js
+node /tmp/build.js
 
 # Backbone as a module
 node cjsc.js -o /tmp/build.js demo/use-backbone.js
+node /tmp/build.js
 
 # Templating with Mustache
 node cjsc.js -o /tmp/build.js demo/use-mustache.js
@@ -500,9 +505,14 @@ var cjsc = require( ".././cjsc-module" ),
     args = {
       targets: [ "./demo/use-main-flow.js", "/tmp/build.js" ],
       options: {
-        debug: true
-      },
-      plugins: []
+        debug: true,
+        transform: [{
+          target: pkgName,
+          options: {
+            foo: true
+          }
+        }]
+      }
     },
     config = {
       "foo": {
@@ -529,8 +539,11 @@ module.exports = function ( file, opts ) {
         code += buf.toString("utf8");
         next();
     }, function ( next ) {
+        // Get parameters for `replace` target
+        // if command line has multiple `replace` targets, opts.replace is an array
+        var params = global.JSON.parse( opts.replace );
         //  transform the code
-        code = code.replace( opts.replace[ 0 ].from, opts.replace[ 0 ].to );
+        code = code.replace( cfg.from, cfg.to );
         this.push( new Buffer( code ) );
         next();
     });
@@ -542,10 +555,6 @@ Usage:
 node cjsc.js -o /tmp/build.js app.js -t [ plugin \
                   --replace '{ "from": "\\$foo", "to": 42 }' ]
 ```
-
-## The `module` object
-Every module has exposed `module` variable that references to an object representing the module.
-Like in [NodeJS](http://
 
 ## Alternatives
 * Browserify - http://browserify.org/

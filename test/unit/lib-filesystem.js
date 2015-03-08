@@ -21,16 +21,12 @@ describe( "lib/FileSystem", function(){
     });
 
     it( "pipe in read file / perform plugin", function( done ){
-      var cli = new Cli(),
-          fSys;
-      cli.plugins = [
+      var cli = new Cli();
+        cli.options.transform = [
         {
-          plugin: npath.resolve( __dirname + "/fixtures/test-plugin.js" ),
-          targets: {
-            replace: [{
-              from: "0.0.1",
-              to: "*.*.*"
-            }]
+          target: npath.resolve( __dirname + "/fixtures/test-plugin.js" ),
+          options: {
+            replace: [ "{ \"from\": \"0.0.1\", \"to\": \"*.*.*\" }" ]
           }
         }
       ];

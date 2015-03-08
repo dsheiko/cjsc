@@ -4,25 +4,64 @@
 var Cli = require( "../../lib/Cli" );
 
 require( "should" );
-
 describe( "lib/Cli", function(){
-  describe( "parseTransformOptions", function(){
+  describe( "run", function(){
     it( "parses command line correctly", function(){
       var cli = new Cli(),
-          line = "demo/use-main-flow.js /tmp/out.js -t [ plugin --replace { \"from\": \"\\\\$foo\", \"to\": 42 } ] -t [ foo --nope ]";
-      cli.parseTransformOptions( line.split( " " ));
-      cli.plugins[ 0 ].plugin.should.eql( "plugin" );
-      cli.plugins[ 0 ].targets.replace[ 0 ].to.should.eql( 42 );
-      cli.plugins[ 1 ].plugin.should.eql( "foo" );
+          args = [
+      "node",
+      "cjsc.js",
+      "-C",
+      "config.json",
+      "--minify",
+      "--debug",
+      "-o",
+      "build.js",
+      "source.js"
+          ];
+
+
+      cli.run( args );
+      cli.options.minify.should.be.ok;
+      cli.options.debug.should.be.ok;
+      cli.options.output.should.equal( "build.js" );
+      cli.srcPath.should.equal( "source.js" );
+      cli.destPath.should.equal( "build.js" );
+      cli.options.config.should.equal( "config.json" );
+
     });
-  });
-  describe( "parsePluginOptions", function(){
-    it( "parses command line correctly", function(){
+
+    it( "parses sub args (transforms) correctly", function(){
       var cli = new Cli(),
-          line = "demo/use-main-flow.js /tmp/out.js -p plugin --plugin=foo";
-      cli.parsePluginOptions( line.split( " " ));
-      cli.plugins[ 0 ].plugin.should.eql( "plugin" );
-      cli.plugins[ 1 ].plugin.should.eql( "foo" );
+          foo,
+          bar,
+          cfg,
+          args = [
+      "node",
+      "cjsc.js",
+      "-t",
+      "[",
+      "browserify-replace",
+      "--replace",
+      "{ \"from\": \"\\\\$foo\", \"to\": 42 }",
+      "--replace",
+      "{ \"from\": \"\\\\$bar\", \"to\": \"quux\" }",
+      "]",
+      "-o",
+      "build.js",
+      "source.js"
+          ];
+
+
+      cli.run( args );
+      cfg = cli.options.transform[ 0 ];
+      cfg.should.have.property( "target" );
+      cfg.target.should.equal( "browserify-replace" );
+      cfg.options.should.have.property( "replace" );
+      foo = global.JSON.parse( cfg.options.replace[ 0 ] );
+      bar = global.JSON.parse( cfg.options.replace[ 1 ] );
+      foo.to.should.equal( 42 );
+      bar.to.should.equal( "quux" );
     });
   });
 

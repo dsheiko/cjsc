@@ -9,8 +9,9 @@ module.exports = function ( file, opts ) {
         code += buf.toString("utf8");
         next();
     }, function ( next ) {
+        var cfg = global.JSON.parse( opts.replace[ 0 ] );
         //  transform the code
-        code = code.replace( opts.replace[ 0 ].from, opts.replace[ 0 ].to );
+        code = code.replace( cfg.from, cfg.to );
         this.push( new Buffer( code ) );
         next();
     });

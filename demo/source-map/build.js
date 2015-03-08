@@ -77,6 +77,7 @@ console.log( "main.js running..." );
 console.log( "Imported name in main.js is `%s`", _require( "demo/source-map/src/main-flow/dep1.js" ).name );
 console.log( "Getting imported object from the cache:" );
 console.log( " imported name in main.js is still `%s`", _require( "demo/source-map/src/main-flow/dep1.js" ).name );
+
   return module;
 });
 
@@ -89,12 +90,14 @@ console.log( "Imported name in dep1.js is `%s`", _require( "demo/source-map/src/
 exports.name = "dep1";
   module.exports = exports;
 
+
   return module;
 });
 
 _require.def( "demo/source-map/src/main-flow/dep2.js", function( _require, exports, module, global ){
 console.log( "dep2.js running..." );
 module.exports.name = "dep2";
+
 
   return module;
 });
