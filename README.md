@@ -576,6 +576,4 @@ node cjsc.js -o /tmp/build.js app.js -t [ plugin \
 * Modules-webmake - https://github.com/medikoo/modules-webmake
 * Frictionless browser package management - http://jspm.io/ (bundles ES6/AMD/CommonJs modules into a single file for production)
 
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/fb790e90a5c2e6afb69ba979b6ac34b1 "githalytics.com")](http://githalytics.com/dsheiko/cjsc)
-
 [![Analytics](https://ga-beacon.appspot.com/UA-1150677-13/dsheiko/cjsc)](http://githalytics.com/dsheiko/cjsc)
