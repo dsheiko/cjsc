@@ -8,6 +8,9 @@ While every AMD-module results in a separate HTTP request and therefore [badly a
 response time](https://developer.yahoo.com/performance/rules.html),
 `cjsc`, instead, combines all the acting modules in a single file (optionally compressed).
 
+Now twice as fast!
+![Now twice faster](https://github.com/dsheiko/cjsc/raw/master/doc/cjsc-compare.jpg)
+
 
 ## Features
 
@@ -24,7 +27,7 @@ response time](https://developer.yahoo.com/performance/rules.html),
 * Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
 * Enclosures every file in its own unique module context
 
-![How cjsc works](https://github.com/dsheiko/cjsc/raw/master/doc/cjsc1.png)
+![How cjsc works](https://github.com/dsheiko/cjsc/raw/master/doc/cjsc-process.jpg)
 
 # Contents
 * [How to install](#a-install)
@@ -229,8 +232,6 @@ Like in [NodeJS](http://nodejs.org/api/modules.html) the object has following st
 * module.children {Object[]} - The module objects required by this one
 
 ## <a name="a-caching"></a>Caching
-
-![Caching](https://github.com/dsheiko/cjsc/raw/master/doc/cjsc2.png)
 
 Caching goes the same as in nodejs. Modules are cached after the first time they are loaded.
 So every call to `require('foo')` returns exactly the same object, if it refers to the same file.
