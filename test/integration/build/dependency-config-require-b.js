@@ -80,34 +80,38 @@ var globalA = _require( "globalA" ),
 window.log.push( JSON.stringify( mod ) );
 
 
-	return module;
+
+  return module;
 });
 
 _require.def( "globalA", function( _require, exports, module, global ){
-	module.exports = window.globalA;
+ module.exports = window.globalA;
 
-	return module;
+
+  return module;
 });
 
 _require.def( "globalB", function( _require, exports, module, global ){
-	module.exports = window.globalB;
+ module.exports = window.globalB;
 
-	return module;
+
+  return module;
 });
 
 _require.def( "test/integration/fixtures/dependency-config/require-b/3rd-party-code.js", function( _require, exports, module, global ){
 
  var 
-	/** @type {module:globalA} */
-	globalA = _require( "globalA" ),
+  /** @type {module:globalA} */
+  globalA = _require( "globalA" ),
 
-	/** @type {module:globalB} */
-	globalB = _require( "globalB" );
+  /** @type {module:globalB} */
+  globalB = _require( "globalB" );
 window.globalC =  "globalC + " + globalA;
 window.globalD =  "globalD + " + globalB;
-	module.exports.globalC = globalC;
-	module.exports.globalD = globalD;
-	return module;
+
+  module.exports.globalC = globalC;
+  module.exports.globalD = globalD;
+  return module;
 });
 
 (function(){

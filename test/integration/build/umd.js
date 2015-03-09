@@ -76,7 +76,8 @@ _require.def( "test/integration/fixtures/umd/main.js", function( _require, expor
 window.log.push( module.id + ":runs" );
 window.log.push( module.id + ":exports:" + _require( "test/integration/fixtures/umd/module/module1.js" ).id );
 
-	return module;
+
+  return module;
 });
 
 _require.def( "test/integration/fixtures/umd/module/module1.js", function( _require, exports, module, global ){
@@ -96,14 +97,18 @@ define(function( require, exports, module ) {
 	window.log.push( module.id + ":exports:" + _require( "test/integration/fixtures/umd/module/module2.js" ).id );
 	return { id: module.id };
 });
-	return module;
+
+
+  return module;
 });
 
 _require.def( "test/integration/fixtures/umd/module/module2.js", function( _require, exports, module, global ){
 window.log.push( module.id + ":runs" );
 exports = { id: module.id };
-	module.exports = exports;
-	return module;
+  module.exports = exports;
+
+
+  return module;
 });
 
 (function(){

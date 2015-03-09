@@ -4,24 +4,30 @@ CommonJS Compiler
 [![NPM version](https://badge.fury.io/js/cjsc.png)](http://badge.fury.io/js/cjsc)
 
 `cjsc` is a command-line tool that makes your Common JS modules suitable for in-browser use.
-While every AMD-module results in a separate HTTP request and therefore [badly affects page response time](https://developer.yahoo.com/performance/rules.html),
+While every AMD-module results in a separate HTTP request and therefore [badly affects page
+response time](https://developer.yahoo.com/performance/rules.html),
 `cjsc`, instead, combines all the acting modules in a single file (optionally compressed).
+
+Now twice as fast!
+![Now twice faster](https://github.com/dsheiko/cjsc/raw/master/doc/cjsc-compare.jpg)
 
 
 ## Features
 
-* Does not bring into you production code any additional library
+* Does not bring into your production code any additional library
 * Works fine with UMD modules (including jQuery, Backbone, Underscore and others)
 * Allows exporting globals of 3rd party libraries without intervention in their code
 * Supports source maps http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
 * Supports JavaScript templates ( Mustache, Handlebars, Underscore and others )
 * Produces a string out of (multiline) non-JS external text file
+* Provides transformation plugin API
+* Supports [Browserify transformers](https://www.npmjs.com/browse/keyword/browserify-plugin)
 
 ## CommonJS Features
 * Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
 * Enclosures every file in its own unique module context
 
-![How cjsc works](https://github.com/dsheiko/cjsc/raw/master/doc/cjsc1.png)
+![How cjsc works](https://github.com/dsheiko/cjsc/raw/master/doc/cjsc-process.jpg)
 
 # Contents
 * [How to install](#a-install)
@@ -35,6 +41,8 @@ While every AMD-module results in a separate HTTP request and therefore [badly a
 * [How to make modules of 3rd party libraries](#a-vendors)
 * [How to use Mustache templates](#a-mustache)
 * [How to use Handlebars templates](#a-handlebars)
+* [API](#a-api)
+* [Plugin example](#a-pluginexample)
 
 
 ## <a name="a-install"></a>How to install
@@ -55,7 +63,6 @@ or globally:
 sudo npm i cjsc -g
 ```
 Note: in this case npm creates a symlink `/usr/bin/cjsc`
-
 
 ## <a name="a-work"></a>Getting Started
 
@@ -86,10 +93,10 @@ module.exports.name = "dep2";
 
 Now we can compile the modules:
 ```bash
-cjsc main.js script.js
+cjsc main.js -o script.js
 ```
 
-As we fire up script.js we get the following output:
+As we execute script.js we get the following output:
 ```
 main.js running...
 dep1.js running...
@@ -110,26 +117,84 @@ Getting imported object from the cache:
 
 ## <a name="a-use"></a>Using CommonJS Compiler in the command line
 
+```
+ Usage: cjsc <src-path> <dest-path>
+
+    <src-path> - source filename (e.g. main.js)
+
+    --output, -o
+        destination filename for compiled code
+        example: <dest-path>, -o=<dest-path>
+
+    --minify, -M
+        minify the output file
+
+    --config, -C
+        specify a configuration JSON file
+        example: --config=<file>
+
+    --transform, -t
+        use a transform module on top-level files.
+        example: --transform=[MODULE --opt]
+
+    --plugin, -p
+        register MODULE as a plugin
+        example: --plugin=MODULE
+
+    --source-map
+        specify an output file where to generate source map. Use "*" automatic naming
+        example: --source-map=<file/pattern>
+
+    --source-map-url
+        the path to the source map to be added in.
+        example: --source-map-url=<url>
+
+    --source-map-root
+        the path to the original source to be included in the source map.
+        example: --source-map-root=<path>
+
+    --banner
+        preserve copyright comments in the output.
+
+    --debug
+        debug mode.
+
+    --help, -h
+        displays this help screen
+
+
+Passing arguments to transforms:
+
+  For -t you may use subarg syntax to pass options to the
+  transforms or plugin function as the second parameter. For example:
+
+    -t [ foo --x 3 --beep '{ a: 1 }' ]
+
+  will call the `foo` transform for each applicable file by calling:
+
+    foo( file, { x: 3, beep: '{ a: 1 }' } )
+```
+
 Compile `main-module.js` into `build.js`:
 ```bash
-./cjsc main-module.js build.js
+./cjsc main-module.js -o build.js
 ```
 or
 ```bash
-node cjsc.js main-module.js build.js
+node cjsc.js main-module.js -o build.js
 ```
 
 Compile `main-module.js` into `build.js` and generate source map
 ```bash
-./cjsc main-module.js build.js  --source-map=build/build.js.map --source-map-url=http://localhost/
+./cjsc main-module.js -o build.js  --source-map=build/build.js.map --source-map-url=http://localhost/
 ```
 or the following options for automatic naming
 ```bash
-./cjsc main-module.js build.js  --source-map=*.map
+./cjsc main-module.js -o build.js  --source-map=*.map
 ```
 or this way to explicitly specify the path to sources relative to the source map
 ```bash
-./cjsc main-module.js build.js  --source-map=build/*.map --source-map-root=../src
+./cjsc main-module.js -o build.js  --source-map=build/*.map --source-map-root=../src
 ```
 
 Whereas:
@@ -143,12 +208,12 @@ Now breakpoints and console messages mapped to the original sources
 
 Compile `main-module.js` into `build.js` and minify `build.js`
 ```bash
-./cjsc main-module.js build.js -M
+./cjsc main-module.js -o build.js -M
 ```
 
 With a banner
 ```bash
-./cjsc main-module.js build.js -M --banner="/*! pkg v.0.0.1 */"
+./cjsc main-module.js -o build.js -M --banner="/*! pkg v.0.0.1 */"
 ```
 
 
@@ -168,15 +233,10 @@ Like in [NodeJS](http://nodejs.org/api/modules.html) the object has following st
 
 ## <a name="a-caching"></a>Caching
 
-![Caching](https://github.com/dsheiko/cjsc/raw/master/doc/cjsc2.png)
-
 Caching goes the same as in nodejs. Modules are cached after the first time they are loaded.
 So every call to `require('foo')` returns exactly the same object, if it refers to the same file.
 
 Multiple calls to `require('foo')` don't execute the module code multiple times.
-
-
-
 
 
 ## <a name="a-grunt"></a>Setting up [Grunt](http://gruntjs.com/) task
@@ -238,7 +298,27 @@ To enable the configuration use `--config` option:
 node cjsc main.js build.js --config=config.json
 ```
 
+ Passing plugin configurations:
 
+```javascript
+{
+  "ver": 1,
+  "modules": {
+    "<dependency-name>": {},
+    "<dependency-name>": {}
+  },
+  "plugins": [
+    {
+      "plugin": "<pkg-name>",
+      "targets":  {
+        "<target>": [{
+          /* options object */
+        }]
+      }
+    }
+  ]
+}
+```
 
 ## <a name="a-config-a"></a>How to make module of a globally exposed variable
 `config.json`:
@@ -321,7 +401,7 @@ console.log( lib.exp1, lib.exp2 );
 ```
 Compilation:
 ```
-node cjsc main.js build.js --config=config.json
+node cjsc main.js -o build.js --config=config.json
 ```
 
 If 3rd party code exposes the only object, it can be done like that:
@@ -387,6 +467,108 @@ var handlebars = require( "./handlebarsjs/handlebars", "Handlebars" ).Handlebars
 		};
 
 console.log( handlebars.compile( tpl )( view ) );
+```
+
+## Supplied demos
+
+```
+# Generic flow
+node cjsc.js -o /tmp/build.js demo/use-main-flow.js
+node /tmp/build.js
+
+# Access 3rd-party non-module in a module
+node cjsc.js -o /tmp/build.js demo/use-3rd-party.js
+node /tmp/build.js
+
+# Non-module to compiled CommonJS
+node cjsc.js -o /tmp/build.js demo/use-nonmodule.js
+node /tmp/build.js
+
+# UMD to compiled CommonJS
+node cjsc.js -o /tmp/build.js demo/use-umd.js
+node /tmp/build.js
+
+# Backbone as a module
+node cjsc.js -o /tmp/build.js demo/use-backbone.js
+node /tmp/build.js
+
+# Templating with Mustache
+node cjsc.js -o /tmp/build.js demo/use-mustache.js
+node /tmp/build.js
+
+# Templating with Handlebars.js
+node cjsc.js -o /tmp/build.js  demo/use-handlebars.js
+node /tmp/build.js
+
+# Source map usage demo
+node cjsc.js -o demo/source-map/build.js demo/source-map/src/use-main-flow.js --source-map=demo/source-map/*.map --source-map-root=./src
+
+# Config usage demo
+node cjsc.js -o /tmp/build.js demo/use-config.js --config=./demo/config/config.json
+
+# Browserify-plugin usage demo
+npm install -g browserify-replace
+node cjsc.js -o /tmp/build.js demo/use-browserify-replace.js -t [ browserify-replace \
+                  --replace '{ "from": "\\$foo", "to": 42 }' \
+                  --replace '{ "from": "\\$bar", "to": "quux" }' ]
+```
+
+
+## <a name="a-api"></a>API
+```
+var cjsc = require( ".././cjsc-module" ),
+    args = {
+      targets: [ "./demo/use-main-flow.js", "/tmp/build.js" ],
+      options: {
+        debug: true,
+        transform: [{
+          target: pkgName,
+          options: {
+            foo: true
+          }
+        }]
+      }
+    },
+    config = {
+      "foo": {
+         "globalProperty": "foo"
+       }
+    };
+
+cjsc( args, config, function( code ){
+  console.log( "All done. Generated code:", code );
+});
+```
+## <a name="a-pluginexample"></a>Plugin example
+
+Plugin example
+```
+var through = require( "through2" );
+
+/*  export a Browserify plugin  */
+module.exports = function ( file, opts ) {
+    /*  provide stream  */
+    var code = "";
+    return through.obj(function (buf, enc, next) {
+        //  accumulate the code
+        code += buf.toString("utf8");
+        next();
+    }, function ( next ) {
+        // Get parameters for `replace` target
+        // if command line has multiple `replace` targets, opts.replace is an array
+        var params = global.JSON.parse( opts.replace );
+        //  transform the code
+        code = code.replace( cfg.from, cfg.to );
+        this.push( new Buffer( code ) );
+        next();
+    });
+};
+```
+
+Usage:
+```
+node cjsc.js -o /tmp/build.js app.js -t [ plugin \
+                  --replace '{ "from": "\\$foo", "to": 42 }' ]
 ```
 
 ## Alternatives

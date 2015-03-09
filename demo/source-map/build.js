@@ -50,7 +50,8 @@ var _require = (function(){
 					throw new Error( "The factory of " + filename + " module not found" );
 				}
 				// Called first time, so let's run code constructing (exporting) the module
-				imports[ filename ] = factories[ filename ]( _require, module.exports, module );
+				imports[ filename ] = factories[ filename ]( _require, module.exports, module,
+          typeof window !== "undefined" ? window : global );
 				imports[ filename ].loaded = true;
 				if ( imports[ filename ].parent.children ) {
 					imports[ filename ].parent.children.push( imports[ filename ] );
@@ -71,31 +72,38 @@ var _require = (function(){
 if ( typeof require === "undefined" ) {
 	require = _require;
 }
-_require.def( "src/use-main-flow.js", function( _require, exports, module ){
+_require.def( "demo/source-map/src/use-main-flow.js", function( _require, exports, module, global ){
 console.log( "main.js running..." );
-console.log( "Imported name in main.js is `%s`", _require( "src/main-flow/dep1.js" ).name );
+console.log( "Imported name in main.js is `%s`", _require( "demo/source-map/src/main-flow/dep1.js" ).name );
 console.log( "Getting imported object from the cache:" );
-console.log( " imported name in main.js is still `%s`", _require( "src/main-flow/dep1.js" ).name );
-	return module;
+console.log( " imported name in main.js is still `%s`", _require( "demo/source-map/src/main-flow/dep1.js" ).name );
+
+  return module;
 });
 
-_require.def( "src/main-flow/dep1.js", function( _require, exports, module ){
-	var __dirname = "src/main-flow", __filename = "src/main-flow/dep1.js";
+_require.def( "demo/source-map/src/main-flow/dep1.js", function( _require, exports, module, global ){
+  var __dirname = "demo/source-map/src/main-flow", __filename = "demo/source-map/src/main-flow/dep1.js";
 console.log( "dep1.js running..." );
 console.log( " it has __diname = `%s`", __dirname );
 console.log( " it has __filename = `%s`", __filename );
-console.log( "Imported name in dep1.js is `%s`", _require( "src/main-flow/dep2.js" ).name );
+console.log( "Imported name in dep1.js is `%s`", _require( "demo/source-map/src/main-flow/dep2.js" ).name );
 exports.name = "dep1";
-	module.exports = exports;
-	return module;
+  module.exports = exports;
+
+
+  return module;
 });
 
-_require.def( "src/main-flow/dep2.js", function( _require, exports, module ){
+_require.def( "demo/source-map/src/main-flow/dep2.js", function( _require, exports, module, global ){
 console.log( "dep2.js running..." );
 module.exports.name = "dep2";
-	return module;
+
+
+  return module;
 });
 
-_require( "src/use-main-flow.js" );
+(function(){
+_require( "demo/source-map/src/use-main-flow.js" );
+}());
 
-//# sourceMappingURL=/cjsc/demo/source-map/build.js.map
+//# sourceMappingURL=./build.js.map

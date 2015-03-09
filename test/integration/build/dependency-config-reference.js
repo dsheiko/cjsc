@@ -75,13 +75,15 @@ if ( typeof require === "undefined" ) {
 _require.def( "test/integration/fixtures/dependency-config/reference/main.js", function( _require, exports, module, global ){
 var $ = _require( "jQuery" );
 window.log.push( $ );
-	return module;
+
+  return module;
 });
 
 _require.def( "jQuery", function( _require, exports, module, global ){
-	module.exports = window.jQuery;
+ module.exports = window.jQuery;
 
-	return module;
+
+  return module;
 });
 
 (function(){

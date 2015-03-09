@@ -74,12 +74,15 @@ if ( typeof require === "undefined" ) {
 }
 _require.def( "test/integration/fixtures/dependency-config/alias/main.js", function( _require, exports, module, global ){
 window.log.push( _require( "test/integration/fixtures/dependency-config/alias/module/concrete-module.js" ) );
-	return module;
+
+  return module;
 });
 
 _require.def( "test/integration/fixtures/dependency-config/alias/module/concrete-module.js", function( _require, exports, module, global ){
 module.exports = "module";
-	return module;
+
+
+  return module;
 });
 
 (function(){
