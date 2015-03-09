@@ -4,20 +4,21 @@ CommonJS Compiler
 [![NPM version](https://badge.fury.io/js/cjsc.png)](http://badge.fury.io/js/cjsc)
 
 `cjsc` is a command-line tool that makes your Common JS modules suitable for in-browser use.
-While every AMD-module results in a separate HTTP request and therefore [badly affects page response time](https://developer.yahoo.com/performance/rules.html),
+While every AMD-module results in a separate HTTP request and therefore [badly affects page
+response time](https://developer.yahoo.com/performance/rules.html),
 `cjsc`, instead, combines all the acting modules in a single file (optionally compressed).
 
 
 ## Features
 
-* Does not bring into you production code any additional library
+* Does not bring into your production code any additional library
 * Works fine with UMD modules (including jQuery, Backbone, Underscore and others)
 * Allows exporting globals of 3rd party libraries without intervention in their code
 * Supports source maps http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
 * Supports JavaScript templates ( Mustache, Handlebars, Underscore and others )
 * Produces a string out of (multiline) non-JS external text file
-* Provides plugin API
-* Supports [Browserify plugins](https://www.npmjs.com/browse/keyword/browserify-plugin) (transformers)
+* Provides transformation plugin API
+* Supports [Browserify transformers](https://www.npmjs.com/browse/keyword/browserify-plugin)
 
 ## CommonJS Features
 * Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
@@ -92,7 +93,7 @@ Now we can compile the modules:
 cjsc main.js -o script.js
 ```
 
-As we fire up script.js we get the following output:
+As we execute script.js we get the following output:
 ```
 main.js running...
 dep1.js running...
@@ -114,48 +115,61 @@ Getting imported object from the cache:
 ## <a name="a-use"></a>Using CommonJS Compiler in the command line
 
 ```
-Usage: cjsc <src-path> <dest-path>
+ Usage: cjsc <src-path> <dest-path>
+
     <src-path> - source filename (e.g. main.js)
-    --help, -h
-            displays this help screen
+
     --output, -o
-            destination filename for compiled code
-            <dest-path>, -o=<dest-path>
+        destination filename for compiled code
+        example: <dest-path>, -o=<dest-path>
+
     --minify, -M
-            minify the output file
+        minify the output file
+
     --config, -C
-            specify a configuration JSON file
-            --config=<file>
+        specify a configuration JSON file
+        example: --config=<file>
+
     --transform, -t
-            use a transform module on top-level files.
-            --transform=[MODULE --opt]
+        use a transform module on top-level files.
+        example: --transform=[MODULE --opt]
+
     --plugin, -p
-            register MODULE as a plugin
-            --plugin=MODULE
+        register MODULE as a plugin
+        example: --plugin=MODULE
+
     --source-map
-            specify an output file where to generate source map. Use "*" automatic naming
-            --source-map=<file/pattern>
+        specify an output file where to generate source map. Use "*" automatic naming
+        example: --source-map=<file/pattern>
+
     --source-map-url
-            the path to the source map to be added in.
-            --source-map-url=<url>
+        the path to the source map to be added in.
+        example: --source-map-url=<url>
+
     --source-map-root
-            the path to the original source to be included in the source map.
-            --source-map-root=<path>
+        the path to the original source to be included in the source map.
+        example: --source-map-root=<path>
+
     --banner
-            preserve copyright comments in the output.
+        preserve copyright comments in the output.
+
     --debug
-            debug mode.
+        debug mode.
+
+    --help, -h
+        displays this help screen
+
 
 Passing arguments to transforms:
 
   For -t you may use subarg syntax to pass options to the
   transforms or plugin function as the second parameter. For example:
 
-    -t [ foo --x 3 --beep { a: 1 } ]
+    -t [ foo --x 3 --beep '{ a: 1 }' ]
 
   will call the `foo` transform for each applicable file by calling:
 
-    foo( file, { x: 3, beep: { a: 1 } } )
+    foo( file, { x: 3, beep: '{ a: 1 }' } )
 ```
 
 Compile `main-module.js` into `build.js`:
@@ -177,7 +191,7 @@ or the following options for automatic naming
 ```
 or this way to explicitly specify the path to sources relative to the source map
 ```bash
-./cjsc main-module.js 0o build.js  --source-map=build/*.map --source-map-root=../src
+./cjsc main-module.js -o build.js  --source-map=build/*.map --source-map-root=../src
 ```
 
 Whereas:
@@ -228,7 +242,7 @@ Multiple calls to `require('foo')` don't execute the module code multiple times.
 
 *Gruntfile.js*
 ```javascript
-grunt.loadNpmTasks('grunt-contrib-cjsc');
+grunt.loadNpmTasks('grunt-cjsc');
 grunt.initConfig({
      cjsc: {
       development: {
@@ -246,11 +260,11 @@ grunt.initConfig({
 ```javascript
 "devDependencies": {
     //..
-    "grunt-contrib-cjsc": "*"
+    "grunt-cjsc": "*"
   }
 ```
 
-Please find details at https://github.com/dsheiko/grunt-contrib-cjsc
+Please find details at https://github.com/dsheiko/grunt-cjsc
 
 
 
