@@ -27,6 +27,8 @@ Now twice as fast!
 * Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
 * Enclosures every file in its own unique module context
 
+
+
 ![How cjsc works](https://github.com/dsheiko/cjsc/raw/master/doc/cjsc-process.jpg)
 
 # Contents
