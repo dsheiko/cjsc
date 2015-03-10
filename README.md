@@ -37,6 +37,7 @@ Now twice as fast!
 * [How to use in the command line](#a-use)
 * [File modules](#a-file-modules)
 * [Caching](#a-caching)
+* [Setting up Grunt task](#a-grunt)
 * [How to configure dependency](#a-config)
 * [How to make module of a globally exposed variable](#a-config-a)
 * [How to make modules of jQuery and its plugins](#a-config-b)
