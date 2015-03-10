@@ -263,7 +263,7 @@ grunt.initConfig({
 ```javascript
 "devDependencies": {
     //..
-    "grunt-cjsc": "*"
+    "grunt-cjsc": ">=1.0.0"
   }
 ```
 
