@@ -173,25 +173,25 @@ Lorem ipsum dolor sit amet
 <p>Gruntfile.js:</p>
 
 <pre><code>grunt.loadNpmTasks('grunt-cjsc');
-    grunt.initConfig({
-         cjsc: {
-          development: {
-            options: {
-              minify: true
-            },
-            files: {
-              "path/compiled.js" : "path/source.js"
-            }
-          }
+grunt.initConfig({
+     cjsc: {
+      development: {
+				options: {
+					minify: true
+				},
+        files: {
+          "path/compiled.js" : "path/source.js"
         }
-      });
+      }
+    }
+  });
 </code></pre>
 
 <p>package.json:</p>
 
 <pre><code>"devDependencies": {
         //..
-        "grunt-cjsc": "*"
+        "grunt-cjsc": ">=1.0.0"
       }</code></pre>
 
 
