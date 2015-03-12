@@ -82,15 +82,6 @@ window.log.push( $.fn );
   return module;
 });
 
-_require.def( "test/integration/fixtures/dependency-config/require-a/jquery-stub.js", function( _require, exports, module, global ){
-module.exports = { 
- name: "jQuery"
-};
-
-
-  return module;
-});
-
 _require.def( "test/integration/fixtures/dependency-config/require-a/jquery-plugin-stub.js", function( _require, exports, module, global ){
 
  var 
@@ -101,6 +92,15 @@ $.fn = "plugin";
 }( jQuery ));
 
   module.exports.jQuery = jQuery;
+  return module;
+});
+
+_require.def( "test/integration/fixtures/dependency-config/require-a/jquery-stub.js", function( _require, exports, module, global ){
+module.exports = { 
+ name: "jQuery"
+};
+
+
   return module;
 });
 

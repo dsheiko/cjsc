@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## R1.0.1
+* Hotfix: R1.0.0 was resolving _require dependences by ids,
+therefore same relative names were resolved incorrectly
+
 ## R1.0.0
 * Fully refactored
 * Adding plugins via --plugin=<nodePackage,nodePackage>
