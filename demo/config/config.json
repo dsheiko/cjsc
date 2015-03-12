@@ -1,9 +1,12 @@
 {
+  "foo": {
+    "globalProperty": "foo"
+  },
 	"jQuery": {
-		"path": "./config/vendors/jquery.js"
+		"path": "./demo/config/vendors/jquery.js"
 	},
 	"plugin": {
-		"path": "./config/vendors/jquery.plugin.js",
+		"path": "./demo/config/vendors/jquery.plugin.js",
 		"require": "jQuery",
 		"exports": "jQuery"
 	}

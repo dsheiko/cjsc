@@ -1,4 +1,4 @@
-var handlebars = require( "./handlebarsjs/handlebars", "Handlebars" ).Handlebars,
+var handlebars = require( "./handlebarsjs/handlebars" ),
 		tpl = require( "./handlebarsjs/example.hbs" ),
 		view = {
 			title: "My New Post",

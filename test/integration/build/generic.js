@@ -77,23 +77,28 @@ window.log.push( "main.js:runs" );
 window.log.push( "main.js:exports:" + _require( "test/integration/fixtures/generic/module/dep1.js" ).name );
 window.log.push( "main.js:caches:" + _require( "test/integration/fixtures/generic/module/dep1.js" ).name );
 
-	return module;
+
+  return module;
 });
 
 _require.def( "test/integration/fixtures/generic/module/dep1.js", function( _require, exports, module, global ){
-	var __dirname = "test/integration/fixtures/generic/module", __filename = "test/integration/fixtures/generic/module/dep1.js";
+  var __dirname = "test/integration/fixtures/generic/module", __filename = "test/integration/fixtures/generic/module/dep1.js";
 window.log.push( "dep1.js:runs" );
 window.log.push( "dep1.js:__diname:" + __dirname );
 window.log.push( "dep1.js:__filename:" + __filename );
 window.log.push( "dep1.js:exports:" + _require( "test/integration/fixtures/generic/module/dep2/dep2.js" ).name );
 module.exports.name = "dep1-import";
-	return module;
+
+
+  return module;
 });
 
 _require.def( "test/integration/fixtures/generic/module/dep2/dep2.js", function( _require, exports, module, global ){
 window.log.push( "dep2.js:runs" );
 module.exports.name = "dep2-import";
-	return module;
+
+
+  return module;
 });
 
 (function(){
