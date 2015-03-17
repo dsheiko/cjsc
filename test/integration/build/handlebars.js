@@ -1,3 +1,4 @@
+(function(){
 /* jshint unused: false */
 /**
  * @typedef module
@@ -80,12 +81,6 @@ var handlebars = _require( "test/integration/fixtures/handlebars/handlebars.js" 
 			body: "This is my first post!"
 		};
 window.log.push( handlebars.compile( tpl )( view ).replace( /[\n\r]/gm, ";" ) );
-
-  return module;
-});
-
-_require.def( "test/integration/fixtures/handlebars/example.hbs", function( _require, exports, module, global ){
-	module.exports = "<div class=\"entry\">\r\n  <h1>{{title}}</h1>\r\n  <div class=\"body\">\r\n    {{body}}\r\n  </div>\r\n</div>";
 
   return module;
 });
@@ -2843,6 +2838,13 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
   return module;
 });
 
+_require.def( "test/integration/fixtures/handlebars/example.hbs", function( _require, exports, module, global ){
+	module.exports = "<div class=\"entry\">\r\n  <h1>{{title}}</h1>\r\n  <div class=\"body\">\r\n    {{body}}\r\n  </div>\r\n</div>";
+
+  return module;
+});
+
 (function(){
 _require( "test/integration/fixtures/handlebars/main.js" );
+}());
 }());

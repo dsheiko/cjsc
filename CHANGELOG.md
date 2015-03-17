@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## R1.0.2
+* Every compiled code now has own scope
+* FileSystem lib was resolving source map path incorrect
+
 ## R1.0.1
 * Hotfix: R1.0.0 was resolving _require dependences by ids,
 therefore same relative names were resolved incorrectly

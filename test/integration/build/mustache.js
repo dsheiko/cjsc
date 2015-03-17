@@ -1,3 +1,4 @@
+(function(){
 /* jshint unused: false */
 /**
  * @typedef module
@@ -673,4 +674,5 @@ _require.def( "test/integration/fixtures/mustache/example.tpl", function( _requi
 
 (function(){
 _require( "test/integration/fixtures/mustache/main.js" );
+}());
 }());

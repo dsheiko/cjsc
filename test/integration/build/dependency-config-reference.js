@@ -1,3 +1,4 @@
+(function(){
 /* jshint unused: false */
 /**
  * @typedef module
@@ -88,4 +89,5 @@ _require.def( "jQuery", function( _require, exports, module, global ){
 
 (function(){
 _require( "test/integration/fixtures/dependency-config/reference/main.js" );
+}());
 }());

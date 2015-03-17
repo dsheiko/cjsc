@@ -1,3 +1,4 @@
+(function(){
 /* jshint unused: false */
 /**
  * @typedef module
@@ -103,4 +104,5 @@ module.exports.name = "dep2-import";
 
 (function(){
 _require( "test/integration/fixtures/generic/main.js" );
+}());
 }());

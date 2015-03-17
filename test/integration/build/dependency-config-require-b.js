@@ -1,3 +1,4 @@
+(function(){
 /* jshint unused: false */
 /**
  * @typedef module
@@ -116,4 +117,5 @@ window.globalD =  "globalD + " + globalB;
 
 (function(){
 _require( "test/integration/fixtures/dependency-config/require-b/main.js" );
+}());
 }());

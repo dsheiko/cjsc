@@ -1,3 +1,4 @@
+(function(){
 /* jshint unused: false */
 /**
  * @typedef module
@@ -113,4 +114,5 @@ exports = { id: module.id };
 
 (function(){
 _require( "test/integration/fixtures/umd/main.js" );
+}());
 }());

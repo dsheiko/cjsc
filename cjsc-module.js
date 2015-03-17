@@ -69,11 +69,11 @@ module.exports = function( rawArgv, config, done ) {
         srcMapGen;
 
 
-    fSys = new require( "./lib/FileSystem" )( cli );
-
-    cli.printHeader( fSys.getProjectInfo().version );
+    cli.printHeader();
 
     cli.run( rawArgv );
+
+    fSys = new require( "./lib/FileSystem" )( cli );
 
     config = new Config( config || cli.options[ "config" ], fSys, cli );
 

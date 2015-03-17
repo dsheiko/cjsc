@@ -1,3 +1,4 @@
+(function(){
 /* jshint unused: false */
 /**
  * @typedef module
@@ -87,4 +88,5 @@ module.exports = "module";
 
 (function(){
 _require( "test/integration/fixtures/dependency-config/alias/main.js" );
+}());
 }());

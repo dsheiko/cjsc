@@ -1,3 +1,4 @@
+(function(){
 /* jshint unused: false */
 /**
  * @typedef module
@@ -105,5 +106,5 @@ module.exports.name = "dep2";
 (function(){
 _require( "demo/source-map/src/use-main-flow.js" );
 }());
-
+}());
 //# sourceMappingURL=./build.js.map

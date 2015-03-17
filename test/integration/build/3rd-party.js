@@ -1,3 +1,4 @@
+(function(){
 /* jshint unused: false */
 /**
  * @typedef module
@@ -95,4 +96,5 @@ window.exp2 = { title: "export2" };
 
 (function(){
 _require( "test/integration/fixtures/3rd-party/main.js" );
+}());
 }());
