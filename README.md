@@ -1,7 +1,10 @@
 CommonJS Compiler
 ==============
+
+[![NPM](https://nodei.co/npm/cjsc.png)](https://nodei.co/npm/cjsc/)
+
 [![Build Status](https://travis-ci.org/dsheiko/cjsc.png)](https://travis-ci.org/dsheiko/cjsc)
-[![NPM version](https://badge.fury.io/js/cjsc.png)](http://badge.fury.io/js/cjsc)
+[![Analytics](https://ga-beacon.appspot.com/UA-1150677-13/dsheiko/cjsc)](http://githalytics.com/dsheiko/cjsc)
 
 `cjsc` is a command-line tool that makes your Common JS modules suitable for in-browser use.
 While every AMD-module results in a separate HTTP request and therefore [badly affects page
@@ -579,4 +582,3 @@ node cjsc.js -o /tmp/build.js app.js -t [ plugin \
 * Modules-webmake - https://github.com/medikoo/modules-webmake
 * Frictionless browser package management - http://jspm.io/ (bundles ES6/AMD/CommonJs modules into a single file for production)
 
-[![Analytics](https://ga-beacon.appspot.com/UA-1150677-13/dsheiko/cjsc)](http://githalytics.com/dsheiko/cjsc)
