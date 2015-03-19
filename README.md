@@ -561,10 +561,7 @@ While debugging you can refer to the module name as `__modulename`:
 
 ```javascript
 console.log( __modulename + ": remote call [status=%s]", status );
-```
-
-```bash
-Lib/Api/Provider: remote call [status=ok]
+// >> Lib/Api/Provider: remote call [status=ok]
 ```
 
 
