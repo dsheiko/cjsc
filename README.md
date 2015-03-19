@@ -25,6 +25,7 @@ Now twice as fast!
 * Provides transformation plugin API
 * Supports [Browserify transformers](https://www.npmjs.com/browse/keyword/browserify-plugin)
 
+
 ## CommonJS Features
 * Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
 * Enclosures every file in its own unique module context
@@ -46,8 +47,11 @@ Now twice as fast!
 * [How to make modules of 3rd party libraries](#a-vendors)
 * [How to use Mustache templates](#a-mustache)
 * [How to use Handlebars templates](#a-handlebars)
+* [How to load the compiled files asynchronously](#a-async)
+* [Bonus tricks](#a-bouns)
 * [API](#a-api)
 * [Plugin example](#a-pluginexample)
+
 
 
 ## <a name="a-install"></a>How to install
@@ -516,6 +520,51 @@ npm install -g browserify-replace
 node cjsc.js -o /tmp/build.js demo/use-browserify-replace.js -t [ browserify-replace \
                   --replace '{ "from": "\\$foo", "to": 42 }' \
                   --replace '{ "from": "\\$bar", "to": "quux" }' ]
+```
+
+## <a name="a-async"></a>How to load the compiled files asynchronously
+Loading dozens atomic modules asynchronously usually slower then loading one compiled file. This an advantage of Common JS compiler
+ over AMD. However if go with a huge compiled file, it would be efficient to split it into a few parts for async loading.
+It is a matter of balance: too many HTTP requires is bad for performance as well as to few. Here how I deal with it.
+
+I inline into the page body tiny async loader [Micro RequireJS](https://github.com/dsheiko/micro-requirejs) (1.5K)
+and use it to load asynchronously:
+
+```php
+<script type="text/javascript">
+<?php include PATH_ROOT . "node_modules/micro-requirejs/rjs.min.js"; ?>
+
+rjs.define( "/vendors/jquery/jquery-1.10.2.min.js", "jquery" );
+rjs.define( "/vendors/picturefill/picturefill.min.js", "picturefill" );
+rjs.define( "/build/js/app.js", "app" );
+rjs.define( "/build/js/sub-app.js", "subapp" );
+// Backbone requires jQuery during initialization
+rjs.require([ "jquery" ], function(){
+  rjs.define( "/vendors/exoskeleton/exoskeleton.min.js", "backbone" );
+});
+
+</script>
+```
+
+Then I specify in the source module what dependencies must be resolved before running the code depended on them:
+```javascript
+global.rjs.require([ "jquery", "backbone" ], function(){
+  var $ = require( "jquery" ),
+      Backbone = require( "backbone" );
+
+  //...
+});
+```
+
+## <a name="a-bonus"></a>Bonus tricks
+While debugging you can refer to the module name as `__modulename`:
+
+```javascript
+console.log( __modulename + ": remote call [status=%s]", status );
+```
+
+```bash
+Lib/Api/Provider: remote call [status=ok]
 ```
 
 
