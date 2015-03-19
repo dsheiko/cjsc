@@ -48,7 +48,7 @@ Now twice as fast!
 * [How to use Mustache templates](#a-mustache)
 * [How to use Handlebars templates](#a-handlebars)
 * [How to load the compiled files asynchronously](#a-async)
-* [Bonus tricks](#a-bouns)
+* [Bonus tricks](#a-bonus)
 * [API](#a-api)
 * [Plugin example](#a-pluginexample)
 
