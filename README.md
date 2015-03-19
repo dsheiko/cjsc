@@ -523,12 +523,12 @@ node cjsc.js -o /tmp/build.js demo/use-browserify-replace.js -t [ browserify-rep
 ```
 
 ## <a name="a-async"></a>How to load the compiled files asynchronously
-Loading dozens atomic modules asynchronously usually slower then loading one compiled file. This an advantage of Common JS compiler
- over AMD. However if go with a huge compiled file, it would be efficient to split it into a few parts for async loading.
-It is a matter of balance: too many HTTP requires is bad for performance as well as to few. Here how I deal with it.
+Loading dozens of atomic modules asynchronously usually slower then loading one compiled file. This is an advantage of Common JS compiler
+ over AMD. However if you go with a huge compiled file, it would be efficient to split it into a few parts for async loading.
+It is a matter of balance: too many HTTP requires is bad for performance as well as too few. Here how I deal with it.
 
 I inline into the page body tiny async loader [Micro RequireJS](https://github.com/dsheiko/micro-requirejs) (1.5K)
-and use it to load asynchronously:
+and use it to load external libraries and compiled assets asynchronously:
 
 ```php
 <script type="text/javascript">
