@@ -1,6 +1,8 @@
 CommonJS Compiler
 ==============
 
+[![Join the chat at https://gitter.im/dsheiko/cjsc](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dsheiko/cjsc?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![NPM](https://nodei.co/npm/cjsc.png)](https://nodei.co/npm/cjsc/)
 
 [![Build Status](https://travis-ci.org/dsheiko/cjsc.png)](https://travis-ci.org/dsheiko/cjsc)
