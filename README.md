@@ -1,11 +1,9 @@
 CommonJS Compiler
 ==============
-
-[![Join the chat at https://gitter.im/dsheiko/cjsc](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dsheiko/cjsc?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 [![NPM](https://nodei.co/npm/cjsc.png)](https://nodei.co/npm/cjsc/)
 
 [![Build Status](https://travis-ci.org/dsheiko/cjsc.png)](https://travis-ci.org/dsheiko/cjsc)
+[![Join the chat at https://gitter.im/dsheiko/cjsc](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dsheiko/cjsc?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 `cjsc` is a command-line tool that makes your Common JS modules suitable for in-browser use.
 While every AMD-module results in a separate HTTP request and therefore [badly affects page
