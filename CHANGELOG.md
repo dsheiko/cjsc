@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## R1.0.3
+* __modulename now resolved relative to the source file
+
 ## R1.0.2
 * Every compiled code now has own scope
 * FileSystem lib was resolving source map path incorrect
