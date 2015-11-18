@@ -24,6 +24,7 @@ Now twice as fast!
 * Produces a string out of (multiline) non-JS external text file
 * Provides transformation plugin API
 * Supports [Browserify transformers](https://www.npmjs.com/browse/keyword/browserify-plugin)
+* Supports Babel.js transformation
 
 
 ## CommonJS Features
@@ -51,6 +52,7 @@ Now twice as fast!
 * [Bonus tricks](#a-bonus)
 * [API](#a-api)
 * [Plugin example](#a-pluginexample)
+* [How to compile ES6/2015](#a-es6)
 
 
 
@@ -620,6 +622,12 @@ Usage:
 ```
 node cjsc.js -o /tmp/build.js app.js -t [ plugin \
                   --replace '{ "from": "\\$foo", "to": 42 }' ]
+```
+
+## <a name="a-es6"></a>Compiling to ES6(2015)
+
+```
+cjsc.js src/Js/app.js -t [ babelify --presets [ es2015 ] ] -o ./build/app.js
 ```
 
 ## Alternatives
