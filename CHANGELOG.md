@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## R1.0.7
+* Documented: how to use babelify transformer to transpile ES6/2015 into ES5 during packaging
+
 ## R1.0.3
 * __modulename now resolved relative to the source file
 

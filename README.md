@@ -5,13 +5,15 @@ CommonJS Compiler
 [![Build Status](https://travis-ci.org/dsheiko/cjsc.png)](https://travis-ci.org/dsheiko/cjsc)
 [![Join the chat at https://gitter.im/dsheiko/cjsc](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dsheiko/cjsc?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-`cjsc` is a command-line tool that makes your Common JS modules suitable for in-browser use.
+`cjsc` is a JavaScript transpiler that makes your CommonJS modules suitable for in-browser use.
 While every AMD-module results in a separate HTTP request and therefore [badly affects page
 response time](https://developer.yahoo.com/performance/rules.html),
 `cjsc`, instead, combines all the acting modules in a single file (optionally compressed).
 
-Now twice as fast!
-![Now twice faster](https://github.com/dsheiko/cjsc/raw/master/doc/cjsc-compare.jpg)
+Comparing to the alternatives [Browserify](http://browserify.org/) and [Webpack](https://github.com/webpack/webpack),
+`cjsc` is much lighter and easier to configure. It's not a multipurpose tool. While
+Browserify attempts to bring node.js to the browser and Webpack to bundle as many formats as possible, `cjsc` is
+fully designated for a single task - to make CommonJS modules available in-browser. And it does the task pretty well.
 
 
 ## Features
@@ -25,12 +27,6 @@ Now twice as fast!
 * Provides transformation plugin API
 * Supports [Browserify transformers](https://www.npmjs.com/browse/keyword/browserify-plugin)
 * Supports [Babel.js](https://babeljs.io/) transformation
-
-
-## CommonJS Features
-* Allows splitting large projects into multiple files (modules) making web-application scalable and maintainable
-* Enclosures every file in its own unique module context
-
 
 
 ![How cjsc works](https://github.com/dsheiko/cjsc/raw/master/doc/cjsc-process.jpg)
