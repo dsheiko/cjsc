@@ -636,3 +636,6 @@ cjsc.js src/Js/app.js -t [ babelify --presets [ es2015 ] --sourceMapRelative ] -
 * Frictionless browser package management - http://jspm.io/ (bundles ES6/AMD/CommonJs modules into a single file for production)
 
 [![Analytics](https://ga-beacon.appspot.com/UA-1150677-13/dsheiko/cjsc)](http://githalytics.com/dsheiko/cjsc)
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/dsheiko/cjsc/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
