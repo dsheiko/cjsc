@@ -52,7 +52,7 @@ var _require = (function(){
 				}
 				// Called first time, so let's run code constructing (exporting) the module
 				imports[ filename ] = factories[ filename ]( _require, module.exports, module,
-          typeof window !== "undefined" ? window : global );
+          typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : null );
 				imports[ filename ].loaded = true;
 				if ( imports[ filename ].parent.children ) {
 					imports[ filename ].parent.children.push( imports[ filename ] );

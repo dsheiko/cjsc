@@ -2,7 +2,7 @@
 /*jshint multistr: true */
 /** @type {function} Compiler constructor */
 var ClassUnderTest = require( "../../lib/Renderer/Script" ),
-    fSys = new require( "../../lib/FileSystem" )( ".." ),
+    fSys = new require( "../../lib/FileSystem" )({ srcPath: ".." }),
     fs = require( "fs" );
 
 require( "should" );
