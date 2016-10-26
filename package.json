@@ -35,9 +35,9 @@
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "~0.4.3",
     "grunt-contrib-qunit": "*",
-    "grunt-jscodesniffer": "^0.1.10",
-    "grunt-mocha-cli": "~1.2.1",
-    "mocha": ">=1.7.4",
+    "grunt-jscodesniffer": "*",
+    "grunt-mocha-cli": "*",
+    "mocha": "*",
     "qunitjs": "*",
     "should": "*",
     "through2": "^0.6.3"

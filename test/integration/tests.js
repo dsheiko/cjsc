@@ -9,106 +9,106 @@
 			script.addEventListener( "load", cb );
 		},
     runTests = function() {
-			asyncTest( "generic flow tests dependency factory, module cache, import, path resolution and __filename/__dir", function() {
-				expect( 1 );
+			QUnit.test( "generic flow tests dependency factory, module cache, import, path resolution and __filename/__dir", function( assert ) {
+				var done = assert.async();
 				global.log = [];
 				load( "./build/generic.js", function(){
-					ok ( global.log.join( ";" ) === "main.js:runs;dep1.js:runs;dep1.js:__diname:test/integration/fixtures/generic/module;dep1.js:__filename:test/integration/fixtures/generic/module/dep1.js;dep2.js:runs;dep1.js:exports:dep2-import;main.js:exports:dep1-import;main.js:caches:dep1-import",
-						"as expected");
-					start();
+					assert.equal( global.log.join( ";" ), "main.js:runs;dep1.js:runs;dep1.js:__diname:test/integration/fixtures/generic/module;dep1.js:__filename:test/integration/fixtures/generic/module/dep1.js;dep2.js:runs;dep1.js:exports:dep2-import;main.js:exports:dep1-import;main.js:caches:dep1-import",
+						"as expected" );
+					done();
 				});
 			});
 
-			asyncTest( "umd flow tests UMD support, module object id property", function() {
-				expect( 1 );
+			QUnit.test( "umd flow tests UMD support, module object id property", function( assert ) {
+				var done = assert.async();
 				global.log = [];
 				load( "./build/umd.js", function(){
-					ok ( global.log.join( ";" ) === "test/integration/fixtures/umd/main.js:runs;test/integration/fixtures/umd/module/module1.js:runs;test/integration/fixtures/umd/module/module2.js:runs;test/integration/fixtures/umd/module/module1.js:exports:test/integration/fixtures/umd/module/module2.js;test/integration/fixtures/umd/main.js:exports:test/integration/fixtures/umd/module/module1.js",
-						"as expected");
-					start();
+					assert.equal( global.log.join( ";" ), "test/integration/fixtures/umd/main.js:runs;test/integration/fixtures/umd/module/module1.js:runs;test/integration/fixtures/umd/module/module2.js:runs;test/integration/fixtures/umd/module/module1.js:exports:test/integration/fixtures/umd/module/module2.js;test/integration/fixtures/umd/main.js:exports:test/integration/fixtures/umd/module/module1.js",
+						"as expected" );
+					done();
 				});
 			});
 
-			asyncTest( "non-module flow", function() {
-				expect( 1 );
+			QUnit.test( "non-module flow", function( assert ) {
+				var done = assert.async();
 				global.log = [];
 				load( "./build/non-module.js", function(){
-					ok ( global.log.join( ";" ) === "main.js:runs",
+					assert.equal( global.log.join( ";" ), "main.js:runs",
 						"as expected");
-					start();
+					done();
 				});
 			});
 
-			asyncTest( "3rd-party flow", function() {
-				expect( 1 );
+			QUnit.test( "3rd-party flow", function( assert ) {
+				var done = assert.async();
 				global.log = [];
 				load( "./build/3rd-party.js", function(){
-					ok ( global.log.join( ";" ) === "exp1:export1;exp2:export2",
+					assert.equal( global.log.join( ";" ), "exp1:export1;exp2:export2",
 						"as expected");
-					start();
+					done();
 				});
 			});
 
-			asyncTest( "Templating with Mustache", function() {
-				expect( 1 );
+			QUnit.test( "Templating with Mustache", function( assert ) {
+				var done = assert.async();
 				global.log = [];
 				load( "./build/mustache.js", function(){
-					ok ( global.log.join( ";" ) === "Joe;; spends 6",
+					assert.equal( global.log.join( ";" ), "Joe;; spends 6",
 						"as expected");
-					start();
+					done();
 				});
 			});
 
-			asyncTest( "Templating with HandlebarsJs", function() {
-				expect( 1 );
+			QUnit.test( "Templating with HandlebarsJs", function( assert ) {
+				var done = assert.async();
 				global.log = [];
 				load( "./build/handlebars.js", function(){
-					ok ( global.log.join( ";" ) === "<div class=\"entry\">;;  <h1>My New Post</h1>;;  <div class=\"body\">;;    This is my first post!;;  </div>;;</div>",
+					assert.equal( global.log.join( ";" ), "<div class=\"entry\">;;  <h1>My New Post</h1>;;  <div class=\"body\">;;    This is my first post!;;  </div>;;</div>",
 						"as expected");
-					start();
+					done();
 				});
 			});
 
-			asyncTest( "Module of a globaly exposed variable", function() {
-				expect( 1 );
+			QUnit.test( "Module of a globaly exposed variable", function( assert ) {
+				var done = assert.async();
 				global.log = [];
 				window.jQuery = "this is a jQuery instance";
 				load( "./build/dependency-config-reference.js", function(){
-					ok ( global.log.join( ";" ) === "this is a jQuery instance",
+					assert.equal( global.log.join( ";" ), "this is a jQuery instance",
 						"as expected");
-					start();
+					done();
 				});
 			});
 
-			asyncTest( "Configuring module aliases", function() {
-				expect( 1 );
+			QUnit.test( "Configuring module aliases", function( assert ) {
+				var done = assert.async();
 				global.log = [];
 				load( "./build/dependency-config-alias.js", function(){
-					ok ( global.log.join( ";" ) === "module",
+					assert.equal( global.log.join( ";" ), "module",
 						"as expected");
-					start();
+					done();
 				});
 			});
 
-			asyncTest( "Configuring a single require and a export", function() {
-				expect( 1 );
+			QUnit.test( "Configuring a single require and a export", function( assert ) {
+				var done = assert.async();
 				global.log = [];
 				load( "./build/dependency-config-require-a.js", function(){
-					ok ( global.log.join( ";" ) === "jQuery;plugin",
+					assert.equal( global.log.join( ";" ), "jQuery;plugin",
 						"as expected");
-					start();
+					done();
 				});
 			});
 
-			asyncTest( "Configuring multiple requires and exports", function() {
-				expect( 1 );
+			QUnit.test( "Configuring multiple requires and exports", function( assert ) {
+				var done = assert.async();
 				global.globalA = "globalA";
 			  global.globalB = "globalB";
 				global.log = [];
 				load( "./build/dependency-config-require-b.js", function(){
-					ok ( global.log.join( ";" ) === "{\"globalC\":\"globalC + globalA\",\"globalD\":\"globalD + globalB\"}",
+					assert.equal( global.log.join( ";" ), "{\"globalC\":\"globalC + globalA\",\"globalD\":\"globalD + globalB\"}",
 						"as expected");
-					start();
+					done();
 				});
 			});
 
