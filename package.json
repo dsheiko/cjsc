@@ -1,20 +1,24 @@
 {
   "name": "cjsc",
   "description": "Utility that compiles CommonJS (NodeJS) modules into a single JavaScript file suitable for the browser",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "author": "Dmitry Sheiko <me@dsheiko.com>",
   "main": "cjsc-module.js",
   "bin": {
     "cjsc": "./cjsc"
   },
+  "scripts": {
+    "test": "grunt test"
+  },
   "keywords": [
-    "browser",
     "require",
     "commonjs",
-    "commonj-esque",
-    "bundle",
     "npm",
-    "javascript"
+    "javascript",
+    "optimizer",
+    "bundling",
+    "bundler",
+    "modules"
   ],
   "dependencies": {
     "async": "^1.5.0",
