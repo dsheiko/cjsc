@@ -86,14 +86,14 @@ window.log.push( JSON.stringify( mod ) );
 });
 
 _require.def( "globalA", function( _require, exports, module, global ){
- module.exports = window.globalA;
+ module.exports = global.globalA;
 
 
   return module;
 });
 
 _require.def( "globalB", function( _require, exports, module, global ){
- module.exports = window.globalB;
+ module.exports = global.globalB;
 
 
   return module;

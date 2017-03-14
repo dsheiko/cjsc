@@ -81,7 +81,7 @@ window.log.push( $ );
 });
 
 _require.def( "jQuery", function( _require, exports, module, global ){
- module.exports = window.jQuery;
+ module.exports = global.jQuery;
 
 
   return module;
