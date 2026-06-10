@@ -1,7 +1,0 @@
-{
-  "LineLength": {
-		"allowMaxLength": 120
-	},
-  "Indentation": false,
-	"VariableNamingConventions": false
-}
